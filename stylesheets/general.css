@@ -1,0 +1,81 @@
+body{
+    background-color: #fefaf1;
+    font-family: 'Merriweather', serif;
+}
+.white{
+    color: #fefaf1;
+}
+.bgwhite{
+    background-color: #fefaf1;
+}
+.bglgrey {
+    background-color: #999999;
+}
+.bglblue{
+    background-color: #559bca;
+}
+.bglghtestblue{
+    background-color: #b5d1e0;
+}
+.bgdkgold{
+    background-color: #FBAF3b;
+}
+.bglggold{
+    background-color: #f1bc33;
+}
+.dkblue{
+    color: #23446e;
+}
+
+.lblue{
+    color: #559bca;
+}
+.lghtestblue{
+    color:#b5d1e0;
+}
+
+.lgold{
+    color: #f1bc33;
+}
+
+.dkgold{
+    color: #FBAF3b;
+}
+
+.dkgrey{
+    color:#333333;
+}
+
+.lgrey{
+    color: #999999;
+}
+
+.mer{
+    font-family: 'Merriweather', serif;
+}
+
+.mus{
+    font-family: museo-sans, sans-serif;
+    font-style: normal;
+    font-weight: 100;
+}
+/*
+Style Colors
+
+Recruitment Colors
+Light BlueHex:      559BCA
+Dark BlueHex:      23446E
+Gold 1Hex:      F1BC33
+Gold 2Hex:      FBAF3B
+
+Additional Colors
+Dark GreyUsed for all body copyHex:      333333
+Light GreySupport color, used sparinglyHex:      999999
+ */
+
+/*
+Typography
+
+MERRIWEATHER
+MUSEO SANS
+ */
