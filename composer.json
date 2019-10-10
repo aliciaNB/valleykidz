@@ -1,0 +1,27 @@
+{
+  "name": "mbritt/255/valleykidz",
+  "authors": [
+    {
+      "name": "Bruce Turner",
+      "email": "bturner@mail.greenriver.edu"
+    },
+    {
+      "name": "Michael Britt",
+      "email": "mbritt@mail.greenriver.edu"
+    },
+    {
+      "name": "Zachary Lindgreen",
+      "email": "zlindgren@mail.greenriver.edu"
+    },
+    {
+      "name": "Alicia Buehner",
+      "email": "Abuehner@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  },
+
+  "autoload": {
+  }
+}
