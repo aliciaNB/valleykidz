@@ -1,6 +1,7 @@
 body{
     background-color: #fefaf1;
-    font-family: 'Merriweather', serif;
+    font-family: 'Merriweather', serif
+
 }
 .white{
     color: #fefaf1;
@@ -10,6 +11,10 @@ body{
 }
 .bglgrey {
     background-color: #999999;
+}
+.bgdkgrey
+{
+    background-color:#333333;
 }
 .bglblue{
     background-color: #559bca;
@@ -59,6 +64,11 @@ body{
     font-style: normal;
     font-weight: 100;
 }
+
+.fullwidth{
+    width:100%;
+}
+
 /*
 Style Colors
 
