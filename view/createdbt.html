@@ -2,17 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
     <title></title>
 </head>
 <body>
+<div class="container-fluid">
 <!-- CodePly modified code -->
-<nav class="navbar navbar-expand-lg bglblue">
+<nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
     <div class="d-flex flex-grow-1">
         <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
-        <a class="navbar-brand white" href="#">
+        <a class="navbar-brand dkblue mus" href="branchprofile">
             Valley <span class="lgold">|</span> Cities DBT Portal
         </a>
         <div class="w-100 text-right">
@@ -24,32 +26,48 @@
     <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
         <ul class="navbar-nav ml-auto flex-nowrap">
             <li class="nav-item">
-                <a href="./" class="nav-link white">Logout</a>
+                <a href="#" class="nav-link white mus font-weight-bold">Quicksearch</a>
+            </li>
+            <li class="nav-item">
+                <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
             </li>
         </ul>
     </div>
 </nav>
-<div class="container border border-dark m-4">
+<div class="border  rounded m-4">
     <form action="#" method="post">
-    <div class="col-sm-12">
-        <h4>Add Targets: </h4>
-        <div class="target_wrapper">
-            <button class="add_target_button btn-sml btn-primary m-2">Add a new Target</button>
-            <input type="text" class="form-control mb-3" name="mytext[]" placeholder="Enter Targets Here">
+        <div class="col-12 mt-3 ml-2">
+            <h4 class="form-row">Add Targets: </h4>
+            <span class="text-danger text-center">{{@errors.feelings}}</span>
+            <div class="target_wrapper">
+                <div class="form-row">
+                    <button class="btn add_target_button btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
+                    border-0 mb-2">Add a new Target</button>
+                </div>
+                <div class="form-row">
+                    <input type="text" class="form-control mb-1 col-10" name="targets[]" placeholder="Enter Targets Here" required>
+                </div>
+            </div>
         </div>
-    </div>
-    <hr>
-    <div class="col-sm-12">
-    <h4>Add Feelings: </h4>
-        <div class="input_fields_wrap">
-            <button class="add_field_button btn-sml btn-primary m-2">Add a new feeling</button>
-            <input type="text" class="form-control mb-3" name="mytext[]" placeholder="Enter Feeling Here">
+
+        <hr>
+        <div class="col-12 ml-2">
+        <h4 class="form-row">Add Feelings: </h4>
+            <div class="input_fields_wrap">
+                <div class="form-row">
+                    <button class="add_field_button btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
+                    border-0 mb-2">Add a new feeling</button>
+                </div>
+                <div class="form-row">
+                  <input type="text" class="form-control mb-2 col-10" name="feelings[]" placeholder="Enter Feeling Here">
+                </div>
+            </div>
+            <div class="container text-right m-1 mb-2">
+                <button class="btn btn-secondary">Submit</button>
+            </div>
         </div>
-        <div class="container text-right m-1">
-            <button class="btn btn-primary">Submit</button>
-        </div>
-    </div>
     </form>
+</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="model/js/form.js"></script>
