@@ -71,5 +71,16 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
     $view = new Template();
     echo $view->render('view/branchprofile.html');
 });
+
+$f3->route('GET|POST /targets', function ($f3) {
+    $view = new Template();
+    echo $view->render('view/targets.html');
+});
+
+$f3->route('GET|POST /emotions', function ($f3) {
+    $view = new Template();
+    echo $view->render('view/emotions.html');
+});
+
 //Run the framework
 $f3->run();
