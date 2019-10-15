@@ -23,9 +23,9 @@ $f3->route('GET|POST /', function ($f3) {
 
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician{
-            $f3->reroute('/branchprofile');
-        elseif ($_POST['user' == "patient"] && $_POST['pass'] == test) {//patient{
+        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician
+            $f3->reroute('view/branchprofile');
+        elseif ($_POST['user' == "patient"] && $_POST['pass'] == test) {//patient
         } else {
             $f3->set('error', "Invalid Username or password");
         }
@@ -44,7 +44,7 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         );
         if(checkErrArray($arrayErr))
         {
-           // $f3->reroute('/branchprofile');
+           // $f3->reroute('view/branchprofile');
         }
         $f3->set('errors', $arrayErr);
     }
