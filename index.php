@@ -23,9 +23,9 @@ $f3->route('GET|POST /', function ($f3) {
 
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician{
+        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician
             $f3->reroute('/branchprofile');
-        elseif ($_POST['user' == "patient"] && $_POST['pass'] == test) {//patient{
+        elseif ($_POST['user' == "patient"] && $_POST['pass'] == test) {//patient
         } else {
             $f3->set('error', "Invalid Username or password");
         }
@@ -69,7 +69,18 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
         $f3->set('errors', $arrayErr);
     }
     $view = new Template();
-    echo $view->render('view/branchprofille.html');
+    echo $view->render('view/branchprofile.html');
 });
+
+$f3->route('GET|POST /targets', function ($f3) {
+    $view = new Template();
+    echo $view->render('view/targets.html');
+});
+
+$f3->route('GET|POST /emotions', function ($f3) {
+    $view = new Template();
+    echo $view->render('view/emotions.html');
+});
+
 //Run the framework
 $f3->run();
