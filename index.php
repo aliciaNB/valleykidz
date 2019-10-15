@@ -25,7 +25,8 @@ $f3->route('GET|POST /', function ($f3) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician
             $f3->reroute('/branchprofile');
-        elseif ($_POST['user' == "patient"] && $_POST['pass'] == test) {//patient
+        elseif ($_POST['user'] == "patient" && $_POST['pass'] == "test") {//patient
+            $f3->reroute('/targets');
         } else {
             $f3->set('error', "Invalid Username or password");
         }
@@ -74,12 +75,30 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
 
 $f3->route('GET|POST /targets', function ($f3) {
     $view = new Template();
-    echo $view->render('view/targets.html');
+
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if($_REQUEST['btn-submit']=="next"){ //if next button is clicked
+            $f3->reroute('/emotions');
+        }
+    }
+    else {
+        echo $view->render('view/targets.html');
+    }
 });
 
 $f3->route('GET|POST /emotions', function ($f3) {
-    $view = new Template();
-    echo $view->render('view/emotions.html');
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if($_REQUEST['btn-submit'] == "prev"){ //if previous button was clicked
+            $f3->reroute('/targets');
+        }
+        elseif($_REQUEST['btn-submit']=="next"){ //if next button is clicked
+            // $f3->reroute('/skills');
+        }
+    }
+    else {
+        $view = new Template();
+        echo $view->render('view/emotions.html');
+    }
 });
 
 //Run the framework

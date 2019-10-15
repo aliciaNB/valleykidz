@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
+    <link type="text/css" rel="stylesheet" href="stylesheets/diary.css" lang="en">
     <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
 <title>Targets</title>
 </head>
@@ -43,22 +44,23 @@
         </ul>
     </div>
 </nav>
-<h1>Targets</h1>
+
+<h1><strong>Targets</strong></h1>
 <div class="container text-right m-1 mb-2">
       <button class="btn btn-primary white bgdkgold mus font-weight-bold rounded-0
                     border-0">Save</button>
 
 </div>
 <form method="POST" action="#">
-	<table>
+	<table class="table table-striped">
         <tr>
-            <th>
+            <th scope="col">
                 Targets
             </th>
-            <th>
+            <th scope="col">
                 Urge
             </th>
-            <th>
+            <th scope="col">
                 Action
             </th>
         </tr>
@@ -121,11 +123,13 @@
         </tr>
 
    </table>
-</form>
+
 <div class="container text-right m-1 mb-2">
-      <button class="btn btn-primary white bgdkgold mus font-weight-bold rounded-0
-                    border-0">Previous</button>
-      <button class="btn btn-secondary">Next</button>
+      <!--<button class="btn btn-primary white bgdkgold mus font-weight-bold rounded-0
+                    border-0">Previous</button>-->
+    <button type="submit" class="btn btn-secondary" name="btn-submit" value="next">Next</button>
 </div>
+
+</form>
 
 </body>
