@@ -19,11 +19,11 @@
                 <a class="navbar-brand dkblue mus" href="branchprofile">
                     Valley <span class="lgold">|</span> Cities DBT Portal
                 </a>
-            <div class="w-100 text-right">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                <div class="w-100 text-right">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
                         <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
+                    </button>
+                </div>
             </div>
             <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
                 <ul class="navbar-nav ml-auto flex-nowrap">
@@ -37,18 +37,20 @@
             </div>
         </nav>
         <h4 class="text-center">Welcome Back</h4>
+
+        <h5 class="mt-5 text-center">Add/Remove Clients On Your Profile</h5>
         <form method="post" action="#">
-        <div class="text-center m-1">
-            <button class="btn btn-sm btn-success mus font-weight-bold round-0 border-0"
-                    type="submit" value="add">ADD CLIENT</button>
-            <button class="btn btn-sm btn-danger mus font-weith-bold round-0 border-0"
-                    type="submit" value="remove">REMOVE CLIENT</button>
-        </div>
         <div class="row">
             <div class="col-lg-3 col-md-2 col-sm-2"></div>
                 <input class="form-control col-lg-6 col-md-8 col-sm-8" name="clientnum"
                        type="text" placeholder="Input client id #">
             <div class="col-lg-3 col-md-2 col-sm-2"></div>
+        </div>
+        <div class="text-center m-1">
+            <button class="btn btn-sm btn-success mus font-weight-bold round-0 border-0"
+                    type="submit" value="add">ADD CLIENT</button>
+            <button class="btn btn-sm btn-danger mus font-weith-bold round-0 border-0"
+                    type="submit" value="remove">REMOVE CLIENT</button>
         </div>
         <div class="text-center">
             <span class="text-danger">{{@errors.addErr}}</span>
@@ -62,7 +64,7 @@
         </div>
 
         <hr class="col-10">
-        <h3>Current Clients</h3>
+        <h3>Current Clients: </h3>
         <hr>
         <div class="table-responsive">
         <table id="branchtable" class="table table-hover dt-responsive display nowrap" cellspacing="0">
