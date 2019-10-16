@@ -30,15 +30,14 @@ function validateClientNumber($data)
  */
 function validateInputGroup($data)
 {
-    foreach ($data as $input)
-    {
-        if(validateInput($input)!="")
-        {
-            return validateInput($input);
+    if($data !=null) {
+        foreach ($data as $input) {
+            if (validateInput($input) != "") {
+                return validateInput($input);
+            }
         }
     }
-    return;
-
+    return "";
 }
 
 /**
@@ -48,6 +47,7 @@ function validateInputGroup($data)
  */
 function validateInput($data)
 {
+    if($data!=null)
      //TODO Add db connection to escape $data =mysqli_real_escape_string($data);
      if($data=="")
      {
