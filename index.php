@@ -107,11 +107,12 @@ $f3->route('GET|POST /targets', function ($f3) {
 
 $f3->route('GET|POST /emotions', function ($f3) {
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        if($_REQUEST['btn-submit'] == "prev"){ //if previous button was clicked
+
+        if($_REQUEST['btn-submit'] == "prev") { //if previous button was clicked
             $f3->reroute('/targets');
         }
-        elseif($_REQUEST['btn-submit']=="next"){ //if next button is clicked
-            // $f3->reroute('/skills');
+        elseif($_REQUEST['btn-submit']=="next") { //if next button is clicked
+             $f3->reroute('/skills');
         }
     }
     else {
@@ -120,12 +121,17 @@ $f3->route('GET|POST /emotions', function ($f3) {
     }
 });
 
-$f3->route('GET|POST /skills', function () {
+$f3->route('GET|POST /skills', function ($f3) {
     $view = new Template();
 
-    //// $f3->reroute('/memberprofile'); TODO reroute on save and exit
-    echo $view->render('view/skills.html');
+    if($_REQUEST['btn-submit'] == "prev") { //if previous button was clicked
+        $f3->reroute('/emotions');
+    }
+    elseif($_REQUEST['btn-submit']=="save") { //if save & exit button is clicked
+        $f3->reroute('/memberprofile');
+    }
 
+    echo $view->render('view/skills.html');
 });
 
 
