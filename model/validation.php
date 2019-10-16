@@ -23,16 +23,24 @@ function validateClientNumber($data)
     return "";
 }
 
+/**
+ * Takes an array of inputs and verifies that they are not empty
+ * @param $data Array accepts a group of strings representing a group of inputs
+ * @return string|void
+ */
 function validateInputGroup($data)
 {
-    foreach ($data as $input)
+    if($data!=null)
     {
-        if(validateInput($input)!="")
+        foreach ($data as $input)
         {
-            return validateInput($input);
+            if(validateInput($input)!="")
+            {
+                return validateInput($input);
+            }
         }
+        return;
     }
-    return;
 }
 
 function validateInput($data)

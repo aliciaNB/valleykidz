@@ -11,63 +11,66 @@
     <title>Profile</title>
 </head>
 <body>
-    <div class="container-fluid">
-        <!-- CodePly modified code -->
-        <nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
-            <div class="d-flex flex-grow-1">
-                <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
-                <a class="navbar-brand dkblue mus" href="branchprofile">
-                    Valley <span class="lgold">|</span> Cities DBT Portal
-                </a>
-                <div class="w-100 text-right">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
+<div class="container-fluid">
+    <!-- CodePly modified code -->
+    <nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
+        <div class="d-flex flex-grow-1">
+            <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
+            <a class="navbar-brand mus" href="branchprofile">
+                Valley <span class="lgold">|</span> Cities DBT Portal
+            </a>
+            <div class="w-100 text-right">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
-            <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
-                <ul class="navbar-nav ml-auto flex-nowrap">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link white mus font-weight-bold">Quicksearch</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <h4 class="text-center">Welcome Back</h4>
+        </div>
+        <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+                <li class="nav-item">
+                    <a href="#" class="nav-link white mus font-weight-bold">Quicksearch</a>
+                </li>
+                <li class="nav-item">
+                    <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-        <h5 class="mt-5 text-center">Add/Remove Clients On Your Profile</h5>
-        <form method="post" action="#">
+    <!--------------------------------End of Nav---------------------------------------------------------------------->
+
+    <h4 class="text-center">Welcome Back</h4>
+
+    <h5 class="mt-5 text-center">Add/Remove Clients On Your Profile</h5>
+    <form method="post" action="#">
         <div class="row">
             <div class="col-lg-3 col-md-2 col-sm-2"></div>
-                <input class="form-control col-lg-6 col-md-8 col-sm-8" name="clientnum"
-                       type="text" placeholder="Input client id #">
+            <input class="form-control col-lg-6 col-md-8 col-sm-8" name="clientnum"
+                   type="text" placeholder="Input client id #">
             <div class="col-lg-3 col-md-2 col-sm-2"></div>
         </div>
         <div class="text-center m-1">
-            <button class="btn btn-sm btn-success mus font-weight-bold round-0 border-0"
+            <button class="btn btn-sm btn-success mus font-weight-bold rounded-0 border-0"
                     type="submit" value="add">ADD CLIENT</button>
-            <button class="btn btn-sm btn-danger mus font-weith-bold round-0 border-0"
+            <button class="btn btn-sm btn-primary mus font-weight-bold rounded-0 border-0"
                     type="submit" value="remove">REMOVE CLIENT</button>
         </div>
         <div class="text-center">
             <span class="text-danger">{{@errors.addErr}}</span>
-         </div>
-        </form>
-
-        <hr class="col-10">
-        <div class="text-center">
-        <h5>Get temporary access to a client with</h5>
-            <a href="#" class="btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0 border-0">QUICK SEARCH</a>
         </div>
+    </form>
 
-        <hr class="col-10">
-        <h3>Current Clients: </h3>
-        <hr>
-        <div class="table-responsive">
-        <table id="branchtable" class="table table-hover dt-responsive display nowrap" cellspacing="0">
+    <hr class="col-10">
+    <div class="text-center">
+        <h5>Get temporary access to a client with</h5>
+        <a href="#" class="btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0 border-0">QUICK SEARCH</a>
+    </div>
+
+    <hr class="col-10">
+    <h3>Current Clients: </h3>
+    <hr>
+    <div class="table-responsive">
+        <table id="branchtable" class="table table-hover dt-responsive display nowrap">
             <tr>
                 <th>Client #</th>
                 <th>Create/Edit</th>
@@ -84,23 +87,23 @@
             <tr>
                 <td><h5> 223555:</h5></td>
                 <td><button type="button" class="btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0 border-0">EDIT DBT</button></td>
-                <td><a href="#" type="button" class="btn btn-sm btn-secondary mus font-weight-bold rounded-0 border-0">VIEW</a></td>
+                <td><button type="button" class="btn btn-sm btn-secondary mus font-weight-bold rounded-0 border-0">VIEW</button></td>
             </tr>
         </table>
-        </div>
     </div>
+</div>
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-    <script>
-        $(document).ready( function () {
-            $('#branchtable').DataTable();
-        } );
-        $('#branchtable').DataTable( {
-            responsive: true
-        } );
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#branchtable').DataTable();
+    } );
+    $('#branchtable').DataTable( {
+        responsive: true
+    } );
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

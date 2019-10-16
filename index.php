@@ -15,6 +15,16 @@ session_start();
 //require_once("vendor/autoload.php");
 //require_once("models/validation.php");
 
+//-----------------------------------------------------Arrays-----------------------------------------------------------
+
+$defaultTargets = array(
+    "Suicidal Ideation","Self Harm", "Substance Use"
+);
+$defaultEmotions = array(
+    "Self Acceptance", "Shame", "Joy", "Anger", "Compassion"
+);
+
+
 //-----------------------------------------------------ROUTES-----------------------------------------------------------
 //default route
 $f3->route('GET|POST /', function ($f3) {
@@ -38,6 +48,9 @@ $f3->route('GET|POST /', function ($f3) {
 
 //dbt create
 $f3->route('GET|POST /createdbt', function ($f3) {
+    global $defaultEmotions;
+    global $defaultTargets;
+
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         $arrayErr = array(
             "feelings" => validateInputGroup($_POST['feelings']),
@@ -45,10 +58,12 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         );
         if(checkErrArray($arrayErr))
         {
-           // $f3->reroute('/branchprofile');
+            $f3->reroute('/branchprofile');
         }
         $f3->set('errors', $arrayErr);
     }
+    $f3->set("targets", $defaultTargets);
+    $f3->set("emotions", $defaultEmotions);
     $view = new Template();
     echo $view->render('view/createdbt.html');
 });

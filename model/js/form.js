@@ -10,7 +10,7 @@ $(document).ready(function() {
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
             $(wrapper).append('<div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Feeling Here"' +
-                ' class="form-control mt-1 col-10" name="feelings[]"/><a href="#"' +
+                ' class="form-control mt-1 col-10" name="feelings[]" required/><a href="#"' +
                 ' class="remove_field bg col-2 text-center justify-content-center align-self-center">X</a></div>');
         }
     });
@@ -32,7 +32,7 @@ $(document).ready(function() {
         if(y < target_max_fields){ //max input box allowed
             y++; //text box increment
             $(target_wrapper).append('<div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Target Here"' +
-                ' class="form-control mt-1 col-10" name="targets[]"/><a href="#"' +
+                ' class="form-control mt-1 col-10" name="targets[]" required/><a href="#"' +
                 ' class="remove_field bg col-2 text-center justify-content-center align-self-center">X</a></div>'); //add input box
         }
     });
