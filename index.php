@@ -31,9 +31,11 @@ $f3->route('GET|POST /', function ($f3) {
         }
         elseif ($_POST['user'] == "member" && $_POST['pass'] == "test") //member
         {
-            $f3->reroute('/memberprofile'); //TODO FIXME reroute to the dashboard page
-            //$f3->reroute('/targets');
-        } else {
+            $f3->reroute('/memberprofile');
+
+        }
+        else
+        {
             $f3->set('error', "Invalid Username or password");
         }
     }
@@ -80,8 +82,13 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
 });
 
 //client dashboard page FIXME you are working here....
-$f3->route('GET|POST /memberprofile', function () {
+$f3->route('GET|POST /memberprofile', function ($f3) {
     $view = new Template();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $f3->reroute('/targets');
+    }
+
     echo $view->render('view/memberprofile.html');
 });
 
@@ -112,6 +119,15 @@ $f3->route('GET|POST /emotions', function ($f3) {
         echo $view->render('view/emotions.html');
     }
 });
+
+$f3->route('GET|POST /skills', function () {
+    $view = new Template();
+
+    //// $f3->reroute('/memberprofile'); TODO reroute on save and exit
+    echo $view->render('view/skills.html');
+
+});
+
 
 //Run the framework
 $f3->run();
