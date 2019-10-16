@@ -23,10 +23,16 @@ $f3->route('GET|POST /', function ($f3) {
 
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician
+
+        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test") //clinician
+        {
             $f3->reroute('/branchprofile');
-        elseif ($_POST['user'] == "patient" && $_POST['pass'] == "test") {//patient
-            $f3->reroute('/targets');
+
+        }
+        elseif ($_POST['user'] == "member" && $_POST['pass'] == "test") //member
+        {
+            $f3->reroute('/memberprofile'); //TODO FIXME reroute to the dashboard page
+            //$f3->reroute('/targets');
         } else {
             $f3->set('error', "Invalid Username or password");
         }
@@ -53,17 +59,17 @@ $f3->route('GET|POST /createdbt', function ($f3) {
     echo $view->render('view/createdbt.html');
 });
 
-
+//group leader dashboard page
 $f3->route('GET|POST /branchprofile', function ($f3) {
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $arrayErr = array(
             "addErr" => validateClientNumber($_POST['clientnum']),);
         if (checkErrArray($arrayErr))
         {
-            if($_REQUEST['btn-submit'] == "add"){ //if add clied update db on groups leader to reference client #
+            if($_REQUEST['btn-submit'] == "add"){ //if add client update db on groups leader to reference client #
 
             }
-            elseif($_REQUEST['btn-submit']=="remove"){ //if remove selected remove from goup leder reference to cline#
+            elseif($_REQUEST['btn-submit']=="remove"){ //if remove selected remove from goupp leader reference to client
 
             }
         }
@@ -71,6 +77,12 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
     }
     $view = new Template();
     echo $view->render('view/branchprofile.html');
+});
+
+//client dashboard page FIXME you are working here....
+$f3->route('GET|POST /memberprofile', function () {
+    $view = new Template();
+    echo $view->render('view/memberprofile.html');
 });
 
 $f3->route('GET|POST /targets', function ($f3) {
