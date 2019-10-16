@@ -25,24 +25,27 @@ function validateClientNumber($data)
 
 /**
  * Takes an array of inputs and verifies that they are not empty
- * @param $data Array accepts a group of strings representing a group of inputs
+ * @param $data array accepts a group of strings representing a group of inputs
  * @return string|void
  */
 function validateInputGroup($data)
 {
-    if($data!=null)
+    foreach ($data as $input)
     {
-        foreach ($data as $input)
+        if(validateInput($input)!="")
         {
-            if(validateInput($input)!="")
-            {
-                return validateInput($input);
-            }
+            return validateInput($input);
         }
-        return;
     }
+    return;
+
 }
 
+/**
+ * Check if a field provided is empty
+ * @param $data String representation of a text box
+ * @return string error message
+ */
 function validateInput($data)
 {
      //TODO Add db connection to escape $data =mysqli_real_escape_string($data);
@@ -50,6 +53,7 @@ function validateInput($data)
      {
          return "Fields can not be empty";
      }
+     return "";
 }
 
 /**

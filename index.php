@@ -33,11 +33,19 @@ $f3->route('GET|POST /', function ($f3) {
 
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test")//clinician
+
+        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test") //clinician
+        {
             $f3->reroute('/branchprofile');
-        elseif ($_POST['user'] == "patient" && $_POST['pass'] == "test") {//patient
-            $f3->reroute('/targets');
-        } else {
+
+        }
+        elseif ($_POST['user'] == "member" && $_POST['pass'] == "test") //member
+        {
+            $f3->reroute('/memberprofile');
+
+        }
+        else
+        {
             $f3->set('error', "Invalid Username or password");
         }
     }
@@ -68,17 +76,17 @@ $f3->route('GET|POST /createdbt', function ($f3) {
     echo $view->render('view/createdbt.html');
 });
 
-
+//group leader dashboard page
 $f3->route('GET|POST /branchprofile', function ($f3) {
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $arrayErr = array(
             "addErr" => validateClientNumber($_POST['clientnum']),);
         if (checkErrArray($arrayErr))
         {
-            if($_REQUEST['btn-submit'] == "add"){ //if add clied update db on groups leader to reference client #
+            if($_REQUEST['btn-submit'] == "add"){ //if add client update db on groups leader to reference client #
 
             }
-            elseif($_REQUEST['btn-submit']=="remove"){ //if remove selected remove from goup leder reference to cline#
+            elseif($_REQUEST['btn-submit']=="remove"){ //if remove selected remove from goupp leader reference to client
 
             }
         }
@@ -86,6 +94,17 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
     }
     $view = new Template();
     echo $view->render('view/branchprofile.html');
+});
+
+//client dashboard page FIXME you are working here....
+$f3->route('GET|POST /memberprofile', function ($f3) {
+    $view = new Template();
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $f3->reroute('/targets');
+    }
+
+    echo $view->render('view/memberprofile.html');
 });
 
 $f3->route('GET|POST /targets', function ($f3) {
@@ -103,11 +122,12 @@ $f3->route('GET|POST /targets', function ($f3) {
 
 $f3->route('GET|POST /emotions', function ($f3) {
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        if($_REQUEST['btn-submit'] == "prev"){ //if previous button was clicked
+
+        if($_REQUEST['btn-submit'] == "prev") { //if previous button was clicked
             $f3->reroute('/targets');
         }
-        elseif($_REQUEST['btn-submit']=="next"){ //if next button is clicked
-            // $f3->reroute('/skills');
+        elseif($_REQUEST['btn-submit']=="next") { //if next button is clicked
+             $f3->reroute('/skills');
         }
     }
     else {
@@ -115,6 +135,20 @@ $f3->route('GET|POST /emotions', function ($f3) {
         echo $view->render('view/emotions.html');
     }
 });
+
+$f3->route('GET|POST /skills', function ($f3) {
+    $view = new Template();
+
+    if($_REQUEST['btn-submit'] == "prev") { //if previous button was clicked
+        $f3->reroute('/emotions');
+    }
+    elseif($_REQUEST['btn-submit']=="save") { //if save & exit button is clicked
+        $f3->reroute('/memberprofile');
+    }
+
+    echo $view->render('view/skills.html');
+});
+
 
 //Run the framework
 $f3->run();

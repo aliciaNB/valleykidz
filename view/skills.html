@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
+    <title>Skills</title>
+</head>
+<body>
+<!-- Navbar -------------------------------------------------------->
+<nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
+    <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
+        <a class="navbar-brand dkblue mus" href="./">
+            Valley <span class="lgold">|</span> Cities DBT Portal
+        </a>
+        <div class="w-100 text-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<h2 class="text-center mer mt-4 mb-4"><strong>DBT Skills Used</strong></h2>
+<form action="#" method="post">
+    <div class="container text-right m-4 mb-2">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="skill">DBT Skill: </label>
+                <select class="form-control mr-2" id="skill">
+                    <option selected disabled>Choose a Skill</option>
+                    <optgroup label="Core Mindfulness">
+                        <option value="wise mind">Wise Mind</option>
+                        <option value="observe">Observe</option>
+                        <option value="describe">Describe</option>
+                        <option value="participate">Participate</option>
+                        <option value="nonjudgmental stance">Nonjudgmental Stance</option>
+                        <option value="one-mindfully">One-mindfully</option>
+                        <option value="effectiveness">Effectiveness</option>
+                    </optgroup>
+                    <optgroup label="Interper">
+                        <option value="objective effectiveness">Objective Effectiveness</option>
+                        <option value="relationship effectiveness">Relationship Effectiveness</option>
+                        <option value="self-respect effectiveness">Self-respect Effectiveness</option>
+                    </optgroup>
+                    <optgroup label="Emotion Regulation">
+                        <option value="identifying primary emotions">Identifying Primary Emotions</option>
+                        <option value="checking the Facts">Checking the Facts</option>
+                        <option value="problem solving">Problem Solving</option>
+                        <option value="opposite-to-emotion action">Opposite-to-emotion action</option>
+                        <option value="acquire positives in the short term">Acquire positives in the short term</option>
+                        <option value="acquire positives in the long term">Acquire positives in the long term</option>
+                        <option value="build mastery">Build Mastery</option>
+                        <option value="cope ahead">Cope Ahead</option>
+                        <option value="please">PLEASE</option>
+                        <option value="mindfulness to current emotion">Mindfulness to Current Emotion</option>
+                    </optgroup>
+                    <optgroup label="Distress Tolerance">
+                        <option value="tipp">TIPP</option>
+                        <option value="distract">Distract</option>
+                        <option value="self-soothe">Self-soothe</option>
+                        <option value="improve">IMPROVE</option>
+                        <option value="pros and cons">Pros and Cons</option>
+                        <option value="half-smile">Half-smile</option>
+                        <option value="radical acceptance">Radical acceptance</option>
+                        <option value="turning the mind">Turning the Mind</option>
+                        <option value="willingness">Willingness</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group ml-2">
+                <label for="degree">Degree skill was used: </label>
+                <select class="form-control mr-2" id="degree">
+                    <option selected disabled>Choose Degree Used</option>
+                    <option value="1">1. Realized afterwards that I should have used the skill.</option>
+                    <option value="2">2. Thought about skill but chose not to use it.</option>
+                    <option value="3">3. Realized afterwards that I did use skill effectively.</option>
+                    <option value="4">4. Mindfully tried to use skill but wasn't effective.</option>
+                    <option value="5">5. Mindfully used skill effectively.</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="checkbox" class="form-check-input" id="degreecheck">
+                <label for="degreecheck"></label>
+            </div>
+            <button type="submit" class="btn-sm btn-primary mer white bgdkgold mus font-weight-bold rounded-0 border-0"
+                    name="btn-submit" value="addskill">+ Add Another Skill</button>
+        </div>
+        <div class="form-group text-left">
+            <label class="" for="skillsnotes">Notes</label>
+            <textarea class="form-control" id="skillsnotes" rows="3">Additional thoughts</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mer white bgdkgold mus font-weight-bold rounded-0
+                    border-0" name="btn-submit" value="prev">Previous</button>
+        <button type="submit" class="btn btn-secondary mer font-weight-bold rounded-0 border-0"
+                    name="btn-submit" value="save">Save & Exit</button>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

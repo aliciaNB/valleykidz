@@ -9,35 +9,36 @@
     <title>Clincian DBT Create</title>
 </head>
 <body>
-<div class="container-fluid">
 <!-- CodePly modified code NavBar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
-        <div class="d-flex flex-grow-1">
-            <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
-            <a class="navbar-brand dkblue mus" href="branchprofile">
-                Valley <span class="lgold">|</span> Cities DBT Portal
-            </a>
-            <div class="w-100 text-right">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
+    <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
+        <a class="navbar-brand dkblue mus" href="branchprofile">
+            Valley <span class="lgold">|</span> Cities DBT Portal
+        </a>
+        <div class="w-100 text-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-        <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
-            <ul class="navbar-nav ml-auto flex-nowrap">
-                <li class="nav-item">
-                    <a href="#" class="nav-link white mus font-weight-bold">Quicksearch</a>
-                </li>
-                <li class="nav-item">
-                    <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    </div>
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="#" class="nav-link white mus font-weight-bold">Quicksearch</a>
+            </li>
+            <li class="nav-item">
+                <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
 
-<!----------------------------------End of Nav ----------------------------------------------------------------------->
 
-<h4 class="text-center m-2">Create Weekly DBT</h4>
+<!--_________________________________End of Nav______________________________________________________________________-->
+
+<h4 class="text-center m-2"><strong>Create Weekly DBT</strong></h4>
 <h5 class="text-center">Client#: 113555</h5>
 <div class="border  rounded m-4">
     <form action="#" method="post">
@@ -47,27 +48,28 @@
             <div class="target_wrapper">
                 <div class="form-row">
                     <button class="btn add_target_button btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
-                    border-0 mb-2">Add custom Target</button>
+                border-0 mb-2">Add a New Target</button>
                 </div>
             </div>
             <div class="mt-1 mb-1 form-row">
-            <repeat group="{{ @targets}}"
-                    key="{{ @key }}"
-                    value="{{ @value }}">
-                <input disabled type="text" value="{{@value}}" class="form-control mt-1 col-12" name="feelings[]" required/>
-            </repeat>
+                <repeat group="{{ @targets}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <input disabled type="text" value="{{@value}}" class="form-control mt-1 col-12" name="feelings[]" required/>
+                </repeat>
             </div>
         </div>
 
         <hr>
         <div class="col-12 ml-2">
-        <h4 class="form-row">Feelings: </h4>
+            <h4 class="form-row">Feelings: </h4>
             <div class="input_fields_wrap">
                 <div class="form-row">
                     <button class="add_field_button btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
-                    border-0 mb-2">Add custom feeling</button>
+                border-0 mb-2">Add a New Feeling</button>
                 </div>
             </div>
+            <h3 class="text-center">Default </h3>
             <div class="mt-1 mb-1 form-row">
                 <repeat group="{{ @emotions}}"
                         key="{{ @key }}"
@@ -75,57 +77,19 @@
                     <input disabled type="text" value="{{@value}}" class="form-control mt-1 col-12" name="feelings[]" required/>
                 </repeat>
             </div>
-            <div class="container text-right m-1 mb-2">
-                <button class="btn btn-secondary border-0 rounded-0">Submit</button>
+            <div class="text-right mt-2 mb-2">
+                <button class="btn btn-secondary font-weight-bold rounded-0 border-0">Submit</button>
             </div>
         </div>
     </form>
 </div>
 </div>
 
-<!----------------------------------MODAL------------------------------------------------------------------------------>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h3>Default Form Information</h3>
-                <hr>
-                <h5 class="font-weight-bold">Targets</h5>
-                <ul class="font-weight-bold">
-                <repeat group="{{ @targets}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <li>{{@value}}</li>
-                </repeat>
-                </ul>
-                <hr>
-                <h5 class="font-weight-bold">Emotions</h5>
-                <ul class="font-weight-bold">
-                    <repeat group="{{@emotions}}"
-                            key="{{@key}}"
-                            value="{{@value}}">
-                        <li>{{@value}}</li>
-                    </repeat>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="model/js/form.js"></script>
