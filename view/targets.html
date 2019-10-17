@@ -24,7 +24,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
     <div class="d-flex flex-grow-1">
         <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
-        <a class="navbar-brand dkblue mus" href="./">
+        <a class="navbar-brand dkblue mus" href="memberprofile">
             Valley <span class="lgold">|</span> Cities DBT Portal
         </a>
         <div class="w-100 text-right">
@@ -49,6 +49,7 @@
 
 </div>
 <form method="POST" action="#">
+    <!-- Targets table -->
 	<table class="table table-striped">
         <tr>
             <th scope="col">
@@ -61,19 +62,20 @@
                 Action
             </th>
         </tr>
+        <!-- Will eventually be a repeat group -->
         <tr>
             <td>
                 Self Harm
             </td>
             <td>
                 <select>
-                    <option>--</option>
-                    <option>0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <option value="">--</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                 </select>
             </td>
             <td>
@@ -96,7 +98,7 @@
                 </select>
             </td>
             <td>
-                <input type="checkbox" disabled>
+                <input type="checkbox">
             </td>
         </tr>
         <tr>
@@ -115,20 +117,19 @@
                 </select>
             </td>
             <td>
-                <input type="checkbox" disabled>
+                <input type="checkbox">
             </td>
         </tr>
 
    </table>
 
 <div class="container text-right m-1 mb-2">
-      <!--<button class="btn btn-primary white bgdkgold mus font-weight-bold rounded-0
-                    border-0">Previous</button>-->
     <button type="submit" class="btn btn-secondary rounded-0 border-0" name="btn-submit" value="next">Next</button>
 </div>
 
 </form>
 
+<!-- Scripts for mobile and bootstrap -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
