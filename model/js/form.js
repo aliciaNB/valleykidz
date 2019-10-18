@@ -41,3 +41,15 @@ $(document).ready(function() {
         e.preventDefault(); $(this).parent('div').remove(); y--;
     })
 });
+
+$( ".hideshow" ).click(function() {
+    $(this).parent().next('.showing').toggle();
+    if($(this).html()=="Hide")
+    {
+        $(this).html("Show");
+    }
+    else
+    {
+        $(this).html("Hide");
+    }
+});

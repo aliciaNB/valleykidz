@@ -52,8 +52,8 @@
                 </div>
             </div>
             <hr mt-1 mb-1>
-            <p class="text-center d-none">Values Below Are Automatically Included In All DBT Forms</p>
-            <div class="mt-1 mb-1 form-row">
+            <p class="text-center">Targets Included In All DBT Forms-<span class="btn hideshow btn-link">Hide</span></p>
+            <div class="mt-1 mb-1 form-row showing">
                 <repeat group="{{ @targets}}"
                         key="{{ @key }}"
                         value="{{ @value }}">
@@ -72,8 +72,8 @@
                 </div>
             </div>
             <hr mt-1 mb-1>
-            <p class="text-center d-none">Values Below Are Automatically Included In All DBT Forms</p>
-            <div class="mt-1 mb-1 form-row">
+            <p class="text-center">Feelings Included In All DBT Forms-<span class="hideshow btn btn-link">Hide</span></p>
+            <div class="mt-1 mb-1 form-row showing">
                 <repeat group="{{ @emotions}}"
                         key="{{ @key }}"
                         value="{{ @value }}">
