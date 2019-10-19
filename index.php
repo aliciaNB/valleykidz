@@ -66,7 +66,10 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         );
         if(checkErrArray($arrayErr))
         {
-            $f3->reroute('/branchprofile');
+            $_SESSION['confirmTargets']= $_POST['targets'];
+            $_SESSION['confirmEmotions']= $_POST['feelings'];
+
+            $f3->reroute('/confirmdbtform');
         }
         $f3->set('errors', $arrayErr);
     }
@@ -120,6 +123,8 @@ $f3->route('GET|POST /targets', function ($f3) {
     }
 });
 
+
+//emotions route
 $f3->route('GET|POST /emotions', function ($f3) {
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -149,6 +154,12 @@ $f3->route('GET|POST /skills', function ($f3) {
     echo $view->render('view/skills.html');
 });
 
+
+//confirmation page
+$f3->route('GET|POST /confirmdbtform', function($f3){
+    $view = new Template();
+    echo $view->render('view/clinicianconfirm.html');
+});
 
 //Run the framework
 $f3->run();

@@ -45,14 +45,14 @@
         <div class="col-12 mt-3 ml-2">
             <h4 class="form-row">Targets:</h4>
             <span class="text-danger text-center">{{@errors.feelings}}</span>
-            <div class="target_wrapper">
+            <div class="target_wrapper mb-1">
                 <div class="form-row">
                     <button class="btn add_target_button btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
                 border-0 mb-2">Add a New Target</button>
                 </div>
             </div>
-            <hr mt-1 mb-1>
-            <p class="text-center">Targets Included In All DBT Forms-<span class="btn hideshow btn-link">Hide</span></p>
+            <hr>
+            <p class="text-center mt-1">Targets Included In All DBT Forms-<span class="btn hideshow btn-link">Hide</span></p>
             <div class="mt-1 mb-1 form-row showing">
                 <repeat group="{{ @targets}}"
                         key="{{ @key }}"
@@ -65,14 +65,14 @@
         <hr>
         <div class="col-12 ml-2">
             <h4 class="form-row">Feelings: </h4>
-            <div class="input_fields_wrap">
+            <div class="input_fields_wrap mb-1">
                 <div class="form-row">
                     <button class="add_field_button btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
                 border-0 mb-2">Add a New Feeling</button>
                 </div>
             </div>
-            <hr mt-1 mb-1>
-            <p class="text-center">Feelings Included In All DBT Forms-<span class="hideshow btn btn-link">Hide</span></p>
+            <hr>
+            <p class="text-center mt-1">Feelings Included In All DBT Forms-<span class="hideshow btn btn-link">Hide</span></p>
             <div class="mt-1 mb-1 form-row showing">
                 <repeat group="{{ @emotions}}"
                         key="{{ @key }}"
