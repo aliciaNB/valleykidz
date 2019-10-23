@@ -51,7 +51,8 @@
             <button class="btn btn-sm btn-success mus font-weight-bold rounded-0 border-0"
                     type="submit" name="add" value="save">ADD CLIENT</button>
             <button class="btn btn-sm btn-primary mus font-weight-bold rounded-0 border-0"
-                    type="submit" name="remove" value="delete">REMOVE CLIENT</button>
+                    type="submit" name="remove" value="delete"
+                    onclick="return confirm('Are you sure you want to remove client?');">REMOVE CLIENT</button>
         </div>
         <div class="text-center">
             <span class="text-danger">{{@errors.addErr}} {{@dberror}}</span>
