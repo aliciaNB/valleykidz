@@ -18,10 +18,11 @@ session_start();
 //-----------------------------------------------------Arrays-----------------------------------------------------------
 
 $defaultTargets = array(
-    "Suicidal Ideation","Self Harm", "Substance Use"
+    "Suicidal Ideation","Self Harm", "Substance Use", "Medication"
 );
 $defaultEmotions = array(
-    "Self Acceptance", "Shame", "Joy", "Anger", "Compassion"
+    "Joy", "Gratitude", "Compassion", "Vulnerability", "Self Acceptance", "Sadness", "Depression", "Anger",
+    "Frustration", "Anxiety"
 );
 
 
