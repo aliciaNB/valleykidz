@@ -68,7 +68,7 @@
                 Self Harm
             </td>
             <td>
-                <select>
+                <select class="action">
                     <option value="">--</option>
                     <option value="0">0</option>
                     <option value="1">1</option>
@@ -79,7 +79,7 @@
                 </select>
             </td>
             <td>
-                <input type="checkbox">
+                <input type="checkbox" class="urge" disabled>
             </td>
         </tr>
         <tr>
@@ -139,5 +139,24 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script>
+    /*$("select").change(function(){
+        if($(this).val() !== "") {
+            $(this).parent.next.firstChild.removeattr("disabled");
+        } else {
+            $(this).parent.next.firstChild.attr("disabled");
+        }
+    });*/
+
+    /*$(document).on('change','.urge',function(){
+        if($(this).val() !== "") {
+            $(this).parent().next().children().first().removeAttr("disabled");
+        } else {
+            $(this).parent.next.firstChild.attr("disabled");
+        }
+    });*/
+
+
+</script>
 </body>
 </html>
