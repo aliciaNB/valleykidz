@@ -1,6 +1,7 @@
 <?php
 /*
- * CREATE TABLE users(
+
+CREATE TABLE users(
 	user_id int(8) primary key not null,
     password varchar(255) not null,
     admin boolean,
@@ -11,9 +12,9 @@ CREATE table client(
 );
 
 CREATE table clinician(
-    clinician_id int(8) primary key
+    clinician_id int(8) primary key,
+    user_name varchar(255)
 );
-
 
 CREATE TABLE profilelinks(
     client_id int(8),
@@ -21,8 +22,8 @@ CREATE TABLE profilelinks(
     PRIMARY KEY(client_id, clinician_id),
     FOREIGN KEY (client_id) REFERENCES client(client_id),
     FOREIGN KEY (clinician_id) REFERENCES clinician(clinician_id)
+);
 
-)
  */
 /**
  * @author Michael Britt
