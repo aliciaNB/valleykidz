@@ -10,11 +10,7 @@ require_once("model/validation.php");
 $f3 = Base::instance();
 session_start();
 
-//TODO
-//required files for classes and validation
-//require_once("vendor/autoload.php");
-//require_once("models/validation.php");
-
+$db = new database();
 //-----------------------------------------------------Arrays-----------------------------------------------------------
 
 $defaultTargets = array(
@@ -28,28 +24,30 @@ $defaultEmotions = array(
 //-----------------------------------------------------ROUTES-----------------------------------------------------------
 //default route
 $f3->route('GET|POST /', function ($f3) {
-    //destroy old sessions
-    session_destroy();
 
+    global $db;
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        if ($_POST['user'] == "jadivan" && $_POST['pass'] == "test") //clinician
+        $result = $db->getUser($_POST['user'],$_POST['pass']);
+        if ($result==="0") //clinician
         {
+            $_SESSION['uuid'] = $_POST['user'];
             $f3->reroute('/branchprofile');
 
         }
-        elseif ($_POST['user'] == "member" && $_POST['pass'] == "test") //member
+        elseif ($result==="1") //member
         {
+            $_SESSION['uuid'] = $_POST['user'];
             $f3->reroute('/memberprofile');
 
         }
         else
         {
-            $f3->set('error', "Invalid Username or password");
+            $f3->set('error', $result);
         }
     }
-
+    //destroy old sessions
+    session_destroy();
     $view = new Template();
     echo $view->render('view/home.html');
 });
@@ -81,20 +79,31 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 
 //group leader dashboard page
 $f3->route('GET|POST /branchprofile', function ($f3) {
+    global $db;
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $arrayErr = array(
             "addErr" => validateClientNumber($_POST['clientnum']),);
         if (checkErrArray($arrayErr))
         {
-            if($_REQUEST['btn-submit'] == "add"){ //if add client update db on groups leader to reference client #
-
+            if(isset($_POST['add'])){ //if add client update db on groups leader to reference client #
+                $error=$db->addClient($_SESSION['uuid'], $_POST['clientnum']);
+                if($error)
+                {
+                   $f3->set('dberror', $error);
+                }
             }
-            elseif($_REQUEST['btn-submit']=="remove"){ //if remove selected remove from goupp leader reference to client
-
+            elseif(isset($_POST['remove'])){ //if remove selected remove from goupp leader reference to client
+                $error=$db->removeClient($_SESSION['uuid'], $_POST['clientnum']);
+                if($error)
+                {
+                    $f3->set('dberror', $error);
+                }
             }
         }
         $f3->set('errors', $arrayErr);
     }
+    $result = $db->getLinks($_SESSION['uuid']);
+    $f3->set('links', $result);
     $view = new Template();
     echo $view->render('view/branchprofile.html');
 });
@@ -110,6 +119,7 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
     echo $view->render('view/memberprofile.html');
 });
 
+//targets page
 $f3->route('GET|POST /targets', function ($f3) {
     $view = new Template();
 
@@ -141,6 +151,7 @@ $f3->route('GET|POST /emotions', function ($f3) {
     }
 });
 
+//skills page
 $f3->route('GET|POST /skills', function ($f3) {
     $view = new Template();
 

@@ -9,7 +9,7 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Feeling Here"' +
+            $(wrapper).append('<div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Emotion Here"' +
                 ' class="form-control mt-1 col-10" name="feelings[]"/><a href="#"' +
                 ' class="remove_field bg col-2 text-center justify-content-center align-self-center">X</a></div>');
         }
@@ -41,7 +41,12 @@ $(document).ready(function() {
         e.preventDefault(); $(this).parent('div').remove(); y--;
     })
 });
+//toggles all showing class divs to hiddent to start
+$( document ).ready(function() {
+    $('.showing').toggle();
+});
 
+//on click of hidshow div swaps between hide show verbage and d-none d-inline
 $( ".hideshow" ).click(function() {
     $(this).parent().next('.showing').toggle();
     if($(this).html()=="Hide")

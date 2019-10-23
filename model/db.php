@@ -31,12 +31,13 @@ CREATE TABLE profilelinks(
  * Class database connects to database for dbt
  */
 $user = $_SERVER['USER'];
-if($user == 'ryanguel'){
-$path = "/home/$user/config2.php";
+if($user == 'mbrittgr'){
+    $path = "/home2/$user/config.php";
 }
 else{
-$path = "/home2/$user/config.php";
+    $path = "/home/$user/config.php";
 }
+
 require_once($path);
 class database
 {
@@ -91,7 +92,6 @@ class database
 
     public function getId($userid)
     {
-
         $sql = "SELECT * FROM `users` WHERE user_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
@@ -100,6 +100,76 @@ class database
         if(!$result)
         {
             return "User ID does not exist";
+        }
+    }
+
+    public function addClient($clinicianid, $clientid)
+    {
+        if($this->isClient($clientid)) {
+            if($this->isLinked($clinicianid,$clientid))
+            {
+                return "Customer Already Connected To Profile";
+            }
+        else{
+            $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
+            $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+            $statement->execute();
+        }
+        }
+        else{
+            return "Client does not exist check with admin to add";
+        }
+    }
+    public function isLinked($clinicianid, $clientid)
+    {
+        $sql = "SELECT * FROM `profilelinks` WHERE clinician_id=:clinician and client_id=:client";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
+        $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    public function isClient($clientid)
+    {
+        $sql = "SELECT * FROM `client` WHERE client_id=:client";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getLinks($clinicianid)
+    {
+        $sql = "SELECT client_id FROM `profilelinks` WHERE clinician_id=:clinician";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function removeClient($clinicianid, $clientid)
+    {
+
+        if($this->isClient($clientid)) {
+            if(!($this->isLinked($clinicianid,$clientid)))
+            {
+                return "Customer Not Connected TO Your Profile";
+            }
+            else{
+                $sql= "DELETE FROM profilelinks WHERE client_id=:client and clinician_id=:clinician";
+                $statement = $this->_dbh->prepare($sql);
+                $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
+                $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+                $statement->execute();
+            }
+        }
+        else{
+            return "Client does not exist check with admin to add";
         }
     }
 }

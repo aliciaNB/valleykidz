@@ -16,9 +16,9 @@ function validateClientNumber($data)
         return "Client number can not contain letters or special characters";
     }
 
-    if(strlen($data)!=6)
+    if(strlen($data)!=3)
     {
-        return "Invalid Entry client numbers must be 6 in length";
+        return "Invalid Entry client numbers must be 3 in length";
     }
     return "";
 }
