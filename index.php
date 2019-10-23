@@ -30,9 +30,10 @@ $f3->route('GET|POST /', function ($f3) {
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->getUser($_POST['user'],$_POST['pass']);
+
         if ($result==="0") //clinician
         {
-            $_SESSION['uuid'] = $_POST['user'];
+            $_SESSION['uuid'] = $db->getClinicianID($_POST['user']);
             $f3->reroute('/branchprofile');
 
         }
@@ -47,6 +48,7 @@ $f3->route('GET|POST /', function ($f3) {
             $f3->set('error', $result);
         }
     }
+
     //destroy old sessions
     session_destroy();
     $view = new Template();

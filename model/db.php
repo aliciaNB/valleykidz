@@ -68,27 +68,61 @@ class database
     }
     public function getUser($userid, $pass)
     {
-        //check for user id
-        $check = $this->getId($userid);
-        //return id error if not found
-        if($check!=null)
-        {
-            return $check;
-        }
-        //else check for both id and pass
-        $sql = "SELECT * FROM `users` WHERE user_id=:user_id and password=:pass";
+        // check if client
+        $sql = "SELECT * FROM users WHERE user_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
-        $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) // Client
+        {
+            //check for user id
+            $check = $this->getId($userid);
+            //return id error if not found
+            if($check!=null)
+            {
+                return $check;
+            }
+
+            $sql = "SELECT * FROM users WHERE user_id=:user_id and password=:pass";
+            $statement= $this->_dbh->prepare($sql);
+            $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
+            $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+        }
+        else // couldn't find user id
+        {
+            // check if clinician
+            $sql = "SELECT * FROM clinician WHERE user_name=:user_id";
+            $statement= $this->_dbh->prepare($sql);
+            $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if ($result)
+            {
+                $sql = "SELECT * FROM clinician INNER JOIN users 
+                ON users.user_id = clinician.clinician_id WHERE clinician.user_name=:user_name and users.password=:pass";
+                $statement= $this->_dbh->prepare($sql);
+                $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
+                $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+            }
+            else
+            {
+                return "User id does not exist";
+            }
+        }
+
         //if both are not correct this means only password is left
         if(!$result)
         {
-            return "Password doest not match client id";
+            return "Password doest not match id";
         }
         return $result['client'];
-
     }
 
     public function getId($userid)
@@ -104,22 +138,36 @@ class database
         }
     }
 
+    public function getClinicianID($user_name)
+    {
+        $sql = "SELECT clinician_id FROM clinician WHERE user_name=:user_name";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":user_name", $user_name, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result['clinician_id'];
+    }
+
     public function addClient($clinicianid, $clientid)
     {
-        if($this->isClient($clientid)) {
+        if($this->isClient($clientid))
+        {
             if($this->isLinked($clinicianid,$clientid))
             {
-                return "Customer Already Connected To Profile";
+                return "Client is already connected to profile";
             }
-        else{
-            $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
-            $statement = $this->_dbh->prepare($sql);
-            $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
-            $statement->bindParam("client", $clientid, PDO::PARAM_STR);
-            $statement->execute();
+            else
+            {
+                $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
+                $statement = $this->_dbh->prepare($sql);
+                $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
+                $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+                $statement->execute();
+            }
         }
-        }
-        else{
+        else
+        {
             return "Client does not exist check with admin to add";
         }
     }
@@ -135,7 +183,7 @@ class database
     }
     public function isClient($clientid)
     {
-        $sql = "SELECT * FROM `client` WHERE client_id=:client";
+        $sql = "SELECT * FROM client WHERE client_id=:client";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam("client", $clientid, PDO::PARAM_STR);
         $statement->execute();
