@@ -37,6 +37,9 @@ INSERT INTO client (client_id) VALUES (123456);
  * Date: 10/22/2019
  * Class database connects to database for dbt
  */
+
+
+//-----------------DEFINE CONFIG FILE USED AND PATHING----------------------------
 $user = $_SERVER['USER'];
 if($user == 'mbrittgr'){
     $path = "/home2/$user/config.php";
@@ -46,6 +49,14 @@ else{
 }
 
 require_once($path);
+
+
+//--------------------------Start of Class---------------------------------------
+
+/**
+ * Class database Creates a database connection using config file
+ * and processes pdo requests
+ */
 class database
 {
     private $_dbh;
@@ -72,6 +83,13 @@ class database
             $this->_errormessage = $e->getMessage();
         }
     }
+
+    /**
+     * Finds out if user is a client/clinician then verifies password is correct
+     * @param $userid String representation of the user information either # or username
+     * @param $pass String reprsents password corelatting to db
+     * @return string Error message or uuid of user request
+     */
     public function getUser($userid, $pass)
     {
         // check if client
@@ -83,14 +101,6 @@ class database
 
         if ($result) // Client
         {
-            //check for user id
-            $check = $this->getId($userid);
-            //return id error if not found
-            if($check!=null)
-            {
-                return $check;
-            }
-
             $sql = "SELECT * FROM users WHERE user_id=:user_id and password=:pass";
             $statement= $this->_dbh->prepare($sql);
             $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
@@ -131,6 +141,11 @@ class database
         return $result['client'];
     }
 
+    /**
+     * Retrieve an id from provided table if a user exists
+     * @param $userid User Id provided of form
+     * @return string If user id exists in users table
+     */
     public function getId($userid)
     {
         $sql = "SELECT * FROM `users` WHERE user_id=:user_id";
@@ -144,6 +159,11 @@ class database
         }
     }
 
+    /**
+     * Gets clinician id provided Clinician user_name
+     * @param $user_name Represnet username of clinician
+     * @return mixed string representation of clinician id
+     */
     public function getClinicianID($user_name)
     {
         $sql = "SELECT clinician_id FROM clinician WHERE user_name=:user_name";
@@ -155,15 +175,21 @@ class database
         return $result['clinician_id'];
     }
 
+    /**
+     * Takes a clinican and client id and links their profile if possible
+     * @param $clinicianid String clinicians id
+     * @param $clientid String clients id
+     * @return string Error message  or inserts profile link into db
+     */
     public function addClient($clinicianid, $clientid)
     {
-        if($this->isClient($clientid))
+        if($this->isClient($clientid))//verify client exists
         {
-            if($this->isLinked($clinicianid,$clientid))
+            if($this->isLinked($clinicianid,$clientid))//verify if a link already exists
             {
                 return "Client is already connected to profile";
             }
-            else
+            else//link does not exist and client exists
             {
                 $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
                 $statement = $this->_dbh->prepare($sql);
@@ -172,11 +198,18 @@ class database
                 $statement->execute();
             }
         }
-        else
+        else//client not found
         {
             return "Client does not exist check with admin to add";
         }
     }
+
+    /**
+     * Check if a profile link exists
+     * @param $clinicianid String Represent clinician id submitted from form
+     * @param $clientid String Represents client id submitted from form
+     * @return mixed Array or null representing found or not found links
+     */
     public function isLinked($clinicianid, $clientid)
     {
         $sql = "SELECT * FROM `profilelinks` WHERE clinician_id=:clinician and client_id=:client";
@@ -187,6 +220,12 @@ class database
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    /**
+     * Checks if client # exists in client table
+     * @param $clientid String representation of requested client #
+     * @return mixed Array or null if found or not
+     */
     public function isClient($clientid)
     {
         $sql = "SELECT * FROM client WHERE client_id=:client";
@@ -197,6 +236,11 @@ class database
         return $result;
     }
 
+    /**
+     * Retrieves all current profile links for clinician provided
+     * @param $clinicianid String clinician id of db
+     * @return mixed Null if no links Array if links
+     */
     public function getLinks($clinicianid)
     {
         $sql = "SELECT client_id FROM `profilelinks` WHERE clinician_id=:clinician";
@@ -207,15 +251,22 @@ class database
         return $result;
     }
 
+    /**
+     * Removes client/clinician profilelink if possible
+     * @param $clinicianid String represent clienician id in db
+     * @param $clientid String represents client id in db
+     * @return string Error message if fails or removes from db link connection.
+     */
     public function removeClient($clinicianid, $clientid)
     {
-
-        if($this->isClient($clientid)) {
-            if(!($this->isLinked($clinicianid,$clientid)))
+        if($this->isClient($clientid))//check if client number exists
+        {
+            if(!($this->isLinked($clinicianid,$clientid)))//link does not exist cant remove
             {
-                return "Customer Not Connected TO Your Profile";
+                return "Customer Not Connected To Your Profile";
             }
-            else{
+            else//link does exist remove from db
+            {
                 $sql= "DELETE FROM profilelinks WHERE client_id=:client and clinician_id=:clinician";
                 $statement = $this->_dbh->prepare($sql);
                 $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
@@ -223,8 +274,40 @@ class database
                 $statement->execute();
             }
         }
-        else{
+        else//id does not exist
+        {
             return "Client does not exist check with admin to add";
+        }
+    }
+
+    /**
+     * Find if user exists in db and of what type they are
+     * @param $uuid String represent a uuid provided from sessions
+     * @return string Represent the type of user either client,clinician,admin, or none
+     */
+    public function getuserType($uuid)
+    {
+        $sql = "SELECT * FROM users WHERE user_id=:uuid";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("uuid", $uuid, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if($result['admin'] ==="1")//is admin
+        {
+            return "a";
+        }
+        elseif ($result['client']==="0")//is clinician
+        {
+            return "cln";
+        }
+        elseif ($result['client']==="1")//is client
+        {
+            return "cl";
+        }
+        else//not any table
+        {
+            return "n";
         }
     }
 }

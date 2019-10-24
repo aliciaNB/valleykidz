@@ -18,7 +18,7 @@ function validateClientNumber($data)
 
     if(strlen($data)!=6)
     {
-        return "Invalid Entry client numbers must be 3 in length";
+        return "Invalid Entry client numbers must be 6 in length";
     }
     return "";
 }
