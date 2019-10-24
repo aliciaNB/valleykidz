@@ -48,7 +48,7 @@ $f3->route('GET|POST /', function ($f3) {
             $f3->set('error', $result);
         }
     }
-
+    $f3->set('redirect', $_SESSION['redirect']);
     //destroy old sessions
     session_destroy();
     $view = new Template();
@@ -57,6 +57,12 @@ $f3->route('GET|POST /', function ($f3) {
 
 //dbt create
 $f3->route('GET|POST /createdbt', function ($f3) {
+    global $db;
+    if($db->getuserType($_SESSION['uuid'])!=="cln")//check if appropriate user on page redirect to home if not
+    {
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
     global $defaultEmotions;
     global $defaultTargets;
 
@@ -83,6 +89,11 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 //group leader dashboard page
 $f3->route('GET|POST /branchprofile', function ($f3) {
     global $db;
+    if($db->getuserType($_SESSION['uuid'])!=="cln")//check if appropriate user on page redirect to home if not
+    {
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         $arrayErr = array(
             "addErr" => validateClientNumber($_POST['clientnum']),);
@@ -114,7 +125,12 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
 //client dashboard page FIXME you are working here....
 $f3->route('GET|POST /memberprofile', function ($f3) {
     $view = new Template();
-
+    global $db;
+    if($db->getuserType($_SESSION['uuid'])!=="cl")//check if appropriate user on page redirect to home if not
+    {
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $f3->reroute('/targets');
     }
