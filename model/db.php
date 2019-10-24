@@ -24,6 +24,12 @@ CREATE TABLE profilelinks(
     FOREIGN KEY (clinician_id) REFERENCES clinician(clinician_id)
 );
 
+*************************SAMPLE USERS****************************************
+
+INSERT INTO users (admin, client, password, user_id) VALUES (0, 1, 'test', 123456), (0, 0, 'test', 1234);
+INSERT INTO clinician (clinician_id, user_name) VALUES (1234, 'jelzughbhi');
+INSERT INTO client (client_id) VALUES (123456);
+
  */
 /**
  * @author Michael Britt
