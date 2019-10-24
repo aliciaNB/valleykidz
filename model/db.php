@@ -41,10 +41,11 @@ INSERT INTO client (client_id) VALUES (123456);
 
 //-----------------DEFINE CONFIG FILE USED AND PATHING----------------------------
 $user = $_SERVER['USER'];
-if($user == 'mbrittgr'){
+if ($user == NULL) {
+    $path = "/home/valleyki/config.php";
+} else if ($user == 'mbrittgr'){
     $path = "/home2/$user/config.php";
-}
-else{
+} else {
     $path = "/home/$user/config.php";
 }
 
