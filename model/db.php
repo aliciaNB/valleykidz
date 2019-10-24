@@ -273,4 +273,35 @@ class database
             return "Client does not exist check with admin to add";
         }
     }
+
+    /**
+     * Find if user exists in db and of what type they are
+     * @param $uuid String represent a uuid provided from sessions
+     * @return string Represent the type of user either client,clinician,admin, or none
+     */
+    public function getuserType($uuid)
+    {
+        $sql = "SELECT * FROM users WHERE user_id=:uuid";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("uuid", $uuid, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if($result['admin'] ==="1")//is admin
+        {
+            return "a";
+        }
+        elseif ($result['client']==="0")//is clinician
+        {
+            return "cln";
+        }
+        elseif ($result['client']==="1")//is client
+        {
+            return "cl";
+        }
+        else//not any table
+        {
+            return "n";
+        }
+    }
 }
