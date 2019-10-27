@@ -58,6 +58,7 @@ $f3->route('GET|POST /', function ($f3) {
 //dbt create
 $f3->route('GET|POST /createdbt', function ($f3) {
     global $db;
+    $f3->set('id', $_GET['id']);
     if($db->getuserType($_SESSION['uuid'])!=="cln")//check if appropriate user on page redirect to home if not
     {
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
@@ -190,6 +191,26 @@ $f3->route('GET|POST /confirmdbtform', function($f3){
     $view = new Template();
     echo $view->render('view/clinicianconfirm.html');
 });
+
+//view form page
+$f3->route('GET|POST /viewform', function($f3){
+    $view = new Template();
+    $f3->set('id', $_GET['id']);
+    global $db;
+    $type =$db->getuserType($_SESSION['uuid']);//get the user type
+
+    if($type==="cln")//if clinician view get provided form
+    {
+
+    }
+    elseif($type==="cl")//view own this week form
+    {
+
+    }
+
+    echo $view->render('view/viewform.html');
+});
+
 
 //Run the framework
 $f3->run();
