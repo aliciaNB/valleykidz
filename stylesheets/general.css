@@ -2,7 +2,6 @@ body{
     background-color: #fefaf1;
     font-family: 'Merriweather', serif;
 }
-
 .white{
     color: #fefaf1;
 }
@@ -68,6 +67,14 @@ body{
 .fullwidth{
     width:100%;
 }
+
+/* pagination on media request in order to create page breaks for tables
+ */
+@media print {
+    .pagination {page-break-after: always;}
+}
+
+
 
 /*
 Style Colors

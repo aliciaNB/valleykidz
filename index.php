@@ -20,6 +20,9 @@ $defaultEmotions = array(
     "Joy", "Gratitude", "Compassion", "Vulnerability", "Self Acceptance", "Sadness", "Depression", "Anger",
     "Frustration", "Anxiety"
 );
+$dates = array(
+  "Mon", "Tue","Wed","Thurs","Fri","Sat","Sun"
+);
 
 
 //-----------------------------------------------------ROUTES-----------------------------------------------------------
@@ -195,10 +198,17 @@ $f3->route('GET|POST /confirmdbtform', function($f3){
 //view form page
 $f3->route('GET|POST /viewform', function($f3){
     $view = new Template();
+
     $f3->set('id', $_GET['id']);
+
     global $db;
     $type =$db->getuserType($_SESSION['uuid']);//get the user type
-
+    global $defaultEmotions;
+    global $defaultTargets;
+    global $dates;
+    $f3->set("dates", $dates);
+    $f3->set("targets", $defaultTargets);
+    $f3->set("emotions", $defaultEmotions);
     if($type==="cln")//if clinician view get provided form
     {
 
@@ -207,10 +217,14 @@ $f3->route('GET|POST /viewform', function($f3){
     {
 
     }
-
     echo $view->render('view/viewform.html');
 });
 
-
+//table selection
+$f3->route('GET|POST /formtable', function($f3)
+{
+    $view = new Template();
+    $_SESSION['clientId'] = $_GET['id'];
+});
 //Run the framework
 $f3->run();
