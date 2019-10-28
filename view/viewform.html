@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
+
+    <title>Group Leader | Dashboard</title>
+</head>
+<body>
+<!-- CodePly modified code -->
+<nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
+    <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
+        <a class="navbar-brand mus" href="branchprofile">
+            Valley <span class="lgold">|</span> Cities DBT Portal
+        </a>
+        <div class="w-100 text-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="#" class="nav-link white mus font-weight-bold">Quicksearch</a>
+            </li>
+            <li class="nav-item">
+                <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
+    <!--Header-->
+    <h4 class="text-center mt-4"><strong>View Weekly DBT</strong></h4>
+    <h5 class="text-center">Client#:{{@id}}</h5>
+    <h6 class="text-center">Week of 10/28/2019 - 11/3/2019</h6>
+
+
+    <!--Table Start-->
+    <h5 class="text-center mt-5">Targets</h5>
+    <div class=" table-responsive pagination">
+        <table id="targets" class="cell-border">
+            <tr>
+                <th class="bglblue white" colspan="2">Targets</th>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <th class="bglblue white">{{@value}}</th>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.0}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>3</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled checked></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+            <tr>
+                <td rowspan="2">{{@targets.1}}</td>
+                <td>Urge</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>Action</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td><input type="checkbox" disabled></td>
+                </repeat>
+            </tr>
+
+        </table>
+    </div>
+
+    <h5 class="text-center mt-5 bgwhite">Emotions</h5>
+    <div class="mt-5 table-responsive pagination">
+        <table id="feelings" class="cell-border">
+            <tr>
+                <th class="bglblue white">Emotions</th>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <th class="bglblue white">{{@value}}</th>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.0}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>1</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+            <tr>
+                <td>{{@emotions.1}}</td>
+                <repeat group="{{@dates}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <td>2</td>
+                </repeat>
+            </tr>
+
+        </table>
+    </div>
+
+    <h5 class="mt-5 text-center">Skills</h5>
+    <div class="table-responsive pagination">
+        <table id="skill">
+            <tr>
+                <th>Date</th>
+                <repeat group="{{ @skils}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <th colspan="2">{{@value}}</th>
+                </repeat>
+            </tr>
+            <tr>
+            </tr>
+        </table>
+    </div>
+
+    <h5 class="mt-5 text-center">Notes</h5>
+    <p class="text-center">This is a note</p>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script>
+    $(document).ready( function () {
+        $('#targets').DataTable();
+    } );
+    $('#branchtable').DataTable( {
+        responsive: true
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+        $('#feelings').DataTable();
+    } );
+    $('#branchtable').DataTable( {
+        responsive: true
+    } );
+</script>
+<script>
+    $(document).ready( function () {
+        $('#skill').DataTable();
+    } );
+    $('#branchtable').DataTable( {
+        responsive: true
+    } );
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
