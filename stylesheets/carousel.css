@@ -4,3 +4,8 @@
     padding-bottom: 30px;
 }
 
+/** Fix for firefox and IE so carousel arrows display **/
+.carousel-inner {
+    height: 100%;
+}
+
