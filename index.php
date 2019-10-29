@@ -27,15 +27,14 @@ $dates = array(
 $f3->set('skillcategory', array(
     'Core Mindfulness' => array('Wise Mind', 'Observe', 'Describe', 'Participate', 'Nonjudgmental Stance',
                                 'One-mindfully', 'Effectiveness'),
-    'Interper' => array('Objective Effectiveness', 'Relationship Effectiveness', 'Self-Respect Effectiveness'),
-                        'Emotion Regulation' => array('Identifying Primary Emotions', 'Checking the Facts',
+    'Interpersonal' => array('Objective Effectiveness', 'Relationship Effectiveness', 'Self-Respect Effectiveness'),
+    'Emotion Regulation' => array('Identifying Primary Emotions', 'Checking the Facts',
                         'Problem Solving', 'Opposite-to-emotion Action', 'Acquire Positives in the Short-term',
                         'Acquire Positives in the Long-term', 'Build Mastery', 'Cope Ahead', 'PLEASE',
                         'Mindfulness to Current Emotion'),
     'Distress Tolerance' => array('TIPP', 'Distract', 'Self-soothe', 'IMPROVE', 'Pros and Cons', 'Half-smile',
                                   'Radical acceptance', 'Turning the Mind', 'Willingness')
 ));
-
 
 //-----------------------------------------------------ROUTES-----------------------------------------------------------
 //default route

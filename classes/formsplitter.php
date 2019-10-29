@@ -12,7 +12,7 @@ class formsplitter
             $futuredate = new DateTime($dates);
             $futuredate->modify('next saturday');
             $futuredate->format("Y-m-d");
-            $divs.="<p><a href='viewform?form=".$formNum. "&weekStart". $dates."&weekEnd".$futuredate->format("Y-m-d")."&id".$id."'>". $dates.
+            $divs.="<p><a href='viewform?form=".$formNum. "&weekStart=". $dates."&weekEnd=".$futuredate->format("Y-m-d")."&id=".$id."'>". $dates.
                 " - ". $futuredate->format("Y-m-d")."</a></p>";
 
         }
