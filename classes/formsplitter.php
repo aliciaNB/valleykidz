@@ -10,10 +10,13 @@ class formsplitter
         foreach ($newDate as $dates)
         {
             $futuredate = new DateTime($dates);
+            $displayStart = $futuredate->format("M d,Y");
             $futuredate->modify('next saturday');
             $futuredate->format("Y-m-d");
-            $divs.="<p><a href='viewform?form=".$formNum. "&weekStart". $dates."&weekEnd".$futuredate->format("Y-m-d")."&id".$id."'>". $dates.
-                " - ". $futuredate->format("Y-m-d")."</a></p>";
+            $displayEnd =$futuredate->format("M d,Y");
+            $divs.="<li><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
+                $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
+                " - ". $displayEnd."</a></li>";
 
         }
         return $divs;
@@ -29,7 +32,7 @@ class formsplitter
         {
             return $dates;
         }
-        if(7 !=$startDate->format('N'))
+        if(1 !=$startDate->format('N'))
         {
             $startDate->modify('last monday');
         }
