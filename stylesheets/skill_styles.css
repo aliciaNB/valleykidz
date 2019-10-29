@@ -1,0 +1,32 @@
+.list {
+    display: flex;
+    justify-content: center;
+}
+
+.skill_key {
+    font-size: 0.75rem;
+}
+
+.skill_key_h3 {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 767px) {
+    .skill_key {
+        font-size: 0.6rem;
+    }
+
+    .skill_key_h3 {
+        font-size: 0.6rem;
+        font-weight: bold;
+    }
+}
+
+.card {
+    background-color: #fefaf1;
+}
+
+.card_h2 {
+    font-size: 16px;
+}
