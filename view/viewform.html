@@ -113,9 +113,14 @@
                 </repeat>
             </tr>
             <repeat group="{{ @skillcategory }}" key="{{ @core }}" value="{{ @skills }}">
-                    <td rowspan="{{sizeof(@skills)+1}}">{{ @core }}</td>
+                <tr>
+                    <td rowspan="{{sizeof(@skills)}}">{{ @core }}</td>
                     <repeat group="{{ @skills }}" key="{{ @index }}" value="{{ @skill }}">
-                        <tr>
+                        <check if="{{ @skills.0 == @skill }}" >
+                            <false>
+                                <tr>
+                            </false>
+                        </check>
                         <td>{{ @skill }}</td>
                         <repeat group="{{ @dates }}" key="{{ @datekey }}" value="{{@datevalue}}">
                             <td>{{ @datekey }}</td>
