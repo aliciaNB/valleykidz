@@ -198,25 +198,23 @@ $f3->route('GET|POST /confirmdbtform', function($f3){
 //view form page
 $f3->route('GET|POST /viewform', function($f3){
     $view = new Template();
-
     $f3->set('id', $_GET['id']);
 
-    global $db;
-    $type =$db->getuserType($_SESSION['uuid']);//get the user type
+
+    //Format Dates to be displayed
+    $displayStart = new DateTime($_GET['weekStart']);
+    $displayEnd = new DateTime($_GET['weekEnd']);
+    $f3->set('displayStart', $displayStart->format("M d,Y"));
+    $f3->set('displayEnd', $displayEnd->format("M d, Y"));
+
+
+    //GRAB ALL INFORMATION FOR Tables
     global $defaultEmotions;
     global $defaultTargets;
     global $dates;
     $f3->set("dates", $dates);
-    $f3->set("targets", $defaultTargets);
-    $f3->set("emotions", $defaultEmotions);
-    if($type==="cln")//if clinician view get provided form
-    {
-
-    }
-    elseif($type==="cl")//view own this week form
-    {
-
-    }
+    $f3->set("targets", $defaultTargets);//TODO pull from db
+    $f3->set("emotions", $defaultEmotions);//TODO pull from db
     echo $view->render('view/viewform.html');
 });
 
@@ -224,7 +222,15 @@ $f3->route('GET|POST /viewform', function($f3){
 $f3->route('GET|POST /formtable', function($f3)
 {
     $view = new Template();
-    $_SESSION['clientId'] = $_GET['id'];
+    global $db;
+    $type =$db->getuserType($_SESSION['uuid']);//get the user type
+    if($type!=="cln")//this page only viewable by clinicians
+    {
+        $f3->reroute('/');
+    }
+    $formsplit = new formsplitter();
+    $f3->set('formsplit', $formsplit);
+    echo $view->render('view/clienttable.html');
 });
 //Run the framework
 $f3->run();
