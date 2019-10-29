@@ -76,17 +76,17 @@
                     <table class="card-body table table-striped">
                         <thead>
                         <tr>
-                            <th scope="col" colspan="2"></th>
-                            <th scope="col" class="text-center">Skill Used</th>
-                            <th scope="col" class="text-center">Degree Used</th>
+                            <th colspan="2"></th>
+                            <th class="text-center">Skill Used</th>
+                            <th class="text-center">Degree Used</th>
                         </tr>
                         </thead>
                         <tbody>
                         <repeat group="{{ @skill }}" value="{{ @skillname }}">
                             <tr>
-                                <td scope="col" colspan="1"></td>
-                                <td scope="col">{{ @skillname }}</td>
-                                <td scope="col">
+                                <td colspan="1"></td>
+                                <td>{{ @skillname }}</td>
+                                <td>
                                     <div class="form-check text-center">
                                         <input class="form-check-input" type="checkbox" value="{{ @skillname }}"
                                                id="{{ str_replace(' ', '', strtolower(@skillname)) . 'check' }}">
@@ -95,7 +95,7 @@
                                         </label>
                                     </div>
                                 </td>
-                                <td scope="col" class="text-center" >
+                                <td class="text-center" >
                                     <select class="custom-select col-sm-2 col-md-4"
                                             id="{{ str_replace(' ', '', strtolower(@skillname)) . 'degree' }}">
                                         <option selected disabled>--</option>
