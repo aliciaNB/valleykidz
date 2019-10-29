@@ -37,13 +37,13 @@
 </nav>
 <div class="container-fluid">
     <!--Header-->
-    <h4 class="text-center mt-4"><strong>View Weekly DBT</strong></h4>
-    <h5 class="text-center">Client# {{@GET.id}}</h5>
-    <h6 class="text-center">{{@displayStart}} - {{@displayEnd}}</h6>
+    <h1 class="text-center mt-4">View Weekly DBT</h1>
+    <h2 class="text-center">Client# {{@GET.id}}</h2>
+    <h3 class="text-center">{{@displayStart}} - {{@displayEnd}}</h3>
 
 
     <!--Table Start-->
-    <h5 class="text-center mt-5">Targets</h5>
+    <h2 class="text-center mt-5">Targets</h2>
     <div class=" table-responsive pagination">
         <table id="targets" class="cell-border">
             <tr>
@@ -54,147 +54,30 @@
                     <th class="bglblue white">{{@value}}</th>
                 </repeat>
             </tr>
-            <tr>
-                <td rowspan="2">{{@targets.0}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>3</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled checked></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
-            <tr>
-                <td rowspan="2">{{@targets.1}}</td>
-                <td>Urge</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>Action</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td><input type="checkbox" disabled></td>
-                </repeat>
-            </tr>
 
+            <repeat group="{{ @targets }}" key="{{ @index }}" value="{{ @target }}">
+                <tr>
+                    <td rowspan="2">{{@target}}</td>
+                    <td>Urge</td>
+                    <repeat group="{{@dates}}"
+                            key="{{ @key }}"
+                            value="{{ @value }}">
+                        <td>3</td>
+                    </repeat>
+                </tr>
+                <tr>
+                    <td>Action</td>
+                    <repeat group="{{@dates}}"
+                            key="{{ @key }}"
+                            value="{{ @value }}">
+                        <td><input type="checkbox" disabled checked></td>
+                    </repeat>
+                </tr>
+            </repeat>
         </table>
     </div>
 
-    <h5 class="text-center mt-5 bgwhite">Emotions</h5>
+    <h2 class="text-center mt-5 bgwhite">Emotions</h2>
     <div class="mt-5 table-responsive pagination">
         <table id="feelings" class="cell-border">
             <tr>
@@ -205,147 +88,50 @@
                     <th class="bglblue white">{{@value}}</th>
                 </repeat>
             </tr>
-            <tr>
-                <td>{{@emotions.0}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>1</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-            <tr>
-                <td>{{@emotions.1}}</td>
-                <repeat group="{{@dates}}"
-                        key="{{ @key }}"
-                        value="{{ @value }}">
-                    <td>2</td>
-                </repeat>
-            </tr>
-
+            <repeat group="{{ @emotions }}" key="{{ @index }}" value="{{ @emotion }}">
+                <tr>
+                    <td>{{@emotion}}</td>
+                    <repeat group="{{@dates}}"
+                            key="{{ @key }}"
+                            value="{{ @value }}">
+                        <td>1</td>
+                    </repeat>
+                </tr>
+            </repeat>
         </table>
     </div>
 
-    <h5 class="mt-5 text-center">Skills</h5>
-    <div class="table-responsive pagination">
-        <table id="skill">
-            <tr>
-                <th>Date</th>
-                <repeat group="{{ @skils}}"
+    <h2 class="mt-5 text-center">Skills</h2>
+    <div class="mt-5 table-responsive pagination">
+        <table id="skill" class="cell-border">
+            <!--<tr>
+                <th class="bglblue white" colspan="2">DBT Skills</th>
+                <repeat group="{{ @dates }}"
                         key="{{ @key }}"
-                        value="{{ @value }}">
-                    <th colspan="2">{{@value}}</th>
+                        value="{{ @day }}">
+                    <th class="bglblue white">{{@day}}</th>
                 </repeat>
-            </tr>
+            </tr>-->
+            <!--<repeat group="{{ @skillcategory }}" key="{{ @core }}" value="{{ @skills }}">
+                <tr>
+                    <td rowspan="{{sizeof(@skills)}}">{{ @core }}</td>
+                    <repeat group="{{ @skills }}" key="{{ @index }}" value="{{ @skill }}">
+                        <td>{{ @skill }}</td>
+                        <repeat group="{{ @dates }}" key="{{ @datekey }}">
+                            <td>1</td>
+                        </repeat>
+                    </repeat>
+                </tr>
+            </repeat>-->
             <tr>
+                <td>
+                    Test
+                </td>
             </tr>
         </table>
     </div>
 
-    <h5 class="mt-5 text-center">Notes</h5>
+    <h2 class="mt-5 text-center">Notes</h2>
     <p class="text-center">This is a note</p>
 </div>
 

@@ -13,6 +13,7 @@ class formsplitter
             $displayStart = $futuredate->format("M d,Y");
             $futuredate->modify('next saturday');
             $futuredate->format("Y-m-d");
+
             $displayEnd =$futuredate->format("M d,Y");
             $divs.="<li><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
                 $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
