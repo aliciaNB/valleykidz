@@ -35,13 +35,21 @@
         </ul>
     </div>
 </nav>
+
+
 <!-- End of Nav-->
-
-
 <div class="container-fluid">
-<h4 class="text-center mt-4 m-2"><strong>View DBTS</strong></h4>
-<h5 class="text-center">Client#:{{@id}}</h5>
+    <h4 class="text-center mt-4 m-2"><strong>View DBTS</strong></h4>
+    <h5 class="text-center">Client# {{@GET.id}}</h5>
 
+    <h5>Current Session</h5>
+    <ul>
+        {{@formsplit->printWeeks('2019-10-14', '2019-10-25', 1, @GET.id)}}
+    </ul>
+    <h5>1st Session</h5>
+    <ul>
+        {{@formsplit->printWeeks('2019-10-1', '2019-10-14', 1, @GET.id)}}
+    </ul>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>

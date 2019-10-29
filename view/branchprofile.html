@@ -80,12 +80,11 @@
                             key="{{ @key }}"
                             value="{{ @value }}">
                         <tr>
-                            <form>
                             <td><h5>{{@value.client_id}}</h5></td>
                             <td><a href="createdbt?id={{@value.client_id}}"
                                    class="btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0 border-0">
                                 CREATE DBT</a></td>
-                            <td><a href="viewform?id={{@value.client_id}}"
+                            <td><a href="formtable?id={{@value.client_id}}"
                                    class="btn btn-sm btn-secondary mus font-weight-bold rounded-0 border-0">VIEW</a></td>
                         </tr>
                     </repeat>
