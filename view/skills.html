@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
-    <title>Skills</title>
+    <link type="text/css" rel="stylesheet" href="stylesheets/skill_styles.css" lang="en">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
+    <title>Daily Diary Card</title>
 </head>
 <body>
-<!-- Navbar -------------------------------------------------------->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
     <div class="d-flex flex-grow-1">
         <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
@@ -31,79 +33,93 @@
     </div>
 </nav>
 
-<h2 class="text-center mer mt-4 mb-4"><strong>DBT Skills Used</strong></h2>
+<!-- TODO: Page Tabs and consolidate forms into one, remove excess routes -->
+
+<!-- Start of Form -->
 <form action="#" method="post">
-    <div class="container text-right m-4 mb-2">
-        <div class="form-inline">
-            <div class="form-group">
-                <label for="skill">DBT Skill: </label>
-                <select class="form-control mr-2" id="skill">
-                    <option selected disabled>Choose a Skill</option>
-                    <optgroup label="Core Mindfulness">
-                        <option value="wise mind">Wise Mind</option>
-                        <option value="observe">Observe</option>
-                        <option value="describe">Describe</option>
-                        <option value="participate">Participate</option>
-                        <option value="nonjudgmental stance">Nonjudgmental Stance</option>
-                        <option value="one-mindfully">One-mindfully</option>
-                        <option value="effectiveness">Effectiveness</option>
-                    </optgroup>
-                    <optgroup label="Interper">
-                        <option value="objective effectiveness">Objective Effectiveness</option>
-                        <option value="relationship effectiveness">Relationship Effectiveness</option>
-                        <option value="self-respect effectiveness">Self-respect Effectiveness</option>
-                    </optgroup>
-                    <optgroup label="Emotion Regulation">
-                        <option value="identifying primary emotions">Identifying Primary Emotions</option>
-                        <option value="checking the Facts">Checking the Facts</option>
-                        <option value="problem solving">Problem Solving</option>
-                        <option value="opposite-to-emotion action">Opposite-to-emotion action</option>
-                        <option value="acquire positives in the short term">Acquire positives in the short term</option>
-                        <option value="acquire positives in the long term">Acquire positives in the long term</option>
-                        <option value="build mastery">Build Mastery</option>
-                        <option value="cope ahead">Cope Ahead</option>
-                        <option value="please">PLEASE</option>
-                        <option value="mindfulness to current emotion">Mindfulness to Current Emotion</option>
-                    </optgroup>
-                    <optgroup label="Distress Tolerance">
-                        <option value="tipp">TIPP</option>
-                        <option value="distract">Distract</option>
-                        <option value="self-soothe">Self-soothe</option>
-                        <option value="improve">IMPROVE</option>
-                        <option value="pros and cons">Pros and Cons</option>
-                        <option value="half-smile">Half-smile</option>
-                        <option value="radical acceptance">Radical acceptance</option>
-                        <option value="turning the mind">Turning the Mind</option>
-                        <option value="willingness">Willingness</option>
-                    </optgroup>
-                </select>
+
+    <!-- TODO Start of Targets Tab -->
+
+    <!-- TODO Start of Emotions Tab -->
+
+    <!-- Start of DBT SKILLS Tab -->
+    <h2 class="text-center mt-4 mb-4"><strong>DBT Skills Used</strong></h2>
+    <!-- Degree Used Scale -->
+    <h3 class="text-center skill_key_h3">Fill in a number for the degree to which you used a skill.</h3>
+    <div class="list skill_key">
+        <ol>
+            <li>Realized afterwards that I should have used skill.</li>
+            <li>Thought about skill but chose not to use it.</li>
+            <li>Realized afterwards that I did use skill effectively.</li>
+            <li>Mindfully tried to use skill but wasn't effective.</li>
+            <li>Mindfully used skill effectively</li>
+        </ol>
+    </div>
+    <!-- Collapsible Core Skills -->
+    <div class="accordion" id="coreskills">
+        <repeat group="{{ @skillcategory }}" key="{{ @category }}" value="{{ @skill }}">
+            <!-- Card Header -->
+            <div class="card">
+                <div class="card-header text-center p-4"
+                     id="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}">
+                    <h2 class="mb-0 card_h2" data-toggle="collapse"
+                        data-target="#{{ str_replace(' ', '', strtolower(@category)) }}"
+                        aria-expanded="true" aria-controls="{{ str_replace(' ', '', strtolower(@category)) }}">
+                        <strong>{{ @category }}</strong>
+                    </h2>
+                </div>
+                <!-- Card body - contains a row for each skill, a checkbox, numeric input 1-5  -->
+                <div id="{{ str_replace(' ', '', strtolower(@category)) }}" class="collapse"
+                     aria-labelledby="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}"
+                     data-parent="#coreskills">
+                    <!-- table in card  -->
+                    <table class="card-body table table-striped">
+                        <thead>
+                        <tr>
+                            <th colspan="2"></th>
+                            <th class="text-center">Skill Used</th>
+                            <th class="text-center">Degree Used</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <repeat group="{{ @skill }}" value="{{ @skillname }}">
+                            <tr>
+                                <td colspan="1"></td>
+                                <td>{{ @skillname }}</td>
+                                <td>
+                                    <div class="form-check text-center">
+                                        <input class="form-check-input" type="checkbox" value="{{ @skillname }}"
+                                               id="{{ str_replace(' ', '', strtolower(@skillname)) . 'check' }}">
+                                        <label class="form-check-label"
+                                               for="{{ str_replace(' ', '', strtolower(@skillname)) . 'check' }}">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td class="text-center" >
+                                    <select class="custom-select col-sm-2 col-md-4"
+                                            id="{{ str_replace(' ', '', strtolower(@skillname)) . 'degree' }}">
+                                        <option selected disabled>--</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <label for="{{ str_replace(' ', '', strtolower(@skillname)) . 'degree' }}">
+                                    </label>
+                                </td>
+                            </tr>
+                        </repeat>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="form-group ml-2">
-                <label for="degree">Degree skill was used: </label>
-                <select class="form-control mr-2" id="degree">
-                    <option selected disabled>Choose Degree Used</option>
-                    <option value="1">1. Realized afterwards that I should have used the skill.</option>
-                    <option value="2">2. Thought about skill but chose not to use it.</option>
-                    <option value="3">3. Realized afterwards that I did use skill effectively.</option>
-                    <option value="4">4. Mindfully tried to use skill but wasn't effective.</option>
-                    <option value="5">5. Mindfully used skill effectively.</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" class="form-check-input" id="degreecheck">
-                <label for="degreecheck"></label>
-            </div>
-            <button type="submit" class="btn-sm btn-primary mer white bgdkgold mus font-weight-bold rounded-0 border-0"
-                    name="btn-submit" value="addskill">+ Add Another Skill</button>
-        </div>
-        <div class="form-group text-left">
-            <label class="" for="skillsnotes">Notes</label>
-            <textarea class="form-control" id="skillsnotes" rows="3">Additional thoughts</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary mer white bgdkgold mus font-weight-bold rounded-0
-                    border-0" name="btn-submit" value="prev">Previous</button>
-        <button type="submit" class="btn btn-secondary mer font-weight-bold rounded-0 border-0"
-                    name="btn-submit" value="save">Save & Exit</button>
+        </repeat>
+    </div>
+    <div class="col text-center mt-3">
+        <button type="submit" class="btn btn-lg btn-primary white bgdkgold mus font-weight-bold
+            rounded-0 border-0 text-center mt-3"
+                name="btn-submit" value="save">Save Progress</button>
     </div>
 </form>
 
