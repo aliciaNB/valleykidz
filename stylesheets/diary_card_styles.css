@@ -1,0 +1,54 @@
+
+.active {
+    background-color: #fefaf1 !important;
+    border-bottom-color: #fefaf1 !important;
+}
+
+.tab-style {
+    background-color: #f1ede5;
+    color: #23446e;
+}
+
+.tab-style:hover {
+    color: #559bca !important;
+}
+
+.form_h2 {
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1.0rem;
+    margin-bottom: 1.0rem;
+}
+
+.list {
+    display: flex;
+    justify-content: center;
+}
+
+.skill_key {
+    font-size: 0.75rem;
+}
+
+.skill_key_h3 {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 767px) {
+    .skill_key {
+        font-size: 0.6rem;
+    }
+
+    .skill_key_h3 {
+        font-size: 0.6rem;
+        font-weight: bold;
+    }
+}
+
+.card {
+    background-color: #fefaf1;
+}
+
+.card_h2 {
+    font-size: 16px;
+}
