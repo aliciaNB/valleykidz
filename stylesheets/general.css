@@ -2,6 +2,11 @@ body{
     background-color: #fefaf1;
     font-family: 'Merriweather', serif;
 }
+
+.btn-primary:hover {
+    background-color: #999999 !important;
+}
+
 .white{
     color: #fefaf1;
 }
