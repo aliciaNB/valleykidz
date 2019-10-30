@@ -48,12 +48,14 @@
         <div class="card text-center col-lg-6 col-md-8 col-10 p-0">
             <h5 class="list-group-item list-group-item-primary bglblue white list-group-flush">Custom Targets</h5>
             <ul class="list-group list-group-flush">
-                <check if="@SESSION.confirmTargets!=null">
+                <check if="@isEmptyTargets!=true">
                     <true>
                         <repeat group="{{ @SESSION.confirmTargets}}"
                                 key="{{ @key }}"
                                 value="{{ @value }}">
+                            <check if="{{@value}} !==''">
                             <li class="list-group-item">{{@value}}</li>
+                            </check>
                         </repeat>
                     </true>
                     <false>
@@ -70,12 +72,14 @@
         <div class="card text-center col-lg-6 col-md-8 col-10 p-0">
             <h5 class="list-group-item list-group-item-primary bglblue white list-group-flush">Custom Feelings</h5>
             <ul class="list-group list-group-flush">
-                <check if="@SESSION.confirmEmotions!=null">
+                <check if="@isEmptyEmotions!=true">
                     <true>
-                        <repeat group="{{ @SESSION.confirmEmotions}}"
+                        <repeat group="{{@SESSION.confirmEmotions}}"
                                 key="{{ @key }}"
                                 value="{{ @value }}">
+                            <check if="@value!==''">
                             <li class="list-group-item">{{@value}}</li>
+                            </check>
                         </repeat>
                     </true>
                     <false>

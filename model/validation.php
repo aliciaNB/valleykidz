@@ -70,3 +70,19 @@ function checkErrArray($data)
     }
     return true;
 }
+
+function isEmptyStringOrNUll($array)
+{
+    if($array===null)
+    {
+        return true;
+    }
+    foreach ($array as $item)
+    {
+        if($item!=="")
+        {
+            return false;
+        }
+    }
+    return true;
+}

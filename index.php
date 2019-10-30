@@ -203,6 +203,11 @@ $f3->route('GET|POST /skills', function ($f3) {
 //confirmation page
 $f3->route('GET|POST /confirmdbtform', function($f3){
     $view = new Template();
+    $check = isEmptyStringOrNUll($_SESSION['confirmTargets']);
+    $check2 = isEmptyStringOrNUll($_SESSION['confirmEmotions']);
+    $f3->set('isEmptyTargets', $check );
+    $f3->set('isEmptyEmotions', $check2);
+
     echo $view->render('view/clinicianconfirm.html');
 });
 
@@ -210,7 +215,6 @@ $f3->route('GET|POST /confirmdbtform', function($f3){
 $f3->route('GET|POST /viewform', function($f3){
     $view = new Template();
     $f3->set('id', $_GET['id']);
-
 
     //Format Dates to be displayed
     $displayStart = new DateTime($_GET['weekStart']);

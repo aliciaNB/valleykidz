@@ -1,6 +1,6 @@
 //sanwabe website add remove field function redesigned for this project
 $(document).ready(function() {
-    var max_fields = 5; //maximum input boxes allowed
+    var max_fields = 6; //maximum input boxes allowed
     var wrapper = $(".input_fields_wrap"); //Fields wrapper
     var add_button = $(".add_field_button"); //Add button ID
 
@@ -22,7 +22,7 @@ $(document).ready(function() {
 
 //sanwabe website add remove field function redesigned for this project
 $(document).ready(function() {
-    var target_max_fields = 4; //maximum input boxes allowed
+    var target_max_fields = 5; //maximum input boxes allowed
     var target_wrapper = $(".target_wrapper"); //Fields wrapper
     var target_button = $(".add_target_button"); //Add button ID
 
