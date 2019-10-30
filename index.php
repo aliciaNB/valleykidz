@@ -140,7 +140,7 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
 //client dashboard page FIXME you are working here....
 $f3->route('GET|POST /memberprofile', function ($f3) {
     $view = new Template();
-    global $db;
+    global $db;//bruce
     if($db->getuserType($_SESSION['uuid'])!=="cl")//check if appropriate user on page redirect to home if not
     {
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
@@ -156,14 +156,11 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
 //skills page
 $f3->route('GET|POST /skills', function ($f3) {
     $view = new Template();
+    if($_SERVER['REQUEST_METHOD'] == 'POST'){//bruce update
 
-    if($_REQUEST['btn-submit'] == "prev") { //if previous button was clicked
-        $f3->reroute('/emotions');
-    }
-    elseif($_REQUEST['btn-submit']=="save") { //if save & exit button is clicked
-        $f3->reroute('/memberprofile');
-    }
+        $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');
 
+    }
     echo $view->render('view/skills.html');
 });
 
