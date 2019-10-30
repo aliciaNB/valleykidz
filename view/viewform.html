@@ -118,6 +118,7 @@
                     <repeat group="{{ @skills }}" key="{{ @index }}" value="{{ @skill }}">
                         <check if="{{ @skills.0 == @skill }}" >
                             <false>
+<<<<<<< HEAD
                 <tr>
                     </false>
                     </check>
@@ -127,6 +128,17 @@
                     </repeat>
                 </tr>
             </repeat>
+=======
+                                <tr>
+                            </false>
+                        </check>
+                        <td>{{ @skill }}</td>
+                        <repeat group="{{ @dates }}" key="{{ @datekey }}" value="{{@datevalue}}">
+                            <td>{{ @datekey }}</td>
+                        </repeat>
+                        </tr>
+                    </repeat>
+>>>>>>> 52194f411f3e5ebc3af84c238e46386e65048224
             </repeat>
         </table>
     </div>
