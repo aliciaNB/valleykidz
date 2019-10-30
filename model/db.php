@@ -30,6 +30,8 @@ INSERT INTO users (admin, client, password, user_id) VALUES (0, 1, 'test', 12345
 INSERT INTO clinician (clinician_id, user_name) VALUES (1234, 'jelzughbhi');
 INSERT INTO client (client_id) VALUES (123456);
 
+UPDATE `clinician` SET `user_name` = 'jelzughbi' WHERE `clinician`.`clinician_id` = 1234;
+
  */
 /**
  * @author Michael Britt
