@@ -104,30 +104,30 @@
     <h2 class="mt-5 text-center">Skills</h2>
     <div class="mt-5 table-responsive pagination">
         <table id="skill" class="cell-border">
-            <!--<tr>
+            <tr>
                 <th class="bglblue white" colspan="2">DBT Skills</th>
                 <repeat group="{{ @dates }}"
                         key="{{ @key }}"
                         value="{{ @day }}">
                     <th class="bglblue white">{{@day}}</th>
                 </repeat>
-            </tr>-->
-            <!--<repeat group="{{ @skillcategory }}" key="{{ @core }}" value="{{ @skills }}">
+            </tr>
+            <repeat group="{{ @skillcategory }}" key="{{ @core }}" value="{{ @skills }}">
                 <tr>
                     <td rowspan="{{sizeof(@skills)}}">{{ @core }}</td>
                     <repeat group="{{ @skills }}" key="{{ @index }}" value="{{ @skill }}">
-                        <td>{{ @skill }}</td>
-                        <repeat group="{{ @dates }}" key="{{ @datekey }}">
-                            <td>1</td>
-                        </repeat>
+                        <check if="{{ @skills.0 == @skill }}" >
+                            <false>
+                <tr>
+                    </false>
+                    </check>
+                    <td>{{ @skill }}</td>
+                    <repeat group="{{ @dates }}" key="{{ @datekey }}" value="{{@datevalue}}">
+                        <td>{{ @datekey }}</td>
                     </repeat>
                 </tr>
-            </repeat>-->
-            <tr>
-                <td>
-                    Test
-                </td>
-            </tr>
+            </repeat>
+            </repeat>
         </table>
     </div>
 
