@@ -147,7 +147,7 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
         $f3->reroute('/');
     }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $f3->reroute('/targets');
+        $f3->reroute('/skills');
     }
 
     echo $view->render('view/memberprofile.html');
