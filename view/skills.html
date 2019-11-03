@@ -56,7 +56,7 @@
 <!-- Start of Form -->
 <form action="#" method="post">
     <div class="tab-content" id="myTabContent">
-        <!-- TODO: Start of Targets Tab Content -->
+        <!-- Start of Targets Tab Content -->
         <div class="tab-pane fade show active" id="targets" role="tabpanel" aria-labelledby="targets-tab">
             <h2 class="form_h2">Targets</h2>
             <!-- Intensity rating scale targets-->
@@ -148,7 +148,7 @@
                 </tr>
             </table>
         </div>
-        <!-- TODO: Start of Emotions Tab Content -->
+        <!-- Start of Emotions Tab Content -->
         <div class="tab-pane fade" id="emotions" role="tabpanel" aria-labelledby="emotions-tab">
             <h2 class="form_h2">Emotions</h2>
             <!-- Intensity rating scale for emotions-->
@@ -267,7 +267,7 @@
             </table>
         </div>
 
-        <!-- TODO: Start of Skills Tab Content-->
+        <!-- Start of Skills Tab Content-->
         <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
             <h2 class="form_h2">Skills</h2>
             <!-- Degree Used Scale -->
@@ -284,16 +284,15 @@
             <!-- Collapsible Core Skills -->
             <div class="accordion" id="coreskills">
                 <repeat group="{{ @skillcategory }}" key="{{ @category }}" value="{{ @skill }}">
-                    <!-- Card Header -->
+
                     <div class="card">
-                        <div class="card-header text-center p-4"
-                             id="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}">
-                            <h2 class="mb-0 card_h2" data-toggle="collapse"
-                                data-target="#{{ str_replace(' ', '', strtolower(@category)) }}"
-                                aria-expanded="true" aria-controls="{{ str_replace(' ', '', strtolower(@category)) }}">
-                                <strong>{{ @category }}</strong>
-                            </h2>
-                        </div>
+                        <!-- Card Header -->
+                        <a class="mb-0 card_a card-header" href="#" data-toggle="collapse"
+                            id="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}"
+                            data-target="#{{ str_replace(' ', '', strtolower(@category)) }}"
+                            aria-expanded="true" aria-controls="{{ str_replace(' ', '', strtolower(@category)) }}">
+                            <strong>{{ @category }}</strong> +
+                        </a>
                         <!-- Card body - contains a row for each skill, a checkbox, numeric input 1-5  -->
                         <div id="{{ str_replace(' ', '', strtolower(@category)) }}" class="collapse"
                              aria-labelledby="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}"
@@ -345,7 +344,7 @@
             </div>
         </div>
 
-        <!--TODO: Start of Notes Tab Content -->
+        <!-- Start of Notes Tab Content -->
         <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <h2 class="form_h2">Notes</h2>
             <h3 class="text-center skill_key_h3">Fill in notes for today.</h3>

@@ -1,4 +1,4 @@
-
+/** Nav Tab Styles ********************************************/
 .active {
     background-color: #fefaf1 !important;
     border-bottom-color: #fefaf1 !important;
@@ -13,6 +13,7 @@
     color: #559bca !important;
 }
 
+/** General Form Page Styles **********************************/
 .form_h2 {
     font-weight: bold;
     text-align: center;
@@ -20,6 +21,7 @@
     margin-bottom: 1.0rem;
 }
 
+/** Emotions, Targets, Skills 0-5 & 1-0 input scale Styles ********/
 .list {
     display: flex;
     justify-content: center;
@@ -34,6 +36,7 @@
     font-weight: bold;
 }
 
+/** Makes key text resize on mobile **/
 @media screen and (max-width: 767px) {
     .skill_key {
         font-size: 0.6rem;
@@ -45,10 +48,20 @@
     }
 }
 
+/** Accordion Skills Card Styles ******************************/
 .card {
     background-color: #fefaf1;
 }
 
-.card_h2 {
-    font-size: 16px;
+.card_a {
+    font-size: 1rem;
+    text-align: center;
+    color: #333333;
+}
+
+.card_a:hover {
+    background-color: #559bca !important;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333333;
 }
