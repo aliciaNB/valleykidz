@@ -10,6 +10,9 @@ body{
 .white{
     color: #fefaf1;
 }
+.bgdkblue{
+    background-color: #23446e;
+}
 .bgwhite{
     background-color: #fefaf1;
 }
@@ -59,6 +62,9 @@ body{
     color: #999999;
 }
 
+.navbar-dark .navbar-nav .nav-link{
+    color: #ffffff;
+}
 .mer{
     font-family: 'Merriweather', serif;
 }
