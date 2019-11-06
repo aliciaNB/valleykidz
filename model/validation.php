@@ -71,6 +71,11 @@ function checkErrArray($data)
     return true;
 }
 
+/**
+ * Check if an array contains only empty strings or is null
+ * @param $array an array of strings
+ * @return bool true if null or all empty strings/ false otherwise
+ */
 function isEmptyStringOrNUll($array)
 {
     if($array===null)

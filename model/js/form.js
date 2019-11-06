@@ -7,6 +7,7 @@ $(document).ready(function() {
     var x = 1; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
+        e.stopPropagation();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
             $(wrapper).append('<div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Emotion Here"' +
@@ -29,6 +30,7 @@ $(document).ready(function() {
     var y = 1; //initlal text box count
     $(target_button).click(function(e){ //on add input button click
         e.preventDefault();
+        e.stopPropagation();
         if(y < target_max_fields){ //max input box allowed
             y++; //text box increment
             $(target_wrapper).append('<div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Target Here"' +
@@ -56,5 +58,14 @@ $( ".hideshow" ).click(function() {
     else
     {
         $(this).html("Hide");
+    }
+});
+
+
+$('#form').on('keyup keypress', function(e) {
+    var keyCode = e.keyCode || e.which;
+    if (keyCode === 13) {
+        e.preventDefault();
+        return false;
     }
 });
