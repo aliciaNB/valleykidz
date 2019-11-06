@@ -1,4 +1,5 @@
 //sanwabe website add remove field function redesigned for this project
+//created new divs when a target button is clicked or removes them when remove href is clicked
 $(document).ready(function() {
     var max_fields = 6; //maximum input boxes allowed
     var wrapper = $(".input_fields_wrap"); //Fields wrapper
@@ -22,6 +23,7 @@ $(document).ready(function() {
 });
 
 //sanwabe website add remove field function redesigned for this project
+//created new divs when a target button is clicked or removes them when remove href is clicked
 $(document).ready(function() {
     var target_max_fields = 5; //maximum input boxes allowed
     var target_wrapper = $(".target_wrapper"); //Fields wrapper
@@ -61,7 +63,7 @@ $( ".hideshow" ).click(function() {
     }
 });
 
-
+//prevents submitting form by enter key, must be tabbed to or highlighted and clicked.
 $('#form').on('keyup keypress', function(e) {
     var keyCode = e.keyCode || e.which;
     if (keyCode === 13) {
