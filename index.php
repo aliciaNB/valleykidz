@@ -208,7 +208,7 @@ $f3->route('GET|POST /formtable', function($f3)
     {
         $f3->reroute('/');
     }
-    $formsplit = new formsplitter();
+    $formsplit = new Formsplitter();
     $f3->set('formsplit', $formsplit);
     echo $view->render('view/clienttable.html');
 });
