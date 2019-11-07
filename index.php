@@ -206,10 +206,6 @@ $f3->route('GET|POST /formtable', function($f3) {
     if ($type!=="cln") { //this page only viewable by clinicians
         $f3->reroute('/');
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 69c2e3d41dba9b90de145c5422372ffa7459da93
     $formsplit = new Formsplitter();
     $f3->set('formsplit', $formsplit);
     echo $view->render('view/clienttable.html');
