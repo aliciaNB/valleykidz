@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
+    <link type="text/css" rel="stylesheet" href="stylesheets/diary_card_styles.css" lang="en">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
+    <title>Daily Diary Card</title>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bglghtestblue">
+    <div class="d-flex flex-grow-1">
+        <span class="w-100 d-lg-none d-block"><!-- hidden spacer to center brand on mobile --></span>
+        <a class="navbar-brand dkblue mus" href="memberprofile">
+            Valley <span class="lgold">|</span> Cities DBT Portal
+        </a>
+        <div class="w-100 text-right">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar7">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+    <div class="collapse navbar-collapse flex-grow-1 text-right" id="myNavbar7">
+        <ul class="navbar-nav ml-auto flex-nowrap">
+            <li class="nav-item">
+                <a href="./" class="nav-link white mus font-weight-bold">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- TODO: Page Tabs and consolidate forms into one, remove excess routes -->
+<ul class="nav nav-tabs mt-3 nav-justified" id="diaryForm" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active tab-style" id="targets-tab" aria-label="targets-tab" data-toggle="tab" href="#targets" role="tab"
+           aria-controls="targets" aria-selected="true">Targets</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link tab-style" id="emotions-tab" aria-label="emtions-tab" data-toggle="tab" href="#emotions" role="tab"
+           aria-controls="emotions" aria-selected="false">Emotions</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link tab-style" id="skills-tab" aria-label="skills-tab" data-toggle="tab" href="#skills" role="tab"
+           aria-controls="skills" aria-selected="false">Skills</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link tab-style" id="notes-tab" aria-label="notes-tab" data-toggle="tab" href="#notes" role="tab"
+           aria-controls="notes" aria-selected="false">Notes</a>
+    </li>
+</ul>
+
+<!-- Start of Form -->
+<form action="#" method="post">
+    <div class="tab-content" id="myTabContent">
+        <!-- Start of Targets Tab Content -->
+        <div class="tab-pane fade show active" id="targets" role="tabpanel" aria-labelledby="targets-tab">
+            <h2 class="form_h2">Targets</h2>
+            <!-- Intensity rating scale targets-->
+            <h3 class="text-center skill_key_h3">Fill in the intensity of urge and if action was taken.</h3>
+            <div class="list skill_key">
+                <ul class="list-unstyled">
+                    <li>0. Not at All</li>
+                    <li>1. A bit</li>
+                    <li>2. Somewhat</li>
+                    <li>3. Rather Strong</li>
+                    <li>4. VERY Strong</li>
+                    <li>5. EXTREMELY STRONG</li>
+                </ul>
+            </div>
+            <!-- Targets table -->
+            <table class="table table-striped border">
+                <tr>
+                    <th></th>
+                    <th>
+                        Targets
+                    </th>
+                    <th>
+                        Urge
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+                <!-- Will eventually be a repeat group -->
+                <tr>
+                    <td></td>
+                    <td>
+                        Self Harm
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option value="">--</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="urge">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Suicidal Ideation
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Substance Use
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Start of Emotions Tab Content -->
+        <div class="tab-pane fade" id="emotions" role="tabpanel" aria-labelledby="emotions-tab">
+            <h2 class="form_h2">Emotions</h2>
+            <!-- Intensity rating scale for emotions-->
+            <h3 class="text-center skill_key_h3">Fill in the intensity of emotion felt.</h3>
+            <div class="list skill_key">
+                <ul class="list-unstyled">
+                    <li>0. Not at All</li>
+                    <li>1. A bit</li>
+                    <li>2. Somewhat</li>
+                    <li>3. Rather Strong</li>
+                    <li>4. VERY Strong</li>
+                    <li>5. EXTREMELY STRONG</li>
+                </ul>
+            </div>
+            <!-- Emotions table -->
+            <table class="table table-striped border">
+                <tr>
+                    <th></th>
+                    <th>
+                        Emotions
+                    </th>
+                    <th>
+                        Intensity
+                    </th>
+                </tr>
+                <!-- Will eventually be a repeat group -->
+                <tr>
+                    <td></td>
+                    <td>
+                        Self Acceptance
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Compassion
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Anger
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Joy
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        Shame
+                    </td>
+                    <td>
+                        <select class="custom-select col col-sm-6 col-md-4">
+                            <option>--</option>
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Start of Skills Tab Content-->
+        <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
+            <h2 class="form_h2">Skills</h2>
+            <!-- Degree Used Scale -->
+            <h3 class="text-center skill_key_h3">Fill in a number for the degree to which you used a skill.</h3>
+            <div class="list skill_key">
+                <ol>
+                    <li>Realized afterwards that I should have used skill.</li>
+                    <li>Thought about skill but chose not to use it.</li>
+                    <li>Realized afterwards that I did use skill effectively.</li>
+                    <li>Mindfully tried to use skill but wasn't effective.</li>
+                    <li>Mindfully used skill effectively.</li>
+                </ol>
+            </div>
+            <!-- Collapsible Core Skills -->
+            <div class="accordion" id="coreskills">
+                <repeat group="{{ @skillcategory }}" key="{{ @category }}" value="{{ @skill }}">
+
+                    <div class="card">
+                        <!-- Card Header -->
+                        <a class="mb-0 card_a card-header" href="#" data-toggle="collapse"
+                            id="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}"
+                            data-target="#{{ str_replace(' ', '', strtolower(@category)) }}"
+                            aria-expanded="true" aria-controls="{{ str_replace(' ', '', strtolower(@category)) }}">
+                            <strong>{{ @category }}</strong> +
+                        </a>
+                        <!-- Card body - contains a row for each skill, a checkbox, numeric input 1-5  -->
+                        <div id="{{ str_replace(' ', '', strtolower(@category)) }}" class="collapse"
+                             aria-labelledby="{{ str_replace(' ', '', strtolower(@category)) . 'header' }}"
+                             data-parent="#coreskills">
+                            <!-- table in card  -->
+                            <table class="card-body table table-striped">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Skill</th>
+                                    <th class="text-center">Skill Used</th>
+                                    <th class="text-center">Degree Used</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <repeat group="{{ @skill }}" value="{{ @skillname }}">
+                                    <tr>
+                                        <td colspan="1"></td>
+                                        <td >{{ @skillname }}</td>
+                                        <td >
+                                            <div class="form-check text-center">
+                                                <input class="form-check-input" type="checkbox" value="{{ @skillname }}"
+                                                       id="{{ str_replace(' ', '', strtolower(@skillname)) . 'check' }}">
+                                                <label class="form-check-label"
+                                                       for="{{ str_replace(' ', '', strtolower(@skillname)) . 'check' }}">
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" >
+                                            <select class="custom-select col col-sm-6 col-md-4"
+                                                    id="{{ str_replace(' ', '', strtolower(@skillname)) . 'degree' }}">
+                                                <option selected disabled>--</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                            <label for="{{ str_replace(' ', '', strtolower(@skillname)) . 'degree' }}">
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </repeat>
+            </div>
+        </div>
+
+        <!-- Start of Notes Tab Content -->
+        <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
+            <h2 class="form_h2">Notes</h2>
+            <h3 class="text-center skill_key_h3">Fill in notes for today.</h3>
+            <div class="container">
+                <div class="form-group">
+                    <label for="daily-notes"></label>
+                    <textarea class="form-control" id="daily-notes" rows="8"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col text-center mt-3 mb-3">
+        <button type="submit" class="btn btn-lg btn-primary white bgdkgold mus font-weight-bold
+            rounded-0 border-0 text-center mt-3"
+                name="btn-submit" value="save">Save & Exit</button>
+    </div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
