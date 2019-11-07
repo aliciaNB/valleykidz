@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bgdkblue">
     <a class="navbar-brand mus" href="branchprofile">
         Valley <span class="lgold">|</span> Cities DBT Portal
@@ -38,7 +39,7 @@
     <h3 class="text-center">{{@displayStart}} - {{@displayEnd}}</h3>
 
 
-    <!--Table Start-->
+    <!-- Target Table -->
     <h2 class="text-center mt-5">Targets</h2>
     <div class=" table-responsive pagination">
         <table id="targets" class="cell-border">
@@ -73,6 +74,7 @@
         </table>
     </div>
 
+    <!-- Emotion Table -->
     <h2 class="text-center mt-5 bgwhite">Emotions</h2>
     <div class="mt-5 table-responsive pagination">
         <table id="feelings" class="cell-border">
@@ -97,6 +99,7 @@
         </table>
     </div>
 
+    <!-- Skills Table -->
     <h2 class="mt-5 text-center">Skills</h2>
     <div class="mt-5 table-responsive pagination">
         <table id="skill" class="cell-border">
@@ -135,6 +138,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script>
+    // Scripts for data tables
     $(document).ready( function () {
         $('#targets').DataTable();
     } );
