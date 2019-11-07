@@ -147,21 +147,21 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
         $f3->reroute('/');
     }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $f3->reroute('/skills');
+        $f3->reroute('/diarycardform');
     }
 
     echo $view->render('view/memberprofile.html');
 });
 
-//skills page
-$f3->route('GET|POST /skills', function ($f3) {
+//diary card form page
+$f3->route('GET|POST /dbtdiary', function ($f3) {
     $view = new Template();
     if($_SERVER['REQUEST_METHOD'] == 'POST'){//bruce update
 
         $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');
 
     }
-    echo $view->render('view/skills.html');
+    echo $view->render('view/diarycardformdiarycardform.html');
 });
 
 
