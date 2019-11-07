@@ -29,7 +29,7 @@ $dates = array(
 $f3->set('skillcategory', array(
     'Core Mindfulness' => array('Wise Mind', 'Observe', 'Describe', 'Participate', 'Nonjudgmental Stance',
                                 'One-mindfully', 'Effectiveness'),
-    'Interpersonal' => array('Objective Effectiveness', 'Relationship Effectiveness', 'Self-Respect Effectiveness'),
+    'Interpersonal Effectiveness' => array('Objective Effectiveness', 'Relationship Effectiveness', 'Self-Respect Effectiveness'),
     'Emotion Regulation' => array('Identifying Primary Emotions', 'Checking the Facts',
                         'Problem Solving', 'Opposite-to-emotion Action', 'Acquire Positives in the Short-term',
                         'Acquire Positives in the Long-term', 'Build Mastery', 'Cope Ahead', 'PLEASE',
