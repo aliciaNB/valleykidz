@@ -147,7 +147,7 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
         $f3->reroute('/');
     }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $f3->reroute('/diarycardform');
+        $f3->reroute('/dbtdiary');
     }
 
     echo $view->render('view/memberprofile.html');
@@ -161,7 +161,7 @@ $f3->route('GET|POST /dbtdiary', function ($f3) {
         $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');
 
     }
-    echo $view->render('view/diarycardformdiarycardform.html');
+    echo $view->render('view/diarycardform.html');
 });
 
 
