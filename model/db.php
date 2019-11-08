@@ -133,6 +133,11 @@ INSERT INTO client (client_id) VALUES (123456);
 
 UPDATE `clinician` SET `user_name` = 'jelzughbi' WHERE `clinician`.`clinician_id` = 1234;
 
+*************************DEFAULT FORM DATA***********************************
+
+INSERT INTO emotions (emotionId,emotionName) VALUES (1,'joy'),(2,'gratitude'),(3,'compassion'),(4,'vulnerability'),
+(5,'self acceptance'),(6,'sadness'),(7,'depression'),(8,'anger'),(9,'frustration'),(10,'anxiety');
+
  */
 /**
  * @author Michael Britt
