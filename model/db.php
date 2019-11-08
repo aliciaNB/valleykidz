@@ -193,7 +193,7 @@ Create Table formEmotions
     emotionId int,
 	PRIMARY KEY (formNum, EmotionId),
 	FOREIGN KEY (formNum) REFERENCES forms(formNum),
-	FOREIGN KEY (emottionId) REFERENCES emotions(emotionId)
+	FOREIGN KEY (emotionId) REFERENCES emotions(emotionId)
     );
 
 Create Table formSkills
@@ -202,7 +202,7 @@ Create Table formSkills
     skillsId int,
 	PRIMARY KEY (formNum, skillsId),
 	FOREIGN KEY (formNum) REFERENCES forms(formNum),
-	FOREIGN KEY skillsId REFERENCES skills(skillsId)
+	FOREIGN KEY (skillsId) REFERENCES skills(skillsId)
 );
 
 
@@ -221,23 +221,34 @@ CREATE Table dateSubmissionTargets
 CREATE TABLE dateSubmissionsEmotions
 (
 	formNum int,
+    dateSubmitted dateTime,
 	emotionId int,
 	intensity int(1),
 	PRIMARY KEY (formNum, EmotionId),
 	FOREIGN KEY (formNum) REFERENCES forms(formNum),
-	FOREIGN KEY (emottionId) REFERENCES emotions(emotionId)
+	FOREIGN KEY (emotionId) REFERENCES emotions(emotionId)
 
 );
 
 CREATE TABLE dateSubmissionSkills
 (
 	formNum int,
+    dateSubmitted dateTime,
     skillsId int,
 	degree int(1),
 	used boolean,
 	PRIMARY KEY (formNum, skillsId),
 	FOREIGN KEY (formNum) REFERENCES forms(formNum),
-	FOREIGN KEY skillsId REFERENCES skills(skillsId)
+	FOREIGN KEY (skillsId) REFERENCES skills(skillsId)
+);
+
+CREATE TABLE noteSubumission
+(
+    noteId int PRIMARY KEY AUTO_INCREMENT,
+    formNum int,
+    dateSubmitted dateTime,
+    noteInfo varchar(255),
+   	FOREIGN KEY (formNum) REFERENCES forms(formNum)
 );
 *************************SAMPLE USERS****************************************
 
