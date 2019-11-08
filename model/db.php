@@ -27,11 +27,11 @@ CREATE TABLE profilelinks(
 ************************Form Table*******************************************
 CREATE TABLE forms
 (
-	formNum int AUTO_INCREMENT PRIMARY KEY,
-    clientNUm int,
+	formId int AUTO_INCREMENT PRIMARY KEY,
+    clientId int,
     startDate dateTime,
     endDate dateTime,
-    FOREIGN KEY(clientNUm) REFERENCES client(client_id)
+    FOREIGN KEY(clientId) REFERENCES client(client_id)
 );
 ************************Proposal 1 DB****************************************
 CREATE TABLE submitttedTargets
