@@ -24,6 +24,221 @@ CREATE TABLE profilelinks(
     FOREIGN KEY (clinician_id) REFERENCES clinician(clinician_id)
 );
 
+************************Form Table*******************************************
+CREATE TABLE forms
+(
+	formNum int AUTO_INCREMENT PRIMARY KEY,
+    clientNUm int,
+    startDate dateTime,
+    endDate dateTime,
+    FOREIGN KEY(clientNUm) REFERENCES client(client_id)
+);
+************************Proposal 1 DB****************************************
+CREATE TABLE submitttedTargets
+(
+    formNum int,
+    submitDate dateTime,
+    suicidalIdeationUrge int(1),
+    suicidalIdeationAction boolean,
+    selfHarmUrge int(1),
+    selfHarmAction boolean,
+    substanceUseUrge int(1),
+    substanceUseAction boolean,
+    medicationUrge int(1),
+    medicationAction boolean,
+    custTarget1Name varchar(255),
+    custTarget1Urge int(1),
+    custTarget1Action boolean,
+    custTarget2Name varchar(255),
+    custTarget2Urge int(1),
+    custTarget2Action boolean,
+    custTarget3Name varchar(255),
+    custTarget3Urge int(1),
+    custTarget3Action boolean,
+    custTarget4Name varchar(255),
+    custTarget4Urge int(1),
+    custTarget4Action boolean,
+    PRIMARY KEY (formNum,submitDate),
+    FOREIGN KEY (formNum) REFERENCES forms(formNum)
+);
+
+
+CREATE TABLE submitttedEmotions
+(
+    formNum int,
+    submitDate dateTime,
+    Joy int(1),
+    Gratitude int(1),
+    Compassion int(1),
+    Vulnerability int(1),
+    SelfAcceptance int(1),
+    Sadness int(1),
+    Depression int(1),
+    Anger int(1),
+    Frustration int(1),
+    Anxiety int(1),
+    custEmotion1Name varchar(255),
+    customEmotin1Val int(1),
+    custEmotion2Name varchar(255),
+    customEmotin2Val int(1),
+    custEmotion3Name varchar(255),
+    customEmotin3Val int(1),
+    custEmotion4Name varchar(255),
+    customEmotin4Val int(1),
+    custEmotion5Name varchar(255),
+    customEmotin5Val int(1),
+    PRIMARY KEY (formNum,submitDate),
+    FOREIGN KEY (formNum) REFERENCES forms(formNum)
+);
+
+
+CREATE TABLE submitttedEmotions
+(
+    formNum int,
+    submitDate dateTime,
+    WiseMindVal int(1),
+    WiseMindUsed boolean,
+    ObserveVal  int(1),
+    ObserveUsed boolean,
+    DescribeVal int(1),
+    DescribeUsed boolean,
+    ParticipateVal int(1),
+    ParticipateUsed boolean,
+    NonjudgmentalStanceVal int(1),
+    NonjudgmentalStanceUsed boolean,
+    OnemindfullyVal int(1),
+    OnemindfullyUsed boolean,
+    EffectivenessVal int(1),
+    EffectivenessUsed boolean,
+    ObjectiveEffectivenessVal int(1),
+    ObjectiveEffectivenessUsed boolean,
+    RelationshipEffectivenessVal int(1),
+    RelationshipEffectivenessUsed boolean,
+    SelfRespectEffectivenessVal int(1),
+    SelfRespectEffectivenessUsed boolean,
+    IdentifyingPrimaryEmotionsVal int(1),
+    IdentifyingPrimaryEmotionsUsed boolean,
+    CheckingtheFactsVal int(1),
+    CheckingtheFactsUsed boolean,
+    ProblemSolvingVal  int(1),
+    ProblemSolvingUsed  boolean,
+    OppositetoemotionActionVal int(1),
+    OppositetoemotionActionUsed boolean,
+    AcquirePositivesintheShorttermVal int(1),
+    AcquirePositivesintheShorttermUsed boolean,
+    AcquirePositivesintheLongtermVal int(1),
+    AcquirePositivesintheLongtermUsed boolean,
+	BuildMasteryVal int(1),
+    BuildMasteryUsed boolean,
+    CopeAheadVal int(1),
+    CopeAheadUsed boolean,
+    PLEASEVal int(1),
+    PLEASEUsed int(1),
+    MindfulnesstoCurrentEmotionVal int(1),
+    MindfulnesstoCurrentEmotionUsed boolean,
+    TIPPVal int(1),
+    TIPPUsed boolean,
+    DistractVal int(1),
+    DistractUsed boolean,
+    SelfsootheVal int(1),
+    SelfsootheUsed boolean,
+    IMPROVEVal int(1),
+    IMPROVEUsed boolean,
+    ProsandConsVal int(1),
+    ProsandConsUsed boolean,
+    HalfsmileVal int(1),
+    HalfsmileUsed boolean,
+    RadicalAcceptanceVal int(1),
+    RadicalAcceptanceUsed boolean,
+    TurningtheMindVal int(1),
+    TurningtheMindUsed boolean,
+    WillingnessVal int(1),
+    WillingnessUsed boolean,
+    PRIMARY KEY (formNum,submitDate),
+    FOREIGN KEY (formNum) REFERENCES forms(formNum)
+);
+
+************************Proposal 2 DB****************************************
+CREATE TABLE targets
+(
+	targetId int PRIMARY KEY AUTO_INCREMENT,
+	targetName varchar(255)
+ );
+
+Create Table skills
+(
+    skillsId int AUTO_INCREMENT PRIMARY KEY,
+    skillsName varchar(255),
+    skillsCatagory char(4)
+);
+
+CREATE TABLE emotions
+(
+    emotionId int AUTO_INCREMENT PRIMARY KEY,
+    emotionName varchar(255)
+);
+
+Create Table formTargets
+(
+    formNum int,
+    targetId int,
+	PRIMARY KEY(formNum,targetId),
+	FOREIGN KEY (formNum) REFERENCES forms(formNum),
+	FOREIGN KEY (targetId) REFERENCES targets(targetId)
+);
+
+Create Table formEmotions
+(
+    formNum int,
+    emotionId int,
+	PRIMARY KEY (formNum, EmotionId),
+	FOREIGN KEY (formNum) REFERENCES forms(formNum),
+	FOREIGN KEY (emottionId) REFERENCES emotions(emotionId)
+    );
+
+Create Table formSkills
+(
+    formNum int,
+    skillsId int,
+	PRIMARY KEY (formNum, skillsId),
+	FOREIGN KEY (formNum) REFERENCES forms(formNum),
+	FOREIGN KEY skillsId REFERENCES skills(skillsId)
+);
+
+
+CREATE Table dateSubmissionTargets
+(
+    formNum int,
+    targetId int,
+	dateSubmitted dateTime,
+	urge int(1),
+	action boolean,
+	PRIMARY KEY(formNum,targetId),
+	FOREIGN KEY (formNum) REFERENCES forms(formNum),
+	FOREIGN KEY (targetId) REFERENCES targets(targetId)
+	);
+
+CREATE TABLE dateSubmissionsEmotions
+(
+	formNum int,
+	emotionId int,
+	intensity int(1),
+	PRIMARY KEY (formNum, EmotionId),
+	FOREIGN KEY (formNum) REFERENCES forms(formNum),
+	FOREIGN KEY (emottionId) REFERENCES emotions(emotionId)
+
+);
+
+CREATE TABLE dateSubmissionSkills
+(
+	formNum int,
+    skillsId int,
+	degree int(1),
+	used boolean,
+	PRIMARY KEY (formNum, skillsId),
+	FOREIGN KEY (formNum) REFERENCES forms(formNum),
+	FOREIGN KEY skillsId REFERENCES skills(skillsId)
+);
 *************************SAMPLE USERS****************************************
 
 INSERT INTO users (admin, client, password, user_id) VALUES (0, 1, 'test', 123456), (0, 0, 'test', 1234);
