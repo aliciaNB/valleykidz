@@ -112,7 +112,7 @@ CREATE TABLE dateSubmissionSkills
     skillId int,
 	degree int(1),
 	used boolean,
-	PRIMARY KEY (formId, skillsId),
+	PRIMARY KEY (formId, skillId),
 	FOREIGN KEY (formId) REFERENCES forms(formId),
 	FOREIGN KEY (skillId) REFERENCES skills(skillId)
 );
