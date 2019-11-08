@@ -130,6 +130,14 @@ CREATE TABLE noteSubmission
 INSERT INTO users (admin, client, password, user_id) VALUES (0, 1, 'test', 123456), (0, 0, 'test', 1234);
 INSERT INTO clinician (clinician_id, user_name) VALUES (1234, 'jelzughbhi');
 INSERT INTO client (client_id) VALUES (123456);
+INSERT INTO skills (skillName, skillCategory) VALUES('wise mind', 'cm'),('observe', 'cm'), ('describe','cm'),  ('participate','cm'),('nonjudgmental stance', 'cm'),('One-mindfully','cm'), ('efectiveness','cm');
+INSERT INTO skills (skillName, skillCategory) VALUES('objective effectiveness','ie'), ('relationship effectiveness','ie'), ('self-respect effectiveness','ie');
+INSERT INTO skills(skillName, skillCategory) VALUES('identifying primary emotions','er'), ('checking the facts','er'),
+                    ('problem solving','er'), ('opposite-to-emotion action','er'), ('acquire positives in the Short-term','er'),
+                    ('acquire positives in the long-term','er'), ('build mastery','er'), ('cope ahead','er'), ('please','er'),
+                    ('mindfulness to current emotion','er');
+INSERT INTO skills(skillName,skillCategory) VALUES('tipp','dt'), ('distract','dt'), ('self-soothe','dt'), ('improve','dt'), ('pros and cons','dt'), ('half-smile','dt'), ('radical acceptance','dt'), ('turning the mind','dt'), ('willingness','dt');
+
 
 UPDATE `clinician` SET `user_name` = 'jelzughbi' WHERE `clinician`.`clinician_id` = 1234;
 
