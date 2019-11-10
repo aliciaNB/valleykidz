@@ -37,20 +37,23 @@ CREATE TABLE forms
 CREATE TABLE targets
 (
 	targetId int PRIMARY KEY AUTO_INCREMENT,
-	targetName varchar(255)
+	targetName varchar(255),
+    isDefault boolean
  );
 
 Create Table skills
 (
     skillId int AUTO_INCREMENT PRIMARY KEY,
     skillName varchar(255),
-    skillCategory char(4)
+    skillCategory char(4),
+    isDefault boolean
 );
 
 CREATE TABLE emotions
 (
     emotionId int AUTO_INCREMENT PRIMARY KEY,
-    emotionName varchar(255)
+    emotionName varchar(255),
+    isDefault boolean
 );
 
 Create Table formTargets
@@ -135,25 +138,25 @@ UPDATE `clinician` SET `user_name` = 'jelzughbi' WHERE `clinician`.`clinician_id
 
 *************************DEFAULT FORM DATA***********************************
 
-INSERT INTO emotions (emotionId,emotionName) VALUES (1,'joy'),(2,'gratitude'),(3,'compassion'),(4,'vulnerability'),
-(5,'self acceptance'),(6,'sadness'),(7,'depression'),(8,'anger'),(9,'frustration'),(10,'anxiety');
+INSERT INTO emotions (emotionId,emotionName,isDefault) VALUES (1,'joy',1),(2,'gratitude',1),(3,'compassion',1),(4,'vulnerability',1),
+(5,'self acceptance',1),(6,'sadness',1),(7,'depression',1),(8,'anger',1),(9,'frustration',1),(10,'anxiety',1);
 
-INSERT INTO targets (targetName) VALUES ('suicidal ideation'),('self harm'), ('substance use'), ('medication');
+INSERT INTO targets (targetName,isDefault) VALUES ('suicidal ideation',1),('self harm',1), ('substance use',1), ('medication',1);
 
-INSERT INTO skills (skillName, skillCategory) VALUES('wise mind', 'cm'),('observe', 'cm'), ('describe','cm'),
-('participate','cm'),('nonjudgmental stance', 'cm'),('One-mindfully','cm'), ('efectiveness','cm');
+INSERT INTO skills (skillName, skillCategory,isDefault) VALUES('wise mind', 'cm',1),('observe', 'cm',1), ('describe','cm',1),
+('participate','cm',1),('nonjudgmental stance', 'cm',1),('one-mindfully','cm',1), ('efectiveness','cm',1);
 
-INSERT INTO skills (skillName, skillCategory) VALUES('objective effectiveness','ie'),
-('relationship effectiveness','ie'), ('self-respect effectiveness','ie');
+INSERT INTO skills (skillName, skillCategory, isDefault) VALUES('objective effectiveness','ie',1),
+('relationship effectiveness','ie',1), ('self-respect effectiveness','ie',1);
 
-INSERT INTO skills(skillName, skillCategory) VALUES('identifying primary emotions','er'), ('checking the facts','er'),
-('problem solving','er'), ('opposite-to-emotion action','er'), ('acquire positives in the Short-term','er'),
-('acquire positives in the long-term','er'), ('build mastery','er'), ('cope ahead','er'), ('please','er'),
-('mindfulness to current emotion','er');
+INSERT INTO skills(skillName, skillCategory, isDefault) VALUES('identifying primary emotions','er',1), ('checking the facts','er',1),
+('problem solving','er',1), ('opposite-to-emotion action','er',1), ('acquire positives in the Short-term','er',1),
+('acquire positives in the long-term','er',1), ('build mastery','er',1), ('cope ahead','er',1), ('please','er',1),
+('mindfulness to current emotion','er',1);
 
-INSERT INTO skills(skillName,skillCategory) VALUES('tipp','dt'), ('distract','dt'), ('self-soothe','dt'),
-('improve','dt'), ('pros and cons','dt'), ('half-smile','dt'), ('radical acceptance','dt'), ('turning the mind','dt'),
-('willingness','dt');
+INSERT INTO skills(skillName,skillCategory, isDefault) VALUES('tipp','dt',1), ('distract','dt',1),
+('self-soothe','dt',1),('improve','dt',1), ('pros and cons','dt',1), ('half-smile','dt',1),
+('radical acceptance','dt',1), ('turning the mind','dt',1),('willingness','dt',1);
 
  */
 /**
@@ -435,5 +438,92 @@ class database
         {
             return "n";
         }
+    }
+
+    /**
+     * Grabs default skills from db
+     * @return mixed Array of all the default skills
+     */
+    public function getDefaultSkills()
+    {
+        $sql = "SELECT * FROM skills WHERE isDefault=1";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Retrieves default emotions from db
+     * @return mixed Array of default emotions
+     */
+    public function getDefaultEmotions()
+    {
+        $sql = "SELECT emotionId,emotionName FROM emotions WHERE isDefault=1";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Retrieves default targets from db
+     * @return mixed Array of defaul targets
+     */
+    public function getDefaultTargets()
+    {
+        $sql = "SELECT targetId,targetName FROM targets WHERE isDefault=1";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Takes a form number in inserts default skills at that time into the associative table
+     * @param $formId int form num being added to
+     */
+    public function insertDefaultSkills($formId)
+    {
+        $defaults =$this->getDefaultSkills();
+        $sql = "INSERT INTO formSkills(formId,skillsId) VALUES";
+        foreach ($defaults as $value)
+        {
+            $sql.='('.$formId.','.$value["skillId"].'),';
+        }
+        $statement = $this->_dbh->prepare(rtrim($sql, ','));
+        $statement->execute();
+    }
+
+    /**
+     * Takes a form number in inserts default emotions at that time into the associative table
+     * @param $formId int form num being added to
+     */
+    public function insertDefaultEmotions($formId)
+    {
+        $defaults =$this->getDefaultEmotions();
+        $sql = "INSERT INTO formEmotions(formId,emotionId) VALUES";
+        foreach ($defaults as $value)
+        {
+            $sql.='('.$formId.','.$value["emotionId"].'),';
+        }
+        $statement = $this->_dbh->prepare(rtrim($sql, ','));
+        $statement->execute();
+    }
+
+    /**
+     * Takes a form number in inserts default targets at that time into the associative table
+     * @param $formId int form num being added to
+     */
+    public function insertDefaultTargets($formId)
+    {
+        $defaults=$this->getDefaultTargets();
+        $sql = "INSERT INTO formEmotions(formId,targetId) VALUES";
+        foreach ($defaults as $value)
+        {
+            $sql.='('.$formId.','.$value["targetId"].'),';
+        }
+        $statement = $this->_dbh->prepare(rtrim($sql, ','));
+        $statement->execute();
     }
 }

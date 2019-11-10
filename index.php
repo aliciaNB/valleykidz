@@ -15,13 +15,9 @@ session_start();
 $db = new database();
 //-----------------------------------------------------Arrays-----------------------------------------------------------
 
-$defaultTargets = array(
-    "Suicidal Ideation","Self Harm", "Substance Use", "Medication"
-);
-$defaultEmotions = array(
-    "Joy", "Gratitude", "Compassion", "Vulnerability", "Self Acceptance", "Sadness", "Depression", "Anger",
-    "Frustration", "Anxiety"
-);
+$defaultTargets = $db->getDefaultTargets();
+$defaultEmotions=$db->getDefaultEmotions();
+
 $dates = array(
   "Mon", "Tue","Wed","Thurs","Fri","Sat","Sun"
 );
@@ -42,7 +38,6 @@ $f3->set('skillcategory', array(
 //default route
 $f3->route('GET|POST /', function ($f3) {
     global $db;
-
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->getUser($_POST['user'],$_POST['pass']);
