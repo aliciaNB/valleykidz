@@ -5,6 +5,7 @@
  * @param $data int client number
  * @return string error message or empty if error-free
  */
+
 function validateClientNumber($data)
 {
     if($data=="")
@@ -90,4 +91,15 @@ function isEmptyStringOrNUll($array)
         }
     }
     return true;
+}
+
+/**
+ * Takes a string and returns escaped string to provent sql injection
+ * @param $string string value from a form input
+ * @param $db db connection
+ * @return string escaped string.
+ */
+function preventSQLInjections($string, $db)
+{
+    //return mysqli_real_escape_string($db ,$string);
 }

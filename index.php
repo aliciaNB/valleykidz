@@ -76,19 +76,53 @@ $f3->route('GET|POST /createdbt', function ($f3) {
     global $defaultTargets;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $arrayErr = array(
-            "feelings" => validateInputGroup($_POST['feelings']),
-            "targets" => validateInputGroup($_POST['targets'])
-        );
 
-        if (checkErrArray($arrayErr)) {
-            $_SESSION['confirmTargets']= $_POST['targets'];
-            $_SESSION['confirmEmotions']= $_POST['feelings'];
 
-            $f3->reroute('/confirmdbtform');
+        $_SESSION['confirmTargets'] = $_POST['targets'];
+        $_SESSION['confirmEmotions'] = $_POST['feelings'];
+
+        //create new form and get its id closing old form that exists
+        $formNum = $db->createForm($_GET['id']);
+
+        //insert all the defaults at this moment form the table
+        $db->insertDefaultSkills($formNum);
+        $db->insertDefaultEmotions($formNum);
+        $db->insertDefaultTargets($formNum);
+
+        //add custom emotions
+        if ($_POST['feelings'])
+        {
+            foreach ($_POST['feelings'] as $feeling)
+            {
+                if($feeling!=="")//if feeling in post was empty ignore and do not place in db
+                {
+                    $result = $db->getEmotionId($feeling);
+                    if(!$result)//id does not exist in table
+                    {
+                        $result=$db->insertEmotion($feeling);//add to table
+                    }
+                    $db->insertCustomEmotions($formNum, $result);//insert into association table to create form
+                }
+            }
         }
 
-        $f3->set('errors', $arrayErr);
+        if($_POST['targets'])
+        {
+            foreach ($_POST['targets'] as $target)
+            {
+                if($target!=="")
+                {
+                    $result = $db->getTargetId($target);
+                    if(!$result)//id does not exist in table
+                    {
+                        $result=$db->insertTarget($target);//add to table
+                    }
+                    $db->insertCustomTargets($formNum, $result);//insert into association table to create form
+                }
+            }
+        }
+
+        $f3->reroute('/confirmdbtform');
     }
     $f3->set("targets", $defaultTargets);
     $f3->set("emotions", $defaultEmotions);
