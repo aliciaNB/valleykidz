@@ -176,10 +176,8 @@ if ($user == NULL) {
 } else {
     $path = "/home/$user/config.php";
 }
-
 require_once($path);
-
-
+require_once("validation.php");
 //--------------------------Start of Class---------------------------------------
 
 /**
@@ -190,6 +188,7 @@ class database
 {
     private $_dbh;
     private $_errormessage;
+    private $mysqli;
 
     /**
      * database constructor. Start out disconnected
@@ -518,12 +517,157 @@ class database
     public function insertDefaultTargets($formId)
     {
         $defaults=$this->getDefaultTargets();
-        $sql = "INSERT INTO formEmotions(formId,targetId) VALUES";
+        $sql = "INSERT INTO formTargets(formId,targetId) VALUES";
         foreach ($defaults as $value)
         {
             $sql.='('.$formId.','.$value["targetId"].'),';
         }
+        var_dump($sql);
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
         $statement->execute();
     }
+
+    //---------------------------------Update General Form------------------------------
+    /**
+     * Creates a new form with open end date and closes previous form
+     * @param $clientId id of customer within db
+     * @return mixed int of form id just created is returned
+     */
+    public function createForm($clientId)
+    {
+        $this->closeForm($clientId);
+        //grab today's date
+        $today = date("Y-m-d");
+
+        $sql = "INSERT INTO forms (clientId, startDate) VALUES(:clientId, :startDate)";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+        $statement->bindParam(":startDate", $today, PDO::PARAM_STR);
+        $statement->execute();
+        $id = $this->_dbh->lastInsertId();//retrive form num of new formid created
+        return $id;
+    }
+
+    /**
+     * Closes an open form of the client if it exists
+     * @param $clientId represents client id in db
+     */
+    private function closeForm($clientId)
+    {
+        $sql = "SELECT * FROM forms WHERE clientId=:clientId and endDate is null";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if(isset($result))//has an open form
+        {
+            //grab today's date
+            $today = date("Y-m-d");
+            $sql= "UPDATE forms SET endDate =:today WHERE clientId=:clientId and endDate IS NULL";
+            $statement= $this->_dbh->prepare($sql);
+            $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+            $statement->bindParam(":today", $today, PDO::PARAM_STR);
+            $statement->execute();
+        }
+    }
+
+
+    //------------------------------UPDAtE EMOTIONS----------------------------------------------
+    /**
+     * Retrieves an emotion id if one exists from emotions table
+     * @param $emotionString string name of emotion
+     * @return mixed null if it does not exist otherwise returns id.
+     */
+    public function getEmotionId($emotionString)
+    {
+        //TODO $escapedString =preventSQLInjections($emotionString, $this->mysqli);
+        $emotionString= strtolower($emotionString);//return escaped string and lowercase it
+        $sql = "SELECT emotionId FROM emotions WHERE emotionName=:ename";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":ename", $emotionString, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * This method inserts new emotions into the emotion table and returns its id of new insert
+     * @param $emotionString represents the name of an emotions entered in custom form
+     * @return mixed int id of latest insert into table
+     */
+    public function insertEmotion($emotionString)
+    {
+        //TODO $escapedString  =preventSQLInjections($emotionString, $this->mysqli);
+        $emotionString= strtolower($emotionString);//return escaped string and lowercase it
+        $sql = "INSERT INTO emotions (emotionName, isDefault) VALUES(:emotionString ,0);";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":emotionString", $emotionString, PDO::PARAM_STR);
+        $statement->execute();
+        $id = $this->_dbh->lastInsertId();
+        return $id;
+    }
+
+    /**
+     * Insert customer emotions into associative table that produces the form for the client developed by clinician
+     * @param $formNum current form num
+     * @param $eId emotions Id num
+     */
+    public function insertCustomEmotions($formNum, $eId)
+    {
+        $sql = "INSERT INTO formEmotions (formId, emotionId) VALUES(:fid ,:eid )";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":fid", $formNum, PDO::PARAM_INT);
+        $statement->bindParam(":eid", $eId, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    //-----------------------------Update Targets----------------------
+    /**
+     * Retrieves an taget id if one exists from target table
+     * @param $targetString string name of target
+     * @return mixed null if it does not exist otherwise returns id.
+     */
+    public function getTargetId($targetString)
+    {
+        //TODO $escapedString =preventSQLInjections($targetString, $this->mysqli);
+        $targetString= strtolower($targetString);//return escaped string and lowercase it
+        $sql = "SELECT targetId FROM targets WHERE targetName=:tname";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":tname", $targetString, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * This method inserts new target into the targets table and returns its id of new insert
+     * @param $targetString represents the name of a target entered in custom form
+     * @return mixed int id of latest insert into table
+     */
+    public function insertTarget($targetString)
+    {
+        //TODO $escapedString  =preventSQLInjections($targetString, $this->mysqli);
+        $targetString= strtolower($targetString);//return escaped string and lowercase it
+        $sql = "INSERT INTO targets(targetName, isDefault) VALUES(:targetString ,0);";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":targetString", $targetString, PDO::PARAM_STR);
+        $statement->execute();
+        $id = $this->_dbh->lastInsertId();
+        return $id;
+    }
+
+    /**
+     * Insert customer target into associative table that produces the form for the client developed by clinician
+     * @param $formNum current form num
+     * @param $tId targets id num
+     */
+    public function insertCustomTargets($formNum, $tid)
+    {
+        $sql = "INSERT INTO formTargets (formId, targetId) VALUES(:fid ,:tid )";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":fid", $formNum, PDO::PARAM_INT);
+        $statement->bindParam(":tid", $tid, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
 }

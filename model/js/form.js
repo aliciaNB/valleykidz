@@ -1,11 +1,11 @@
 //sanwabe website add remove field function redesigned for this project
 //created new divs when a target button is clicked or removes them when remove href is clicked
 $(document).ready(function() {
-    var max_fields = 6; //maximum input boxes allowed
+    var max_fields = 5; //maximum input boxes allowed
     var wrapper = $(".input_fields_wrap"); //Fields wrapper
     var add_button = $(".add_field_button"); //Add button ID
 
-    var x = 1; //initlal text box count
+    var x = 0; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         e.stopPropagation();
@@ -25,11 +25,11 @@ $(document).ready(function() {
 //sanwabe website add remove field function redesigned for this project
 //created new divs when a target button is clicked or removes them when remove href is clicked
 $(document).ready(function() {
-    var target_max_fields = 5; //maximum input boxes allowed
+    var target_max_fields = 4; //maximum input boxes allowed
     var target_wrapper = $(".target_wrapper"); //Fields wrapper
     var target_button = $(".add_target_button"); //Add button ID
 
-    var y = 1; //initlal text box count
+    var y = 0; //initlal text box count
     $(target_button).click(function(e){ //on add input button click
         e.preventDefault();
         e.stopPropagation();
