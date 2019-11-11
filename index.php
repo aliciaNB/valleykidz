@@ -13,13 +13,14 @@ $f3 = Base::instance();
 session_start();
 
 $db = new database();
+$f3->set('db', $db);
 //-----------------------------------------------------Arrays-----------------------------------------------------------
 
 $defaultTargets = $db->getDefaultTargets();
 $defaultEmotions=$db->getDefaultEmotions();
 
 $dates = array(
-  "Mon", "Tue","Wed","Thurs","Fri","Sat","Sun"
+  "Mon","Tue","Wed","Thurs","Fri","Sat","Sun"
 );
 
 $f3->set('skillcategory', array(
@@ -135,6 +136,10 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
     $view = new Template();
     global $db;
 
+    $f3->set('dateRange', $f3->get('db')->getDateRange($_SESSION['uuid']));
+    $currentDate = new DateTime('Today');
+    $f3->set('currentDate', $currentDate->format('M. d'));
+
     if ($db->getuserType($_SESSION['uuid'])!=="cl") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
@@ -149,6 +154,10 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
 //diary card form page
 $f3->route('GET|POST /dbtdiary', function ($f3) {
     $view = new Template();
+    $f3->set('customTargets', $f3->get('db')->getFormTargets($_SESSION['uuid']));
+    $f3->set('customEmotions', $f3->get('db')->getFormEmotions($_SESSION['uuid']));
+    $f3->set('skills', $f3->get('db')->getSkills());
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');
     }

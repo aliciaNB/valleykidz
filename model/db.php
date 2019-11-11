@@ -158,6 +158,11 @@ INSERT INTO skills(skillName,skillCategory, isDefault) VALUES('tipp','dt',1), ('
 ('self-soothe','dt',1),('improve','dt',1), ('pros and cons','dt',1), ('half-smile','dt',1),
 ('radical acceptance','dt',1), ('turning the mind','dt',1),('willingness','dt',1);
 
+INSERT INTO forms(clientId, startDate) VALUES (123456, '2019-11-07');
+INSERT INTO formTargets (formId, targetId) VALUES (1, 1),(1,2),(1,3),(1,4);
+
+INSERT INTO formEmotions(formId,emotionId) VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10);
+
  */
 /**
  * @author Michael Britt
@@ -525,5 +530,117 @@ class database
         }
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
         $statement->execute();
+    }
+
+    /**
+     * Takes a client Id number and returns all the targets on their current form
+     * @param $clientId int client id
+     * @return mixed associative array of the clients current targets
+     */
+    public function getFormTargets($clientId)
+    {
+        // Getting the current formId from the clientId
+        $formId = $this->getCurrentFormId($clientId);
+
+        // Getting the client's current targets and returning them
+        $sql = "SELECT targetName FROM targets INNER JOIN formTargets ON targets.targetId = formTargets.targetId 
+                WHERE formTargets.formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Takes a client Id number and returns all the emotions on their current form
+     * @param $clientId int client id
+     * @return mixed associative array of the clients current emotions
+     */
+    public function getFormEmotions($clientId)
+    {
+        // Getting the current formId from the clientId
+        $formId = $this->getCurrentFormId($clientId);
+
+        // Getting the client's current targets and returning them
+        $sql = "SELECT emotionName FROM emotions INNER JOIN formEmotions ON emotions.emotionId = formEmotions.emotionId 
+                WHERE formEmotions.formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    // Gets the client's current form and returns the ID
+    private function getCurrentFormId($clientId)
+    {
+        $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId AND endDate IS NULL";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result[0]['formId'];
+    }
+
+    /**
+     * Gets the skills from the database and returns them
+     * @return array An associative array of the skills sorted by category
+     */
+    public function getSkills()
+    {
+        // Getting all Core Mindfulness skills
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'cm'";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $cm = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Getting all Interpersonal Effectiveness skills
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'ie'";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $ie = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Getting all Emotion Regulation skills
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'er'";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $er = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Getting all Distress Tolerance skills
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'dt'";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $dt = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $skills = array('Core Mindfulness'=>$cm, 'Interpersonal Effectiveness'=>$ie,
+            'Emotion Regulation'=>$er, 'Distress Tolerance'=>$dt);
+        return $skills;
+    }
+
+    public function getDateRange($clientId)
+    {
+        $sql = "SELECT startDate FROM forms WHERE clientId=:clientId AND endDate IS NULL";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $startDate = new DateTime($results[0]['startDate']);
+        $currentDate = new DateTime('Today');
+        $dateCounter = $startDate;
+        $dateArray = array();
+
+        while (true)
+        {
+            $dateArray[$dateCounter->format('l')] = $dateCounter->format('M. d');
+            if ($dateCounter == $currentDate)
+            {
+                break;
+            }
+            $dateCounter->add(new DateInterval('P1D'));
+        }
+
+        return $dateArray;
     }
 }
