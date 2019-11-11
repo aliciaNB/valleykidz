@@ -532,7 +532,7 @@ class database
         $statement->execute();
     }
 
-<<<<<<< HEAD
+
     /**
      * Takes a client Id number and returns all the targets on their current form
      * @param $clientId int client id
@@ -644,7 +644,7 @@ class database
 
         return $dateArray;
     }
-=======
+
     //---------------------------------Update General Form------------------------------
     /**
      * Creates a new form with open end date and closes previous form
@@ -787,6 +787,4 @@ class database
         $statement->bindParam(":tid", $tid, PDO::PARAM_INT);
         $statement->execute();
     }
-
->>>>>>> 4c2baf355a92f861ea990be0c7bf3e0be6b42158
 }
