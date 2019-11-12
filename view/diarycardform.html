@@ -28,8 +28,7 @@
         </ul>
     </div>
 </nav>
-
-<!-- TODO: Page Tabs and consolidate forms into one, remove excess routes -->
+<!-- Start of Form Tab list for Targets, Emotions, Skills, and Notes tabs -->
 <ul class="nav nav-tabs mt-3 nav-justified" id="diaryForm" role="tablist">
     <li class="nav-item">
         <a class="nav-link active tab-style" id="targets-tab" aria-label="targets-tab" data-toggle="tab" href="#targets" role="tab"
@@ -48,7 +47,6 @@
            aria-controls="notes" aria-selected="false">Notes</a>
     </li>
 </ul>
-
 <!-- Start of Form -->
 <form action="#" method="post">
     <div class="tab-content" id="myTabContent">
@@ -90,7 +88,7 @@
                         </td>
                         <td>
                             <select class="custom-select col col-sm-6 col-md-4">
-                                <option value="">--</option>
+                                <option value="" selected>--</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -141,20 +139,19 @@
                         </td>
                         <td>
                             <select class="custom-select col col-sm-6 col-md-4">
-                                <option>--</option>
-                                <option>0</option>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                                <option value="" selected>--</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
                             </select>
                         </td>
                     </tr>
                 </repeat>
             </table>
         </div>
-
         <!-- Start of Skills Tab Content-->
         <div class="tab-pane fade" id="skills" role="tabpanel" aria-labelledby="skills-tab">
             <h2 class="form_h2">Skills</h2>
@@ -172,7 +169,6 @@
             <!-- Collapsible Core Skills -->
             <div class="accordion" id="coreskills">
                 <repeat group="{{ @skills }}" key="{{ @category }}" value="{{ @skill }}">
-
                     <div class="card">
                         <!-- Card Header -->
                         <a class="mb-0 card_a card-header" href="#" data-toggle="collapse"
@@ -213,7 +209,7 @@
                                         <td class="text-center" >
                                             <select class="custom-select col col-sm-6 col-md-4"
                                                     id="{{ str_replace(' ', '', strtolower(@skillname['skillName'])) . 'degree' }}">
-                                                <option selected disabled>--</option>
+                                                <option value="" selected>--</option>
                                                 <option value="1">1</option>
                                                 <option value="2">2</option>
                                                 <option value="3">3</option>
@@ -232,7 +228,6 @@
                 </repeat>
             </div>
         </div>
-
         <!-- Start of Notes Tab Content -->
         <div class="tab-pane fade" id="notes" role="tabpanel" aria-labelledby="notes-tab">
             <h2 class="form_h2">Notes</h2>
@@ -245,14 +240,12 @@
             </div>
         </div>
     </div>
-
     <div class="col text-center mt-3 mb-3">
         <button type="submit" class="btn btn-lg btn-primary white bgdkgold mus font-weight-bold
             rounded-0 border-0 text-center mt-3"
                 name="btn-submit" value="save">Save & Exit</button>
     </div>
 </form>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
