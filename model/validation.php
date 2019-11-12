@@ -94,7 +94,7 @@ function isEmptyStringOrNUll($array)
 }
 
 /**
- * Takes a string and returns escaped string to provent sql injection
+ * Takes a string and returns escaped string to prevent sql injection
  * @param $string string value from a form input
  * @param $db db connection
  * @return string escaped string.
@@ -102,4 +102,103 @@ function isEmptyStringOrNUll($array)
 function preventSQLInjections($string, $db)
 {
     //return mysqli_real_escape_string($db ,$string);
+}
+
+/**
+ * Takes the Client's post array from their form and the skills array and validates
+ * the selects, checkboxes, and the notes
+ * @param $post The post array
+ * @param $skills The skills array
+ * @return bool Whether or not the form data was valid
+ */
+function validateForm(&$post, $skills)
+{
+    validateNotes($post);
+    return validateSelects($post) && validateCheckboxes($post, $skills);
+}
+
+/**
+ * Takes the post array from the client's form and makes sure the selects have valid data
+ * @param $post The post array
+ * @return bool Whether or not the data is valid
+ */
+function validateSelects($post)
+{
+    $urges = $post['urges'];
+    foreach ($urges as $urge)
+    {
+        if (!($urge === "" || in_array($urge, range(0,5))))
+        {
+            return false;
+        }
+    }
+
+    $intensities = $post['intensity'];
+    foreach ($intensities as $intensity)
+    {
+        if (!($intensity === "" || in_array($intensity, range(0,5))))
+        {
+            return false;
+        }
+    }
+
+    $degrees = $post['degree'];
+    foreach ($degrees as $degree)
+    {
+        if (!($degree === "" || in_array($degree, range(1,5))))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Takes the post and skills arrays from the client's form and makes sure the checkboxes have valid data
+ * @param $post The post array
+ * @param $skills The skills array
+ * @return bool Whether or not the data is valid
+ */
+function validateCheckboxes($post, $skills)
+{
+    $numTargets = count($post['urges']);
+    $actions = $post['actions'];
+    $used = $post['coreskills'];
+
+    if($actions)
+    {
+        for($i = 0; $i < $numTargets; $i++)
+        {
+            if ($actions[$i] != 'on' || $actions[$i] != null)
+            {
+                return false;
+            }
+        }
+    }
+
+    if ($used)
+    {
+        foreach($skills as $coreskill)
+        {
+            foreach ($coreskill as $skill)
+            {
+                if ($used[$skill] != "on" || $used[$skill] != null)
+                {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+/**
+ * Takes the post array from the client's form and the database object and escapes the client's notes
+ * @param $post The post array
+ * @param $db The database object
+ */
+function validateNotes(&$post)
+{
+    $badChars = array(';', '(', ')');
+    $post['notes'] = str_replace($badChars, '', $post['notes']);
 }
