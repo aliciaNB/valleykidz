@@ -217,6 +217,8 @@ class database
         }
     }
 
+    //-----------------------------Validate user in db------------------------------------------
+
     /**
      * Finds out if user is a client/clinician then verifies password is correct
      * @param $userid String representation of the user information either # or username
@@ -308,6 +310,8 @@ class database
         return $result['clinician_id'];
     }
 
+
+    //---------------------------Update profiles links----------------------------------------------
     /**
      * Takes a clinican and client id and links their profile if possible
      * @param $clinicianid String clinicians id
@@ -444,6 +448,8 @@ class database
         }
     }
 
+
+    //---------------------------------Insert defaults-----------------------------------------
     /**
      * Grabs default skills from db
      * @return mixed Array of all the default skills
@@ -527,12 +533,12 @@ class database
         {
             $sql.='('.$formId.','.$value["targetId"].'),';
         }
-        var_dump($sql);
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
         $statement->execute();
     }
 
 
+    //------------------------------------Retrieve existing forms---------------------------------------------
     /**
      * Takes a client Id number and returns all the targets on their current form
      * @param $clientId int client id
@@ -645,7 +651,7 @@ class database
         return $dateArray;
     }
 
-    //---------------------------------Update General Form------------------------------
+    //---------------------------------Update  Form Table------------------------------
     /**
      * Creates a new form with open end date and closes previous form
      * @param $clientId id of customer within db
@@ -698,16 +704,15 @@ class database
      */
     public function getEmotionId($emotionString)
     {
-        //TODO $escapedString =preventSQLInjections($emotionString, $this->mysqli);
-        $emotionString= strtolower($emotionString);//return escaped string and lowercase it
+        $escapedString =filter_var($emotionString, FILTER_SANITIZE_STRING);
+        $emotionString= strtolower($escapedString);//return escaped string and lowercase it
         $sql = "SELECT emotionId FROM emotions WHERE emotionName=:ename";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":ename", $emotionString, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result;
+        return $result['emotionId'];
     }
-
     /**
      * This method inserts new emotions into the emotion table and returns its id of new insert
      * @param $emotionString represents the name of an emotions entered in custom form
@@ -715,8 +720,8 @@ class database
      */
     public function insertEmotion($emotionString)
     {
-        //TODO $escapedString  =preventSQLInjections($emotionString, $this->mysqli);
-        $emotionString= strtolower($emotionString);//return escaped string and lowercase it
+        $escapedString=filter_var($emotionString, FILTER_SANITIZE_STRING);
+        $emotionString= strtolower($escapedString);//return escaped string and lowercase it
         $sql = "INSERT INTO emotions (emotionName, isDefault) VALUES(:emotionString ,0);";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":emotionString", $emotionString, PDO::PARAM_STR);
@@ -747,14 +752,14 @@ class database
      */
     public function getTargetId($targetString)
     {
-        //TODO $escapedString =preventSQLInjections($targetString, $this->mysqli);
-        $targetString= strtolower($targetString);//return escaped string and lowercase it
+        $escapedString = filter_var($targetString, FILTER_SANITIZE_STRING);
+        $targetString= strtolower($escapedString);//return escaped string and lowercase it
         $sql = "SELECT targetId FROM targets WHERE targetName=:tname";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":tname", $targetString, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result;
+        return $result['targetId'];
     }
 
     /**
@@ -764,8 +769,8 @@ class database
      */
     public function insertTarget($targetString)
     {
-        //TODO $escapedString  =preventSQLInjections($targetString, $this->mysqli);
-        $targetString= strtolower($targetString);//return escaped string and lowercase it
+        $escapedString  =filter_var($targetString, FILTER_SANITIZE_STRING);
+        $targetString= strtolower($escapedString);//return escaped string and lowercase it
         $sql = "INSERT INTO targets(targetName, isDefault) VALUES(:targetString ,0);";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":targetString", $targetString, PDO::PARAM_STR);
@@ -786,5 +791,41 @@ class database
         $statement->bindParam(":fid", $formNum, PDO::PARAM_INT);
         $statement->bindParam(":tid", $tid, PDO::PARAM_INT);
         $statement->execute();
+    }
+
+    /**
+     * This will retrieve the custom emotions from the most recent form submitted by the client.
+     * @param $clientId id of the client being worked with
+     * @return mixed an array of custom emotion names
+     */
+    public function getRecentCustomEmotions($clientId)
+    {
+        $formId = $this->getCurrentFormId($clientId);//grab most currect form
+        $sql = "SELECT emotions.emotionName FROM formEmotions INNER JOIN emotions on 
+            formEmotions.emotionId = emotions.emotionId WHERE emotions.isDefault=0 AND formId=:formId";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    /**
+     * This will retrieve the custom targets from the most recent form submitted by the client
+     * @param $clientId id of the client being worked with
+     * @return mixed an array of customer target names.
+     */
+    public function getRecentCustomTargets($clientId)
+    {
+        $formId = $this->getCurrentFormId($clientId);//grab current form
+
+        $sql = "SELECT targets.targetName FROM formTargets INNER JOIN targets on targets.targetId =
+            formTargets.targetId WHERE formTargets.formId=:formId  AND targets.isDefault=0";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }

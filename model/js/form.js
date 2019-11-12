@@ -4,8 +4,8 @@ $(document).ready(function() {
     var max_fields = 5; //maximum input boxes allowed
     var wrapper = $(".input_fields_wrap"); //Fields wrapper
     var add_button = $(".add_field_button"); //Add button ID
-
-    var x = 0; //initlal text box count
+    var inputEmotionDiv = document.getElementById('emotions');
+    var x = inputEmotionDiv.getElementsByTagName('input').length; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         e.stopPropagation();
@@ -29,7 +29,8 @@ $(document).ready(function() {
     var target_wrapper = $(".target_wrapper"); //Fields wrapper
     var target_button = $(".add_target_button"); //Add button ID
 
-    var y = 0; //initlal text box count
+    var inputFormDiv = document.getElementById('targets');
+    var y = inputFormDiv.getElementsByTagName('input').length; //initlal text box count
     $(target_button).click(function(e){ //on add input button click
         e.preventDefault();
         e.stopPropagation();

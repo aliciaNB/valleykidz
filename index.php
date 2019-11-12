@@ -72,12 +72,20 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
+    //collect default emoitons and targets form db
     global $defaultEmotions;
     global $defaultTargets;
 
+    $priorFormEmotions = $db->getRecentCustomEmotions($_GET['id']);
+    $priorFormTargets =$db->getRecentCustomTargets($_GET['id']);
+    $f3->set('priorTarg', $priorFormTargets);
+    $f3->set('priorEmo', $priorFormEmotions);
+
+
+
+    //-------------------------------------------POST LOGIC--------------------------------------------
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-
+        //set session variable for custoer targets
         $_SESSION['confirmTargets'] = $_POST['targets'];
         $_SESSION['confirmEmotions'] = $_POST['feelings'];
 
@@ -89,14 +97,15 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         $db->insertDefaultEmotions($formNum);
         $db->insertDefaultTargets($formNum);
 
-        //add custom emotions
-        if ($_POST['feelings'])
+        //-------------------------Add custom emotions and targets on post----------------------------------
+        if ($_POST['feelings'])//check if post array has values
         {
-            foreach ($_POST['feelings'] as $feeling)
+            foreach ($_POST['feelings'] as $feeling)//check each feeling
             {
                 if($feeling!=="")//if feeling in post was empty ignore and do not place in db
                 {
                     $result = $db->getEmotionId($feeling);
+                    var_dump($result);
                     if(!$result)//id does not exist in table
                     {
                         $result=$db->insertEmotion($feeling);//add to table
@@ -124,6 +133,8 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 
         $f3->reroute('/confirmdbtform');
     }
+
+
     $f3->set("targets", $defaultTargets);
     $f3->set("emotions", $defaultEmotions);
     $view = new Template();
