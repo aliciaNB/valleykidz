@@ -633,6 +633,11 @@ class database
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+        if ($results == null)
+        {
+            return null;
+        }
+
         $startDate = new DateTime($results[0]['startDate']);
         $currentDate = new DateTime('Today');
         $dateCounter = $startDate;
