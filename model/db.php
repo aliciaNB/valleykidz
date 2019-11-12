@@ -580,9 +580,20 @@ class database
     }
 
     // Gets the client's current form and returns the ID
-    private function getCurrentFormId($clientId)
+    public function getCurrentFormId($clientId)
     {
         $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId AND endDate IS NULL";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result[0]['formId'];
+    }
+
+    // Gets the client's current form and returns the ID
+    public function getRecentClosedFormId($clientId)
+    {
+        $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId ORDER BY endDate DESC";
         $statement = $this->_dbh->prepare($sql);
         $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
         $statement->execute();
@@ -665,7 +676,6 @@ class database
      */
     public function createForm($clientId)
     {
-        $this->closeForm($clientId);
         //grab today's date
         $today = date("Y-m-d");
 
@@ -682,7 +692,7 @@ class database
      * Closes an open form of the client if it exists
      * @param $clientId represents client id in db
      */
-    private function closeForm($clientId)
+    public function closeForm($clientId)
     {
         $sql = "SELECT * FROM forms WHERE clientId=:clientId and endDate is null";
         $statement= $this->_dbh->prepare($sql);
@@ -806,7 +816,7 @@ class database
      */
     public function getRecentCustomEmotions($clientId)
     {
-        $formId = $this->getCurrentFormId($clientId);//grab most currect form
+        $formId = $this->getRecentClosedFormId($clientId);//grab most currect form
         $sql = "SELECT emotions.emotionName FROM formEmotions INNER JOIN emotions on 
             formEmotions.emotionId = emotions.emotionId WHERE emotions.isDefault=0 AND formId=:formId";
         $statement= $this->_dbh->prepare($sql);
@@ -824,7 +834,7 @@ class database
      */
     public function getRecentCustomTargets($clientId)
     {
-        $formId = $this->getCurrentFormId($clientId);//grab current form
+        $formId = $this->getRecentClosedFormId($clientId);//grab current form
 
         $sql = "SELECT targets.targetName FROM formTargets INNER JOIN targets on targets.targetId =
             formTargets.targetId WHERE formTargets.formId=:formId  AND targets.isDefault=0";
@@ -834,4 +844,5 @@ class database
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
 }

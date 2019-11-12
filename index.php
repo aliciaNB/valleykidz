@@ -144,29 +144,35 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 //group leader dashboard page
 $f3->route('GET|POST /branchprofile', function ($f3) {
     global $db;
-
+    $f3->set('db', $db);
     if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $arrayErr = array("addErr" => validateClientNumber($_POST['clientnum']),);
-
-        if (checkErrArray($arrayErr)) {
-            if (isset($_POST['add'])) { //if add client update db on groups leader to reference client #
-                $error=$db->addClient($_SESSION['uuid'], $_POST['clientnum']);
-                if ($error) {
-                   $f3->set('dberror', $error);
-                }
-            } elseif (isset($_POST['remove'])) { //if remove selected remove from goupp leader reference to client
-                $error=$db->removeClient($_SESSION['uuid'], $_POST['clientnum']);
-                if($error) {
-                    $f3->set('dberror', $error);
+        if(isset($_POST['id']))
+        {
+            $db->closeForm($_POST['id']);
+        }
+        else{
+            $arrayErr = array("addErr" => validateClientNumber($_POST['clientnum']),);
+            if (checkErrArray($arrayErr))
+            {
+                if (isset($_POST['add'])) { //if add client update db on groups leader to reference client #
+                    $error=$db->addClient($_SESSION['uuid'], $_POST['clientnum']);
+                    if ($error) {
+                       $f3->set('dberror', $error);
+                    }
+                } elseif (isset($_POST['remove'])) { //if remove selected remove from goupp leader reference to client
+                    $error=$db->removeClient($_SESSION['uuid'], $_POST['clientnum']);
+                    if($error) {
+                        $f3->set('dberror', $error);
+                    }
                 }
             }
+            $f3->set('errors', $arrayErr);
         }
-        $f3->set('errors', $arrayErr);
     }
 
     $result = $db->getLinks($_SESSION['uuid']);
