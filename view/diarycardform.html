@@ -96,7 +96,7 @@
                             {{ ucwords(@target['targetName']) }}
                         </td>
                         <td>
-                            <select class="custom-select col col-sm-6 col-md-4">
+                            <select name="urges[]" class="custom-select col col-sm-6 col-md-4">
                                 <option value="" selected>--</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -107,7 +107,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="checkbox" class="urge">
+                            <input name="actions[{{@key}}]" type="checkbox" class="urge">
                         </td>
                     </tr>
                 </repeat>
@@ -147,7 +147,7 @@
                             {{ ucwords(@emotion['emotionName']) }}
                         </td>
                         <td>
-                            <select class="custom-select col col-sm-6 col-md-4">
+                            <select name="intensity[]" class="custom-select col col-sm-6 col-md-4">
                                 <option value="" selected>--</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -207,8 +207,8 @@
                                         <td >{{ ucwords(@skillname['skillName']) }}</td>
                                         <td >
                                             <div class="form-check text-center">
-                                                <input class="form-check-input" type="checkbox"
-                                                       value="{{ @skillname['skillName'] }}"
+                                                <input name="coreskills[{{@skillname['skillName']}}]"
+                                                       class="form-check-input" type="checkbox"
                                                        id="{{ str_replace(' ', '', strtolower(@skillname['skillName'])) . 'check' }}">
                                                 <label class="form-check-label"
                                                        for="{{ str_replace(' ', '', strtolower(@skillname['skillName'])) . 'check' }}">
@@ -216,7 +216,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center" >
-                                            <select class="custom-select col col-sm-6 col-md-4"
+                                            <select name="degree[]" class="custom-select col col-sm-6 col-md-4"
                                                     id="{{ str_replace(' ', '', strtolower(@skillname['skillName'])) . 'degree' }}">
                                                 <option value="" selected>--</option>
                                                 <option value="1">1</option>
@@ -244,7 +244,7 @@
             <div class="container">
                 <div class="form-group">
                     <label for="daily-notes"></label>
-                    <textarea class="form-control" id="daily-notes" rows="8"></textarea>
+                    <textarea name="notes" class="form-control" id="daily-notes" rows="8"></textarea>
                 </div>
             </div>
         </div>
