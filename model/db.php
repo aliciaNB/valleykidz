@@ -634,7 +634,8 @@ class database
 
         while (true)
         {
-            $dateArray[$dateCounter->format('l')] = $dateCounter->format('M. d');
+            $dateArray[$dateCounter->format('l')] = array($dateCounter->format('M. d'),
+                $dateCounter->format('Y-m-d'));
             if ($dateCounter == $currentDate)
             {
                 break;
