@@ -1,16 +1,27 @@
 /** Nav Tab Styles ********************************************/
 .active {
+    color: #333333;
     background-color: #fefaf1 !important;
     border-bottom-color: #fefaf1 !important;
 }
 
 .tab-style {
     background-color: #f1ede5;
-    color: #23446e;
+    color: #559bca;
+}
+
+.nav-tabs .nav-link {
+    border-top-left-radius: .75rem;
+    border-top-right-radius: .75rem;
+    margin-left: 2px;
+    margin-right: 2px;
+    background-color: #e8e2d4;
+    padding: .7rem 1rem;
 }
 
 .tab-style:hover {
-    color: #559bca !important;
+    color: #333333;
+    background-color: #dfd6c4;
 }
 
 /** General Form Page Styles **********************************/

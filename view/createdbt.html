@@ -41,11 +41,19 @@
         <div class="col-12 mt-3 ml-2">
             <h3 class="form-row">Targets:</h3>
             <span class="text-danger text-center">{{@errors.feelings}}</span>
-            <div class="target_wrapper mb-1">
+            <div class="target_wrapper mb-1" id="targets">
                 <div class="form-row">
                     <button type="button" class="btn add_target_button btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
                 border-0 mb-2">Add a New Target</button>
                 </div>
+                <repeat group="{{ @priorTarg}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                    <div class="mt-1 mb-1 form-row"><input placeholder="Enter Target Here"
+                         type="text" value="{{ucwords(@value['targetName'])}}"
+                         class="form-control mt-1 col-10" name="targets[]"/><a href="#"
+                         class="remove_field bg col-2 text-center justify-content-center align-self-center">X</a></div>
+                </repeat>
             </div>
             <hr>
             <p class="text-center mt-1">Targets Included In All DBT Forms-<span class="btn hideshow btn-link">Show</span></p>
@@ -61,11 +69,19 @@
         <hr>
         <div class="col-12 ml-2">
             <h3 class="form-row">Emotions: </h3>
-            <div class="input_fields_wrap mb-1">
+            <div class="input_fields_wrap mb-1" id="emotions">
                 <div class="form-row">
                     <button type="button" class="add_field_button btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0
                 border-0 mb-2">Add a New Emotions</button>
                 </div>
+                <repeat group="{{ @priorEmo}}"
+                        key="{{ @key }}"
+                        value="{{ @value }}">
+                <div class="mt-1 mb-1 form-row"><input type="text" placeholder="Enter Emotion Here"
+                     value="{{ucwords(@value['emotionName'])}}"
+                     class="form-control mt-1 col-10" name="feelings[]"/><a href="#"
+                     class="remove_field bg col-2 text-center justify-content-center align-self-center">X</a></div>
+                </repeat>
             </div>
             <hr>
             <p class="text-center mt-1">Emotions Included In All DBT Forms-<span class="hideshow btn btn-link">Show</span></p>
