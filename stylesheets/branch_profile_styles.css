@@ -1,0 +1,40 @@
+/*
+ * Name: Alicia Buehner, Bruce Turner, Michael Britt, Zack Lindgren
+ * Date: 11.12.19
+ * Description: This file contains the branchprofile dashboard styles.
+ */
+
+/* Heading styles *********************************************/
+.add-remove {
+    font-size: 1.25rem;
+}
+
+.quick-sr {
+    font-size: 1.25rem;
+}
+
+/* Custom Button Styles ***************************************/
+
+.addclient-btn {
+    background-color: #99c24d;
+}
+
+.addclient-btn:hover {
+    background-color: #7e9f40;
+}
+
+.removeclient-btn {
+    background-color: #559bca;
+}
+
+.removeclient-btn:hover {
+    background-color: #467fa6;
+}
+
+.viewform-btn {
+    background-color: #559bca;
+}
+
+.viewform-btn:hover {
+    background-color: #467fa6;
+}
