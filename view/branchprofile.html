@@ -69,7 +69,7 @@
                 <table id="branchtable" class="table table-hover dt-responsive display nowrap">
                     <tr>
                         <th>Client #</th>
-                        <th>Create/Edit</th>
+                        <th>Create/Submit</th>
                         <th>Submited Forms</th>
                     </tr>
                     <repeat group="{{@links}}"
@@ -77,9 +77,27 @@
                             value="{{ @value }}">
                         <tr>
                             <td><h5>{{@value.client_id}}</h5></td>
-                            <td><a href="createdbt?id={{@value.client_id}}"
-                                   class="btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0 border-0">
-                                CREATE DBT</a></td>
+                                <check if="@db->getCurrentFormId(@value.client_id)">
+                                    <true>
+                                        <td>
+                                        <form action="#" method="post">
+                                        <input name="id" type="text" value="{{@value.client_id}}" class="d-none">
+                                        <button type="submit"
+                                        onclick="return confirm('Are you sure you want to submit form for client# {{@value.client_id}}?')";
+                                        class="btn btn-sm btn-primary white bgdkgold mus
+                                        font-weight-bold rounded-0 border-0">
+                                        SUBMIT DBT</button>
+                                        </form>
+                                        </td>
+                                    </true>
+                                    <false>
+                                        <td>
+                                            <a href="createdbt?id={{@value.client_id}}"
+                                            class="btn btn-sm btn-primary white bgdkgold mus font-weight-bold rounded-0 border-0">
+                                            CREATE DBT</a>
+                                        </td>
+                                    </false>
+                                </check>
                             <td><a href="formtable?id={{@value.client_id}}"
                                    class="btn btn-sm btn-secondary mus font-weight-bold rounded-0 border-0">VIEW</a></td>
                         </tr>
