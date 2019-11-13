@@ -159,7 +159,7 @@ function validateSelects($post)
  * @param $skills The skills array
  * @return bool Whether or not the data is valid
  */
-function validateCheckboxes($post, $skills, $targets)
+function validateCheckboxes($post, $skills)
 {
     $numTargets = count($post['urges']);
     $actions = $post['actions'];
