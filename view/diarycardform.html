@@ -96,7 +96,7 @@
                             {{ ucwords(@target['targetName']) }}
                         </td>
                         <td>
-                            <select name="urges[]" class="custom-select col col-sm-6 col-md-4">
+                            <select name="urges[{{@target['targetName']}}]" class="custom-select col col-sm-6 col-md-4">
                                 <option value="" selected>--</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -107,7 +107,7 @@
                             </select>
                         </td>
                         <td>
-                            <input name="actions[{{@key}}]" type="checkbox" class="urge">
+                            <input name="actions[{{@target['targetName']}}]" value="1" type="checkbox" class="urge">
                         </td>
                     </tr>
                 </repeat>
@@ -147,7 +147,7 @@
                             {{ ucwords(@emotion['emotionName']) }}
                         </td>
                         <td>
-                            <select name="intensity[]" class="custom-select col col-sm-6 col-md-4">
+                            <select name="intensity[{{@emotion['emotionName']}}]" class="custom-select col col-sm-6 col-md-4">
                                 <option value="" selected>--</option>
                                 <option value="0">0</option>
                                 <option value="1">1</option>
@@ -209,6 +209,7 @@
                                             <div class="form-check text-center">
                                                 <input name="coreskills[{{@skillname['skillName']}}]"
                                                        class="form-check-input" type="checkbox"
+                                                       value="1"
                                                        id="{{ str_replace(' ', '', strtolower(@skillname['skillName'])) . 'check' }}">
                                                 <label class="form-check-label"
                                                        for="{{ str_replace(' ', '', strtolower(@skillname['skillName'])) . 'check' }}">
@@ -250,6 +251,8 @@
         </div>
     </div>
     <div class="col text-center mt-3 mb-3">
+        <!-- Hidden form field to pass along the client-selected date -->
+        <input name="date" value="{{@SESSION.chosenDate}}" hidden>
         <button type="submit" class="btn btn-lg btn-primary white bgdkgold mus font-weight-bold
             rounded-0 border-0 text-center mt-3"
                 name="btn-submit" value="save">Save & Exit</button>

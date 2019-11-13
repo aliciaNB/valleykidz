@@ -190,6 +190,7 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
         $f3->reroute('/');
     }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $_SESSION['chosenDate'] = $_POST['date'];
         $f3->reroute('/dbtdiary');
     }
 
@@ -204,13 +205,15 @@ $f3->route('GET|POST /dbtdiary', function ($f3) {
     $f3->set('skills', $f3->get('db')->getSkills());
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $isValid = validateForm($_POST, $f3->get('skills'));
+        //var_dump($_POST);
+        $f3->get('db')->submitClientData($_POST, $_SESSION['uuid']);
+        /*$isValid = validateForm($_POST, $f3->get('skills'));
 
         if(!$isValid)
         {
             $f3->reroute('/memberprofile?confirm=An Error Occurred While Saving the Form');
         }
-        $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');
+        $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');*/
     }
     echo $view->render('view/diarycardform.html');
 });

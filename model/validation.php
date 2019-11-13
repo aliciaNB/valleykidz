@@ -159,7 +159,7 @@ function validateSelects($post)
  * @param $skills The skills array
  * @return bool Whether or not the data is valid
  */
-function validateCheckboxes($post, $skills)
+function validateCheckboxes($post, $skills, $targets)
 {
     $numTargets = count($post['urges']);
     $actions = $post['actions'];
@@ -169,7 +169,7 @@ function validateCheckboxes($post, $skills)
     {
         for($i = 0; $i < $numTargets; $i++)
         {
-            if ($actions[$i] != 'on' || $actions[$i] != null)
+            if ($actions[$i] != '1' || $actions[$i] != null)
             {
                 return false;
             }
@@ -182,7 +182,7 @@ function validateCheckboxes($post, $skills)
         {
             foreach ($coreskill as $skill)
             {
-                if ($used[$skill] != "on" || $used[$skill] != null)
+                if ($used[$skill] != "1" || $used[$skill] != null)
                 {
                     return false;
                 }

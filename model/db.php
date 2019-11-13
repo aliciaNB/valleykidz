@@ -657,6 +657,263 @@ class database
         return $dateArray;
     }
 
+    /**
+     * Takes the post array from when the client submits their form and either adds or updates the database with the
+     * date and new data being selected
+     * @param $post The post array
+     * @param $clientId The client's ID
+     */
+    public function submitClientData($post, $clientId)
+    {
+        $dataExists = $this->doesClientDataAlreadyExist($clientId, $post['date']);
+
+        if($dataExists)
+        {
+            $this->updateClientData($post, $clientId);
+        }
+        else
+        {
+            $this->addClientData($post, $clientId);
+        }
+    }
+
+    private function addClientData($post, $clientId)
+    {
+        $formId = $this->getCurrentFormId($clientId);
+
+        $this->addClientTargets($post['urges'], $post['actions'], $formId, $post['date']);
+        $this->addClientEmotions($post['intensity'], $formId, $post['date']);
+        $this->addClientSkills($post['degree'], $post['coreskills'], $formId, $post['date']);
+        $this->addClientNotes($post['notes'], $formId, $post['date']);
+    }
+
+    private function updateClientData($post, $clientId)
+    {
+        $formId = $this->getCurrentFormId($clientId);
+
+        $this->updateClientTargets($post['urges'], $post['actions'], $formId, $post['date']);
+        $this->updateClientEmotions($post['intensity'], $formId, $post['date']);
+        $this->updateClientSkills($post['degree'], $post['coreskills'], $formId, $post['date']);
+        $this->updateClientNotes($post['notes'], $formId, $post['date']);
+    }
+
+    private function addClientTargets($urges, $actions, $formId, $date)
+    {
+        $formTargets = $this->getCurrentFormTargets($formId);
+
+        foreach ($formTargets as $targets)
+        {
+            $urge = ($urges[$targets[0]] == "" ? null : $urges[$targets[0]]);
+            $action = ($actions[$targets[0]] == null ? 0 : $actions[$targets[0]]);
+
+            $sql = "INSERT INTO dateSubmissionTargets (formId, targetId, dateSubmitted, urge, action) VALUES
+            (:formId, :targetId, :date, :urge, :action)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("urge", $urge, PDO::PARAM_INT);
+            $statement->bindParam("action", $action, PDO::PARAM_INT);
+            $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+            $statement->bindParam("targetId", $targets[1], PDO::PARAM_STR);
+            $statement->bindParam("date", $date, PDO::PARAM_STR);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    private function updateClientTargets($urges, $actions, $formId, $date)
+    {
+        $formTargets = $this->getCurrentFormTargets($formId);
+
+        foreach ($formTargets as $targets)
+        {
+            $urge = ($urges[$targets[0]] == "" ? null : $urges[$targets[0]]);
+            $action = ($actions[$targets[0]] == null ? 0 : $actions[$targets[0]]);
+
+            $sql = "UPDATE dateSubmissionTargets SET urge=:urge, action=:action 
+            WHERE formId=:formId AND targetId=:targetId AND dateSubmitted=:dateSubmitted";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("urge", $urge, PDO::PARAM_INT);
+            $statement->bindParam("action", $action, PDO::PARAM_INT);
+            $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+            $statement->bindParam("targetId", $targets[1], PDO::PARAM_STR);
+            $statement->bindParam("dateSubmitted", $date, PDO::PARAM_STR);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    private function addClientEmotions($intensities, $formId, $date)
+    {
+        $formEmotions = $this->getCurrentFormEmotions($formId);
+
+        foreach ($formEmotions as $emotions)
+        {
+            $intensity = ($intensities[$emotions[0]] == "" ? null : $intensities[$emotions[0]]);
+
+            $sql = "INSERT INTO dateSubmissionsEmotions (formId, dateSubmitted, emotionId, intensity) VALUES 
+            (:formId, :date, :emotionId, :intensity)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("intensity", $intensity, PDO::PARAM_INT);
+            $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+            $statement->bindParam("emotionId", $emotions[1], PDO::PARAM_STR);
+            $statement->bindParam("date", $date, PDO::PARAM_STR);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    private function updateClientEmotions($intensities, $formId, $date)
+    {
+        $formEmotions = $this->getCurrentFormEmotions($formId);
+
+        foreach ($formEmotions as $emotions)
+        {
+            $intensity = ($intensities[$emotions[0]] == "" ? null : $intensities[$emotions[0]]);
+
+            $sql = "UPDATE dateSubmissionsEmotions SET intensity=:intensity
+            WHERE formId=:formId AND emotionId=:emotionId AND dateSubmitted=:dateSubmitted";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("intensity", $intensity, PDO::PARAM_INT);
+            $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+            $statement->bindParam("emotionId", $emotions[1], PDO::PARAM_STR);
+            $statement->bindParam("dateSubmitted", $date, PDO::PARAM_STR);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    private function addClientSkills($degrees, $coreskills, $formId, $date)
+    {
+        $allSkills = $this->getSkillsArray();
+
+        foreach ($allSkills as $skillId => $skill)
+        {
+            $degree = ($degrees[$skillId - 1] == "" ? null : $degrees[$skillId - 1]);
+            $used = ($coreskills[$skill] == null ? 0 : 1);
+
+            $sql = "INSERT INTO dateSubmissionSkills (formId, dateSubmitted, skillId, degree, used) VALUES 
+            (:formId, :date, :skillId, :degree, :used)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("formId", $formId, PDO::PARAM_INT);
+            $statement->bindParam("date", $date, PDO::PARAM_STR);
+            $statement->bindParam("skillId", $skillId, PDO::PARAM_STR);
+            $statement->bindParam("degree", $degree, PDO::PARAM_INT);
+            $statement->bindParam("used", $used, PDO::PARAM_INT);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    private function updateClientSkills($degrees, $coreskills, $formId, $date)
+    {
+        $allSkills = $this->getSkillsArray();
+
+        foreach ($allSkills as $skillId => $skill)
+        {
+            $degree = ($degrees[$skillId - 1] == "" ? null : $degrees[$skillId - 1]);
+            $used = ($coreskills[$skill] == null ? 0 : 1);
+
+            $sql = "UPDATE dateSubmissionSkills SET degree=:degree, used=:used 
+            WHERE formId=:formId AND dateSubmitted=:date AND skillId=:skillId";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam("formId", $formId, PDO::PARAM_INT);
+            $statement->bindParam("date", $date, PDO::PARAM_STR);
+            $statement->bindParam("skillId", $skillId, PDO::PARAM_STR);
+            $statement->bindParam("degree", $degree, PDO::PARAM_INT);
+            $statement->bindParam("used", $used, PDO::PARAM_INT);
+            $statement->execute();
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    private function addClientNotes($note, $formId, $date)
+    {
+        $sql = "INSERT INTO noteSubmission (formId, dateSubmitted, noteInfo) VALUES
+        (:formId, :date, :note)";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_INT);
+        $statement->bindParam("date", $date, PDO::PARAM_STR);
+        $statement->bindParam("note", $note, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function updateClientNotes($note, $formId, $date)
+    {
+        $sql = "UPDATE noteSubmission SET noteInfo=:note WHERE formId=:formId AND dateSubmitted=:date";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_INT);
+        $statement->bindParam("date", $date, PDO::PARAM_STR);
+        $statement->bindParam("note", $note, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getSkillsArray()
+    {
+        $sql = "SELECT * FROM skills";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $allSkills = array();
+
+        foreach ($results as $result)
+        {
+            $allSkills[$result['skillId']] = $result['skillName'];
+        }
+        return $allSkills;
+    }
+
+    private function getCurrentFormTargets($formId)
+    {
+        $sql = "SELECT targetName, targets.targetId FROM targets LEFT JOIN formTargets ON targets.targetId = formTargets.targetId 
+        WHERE formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $targetsArray = array();
+        foreach ($results as $result)
+        {
+            array_push($targetsArray, array($result['targetName'], $result['targetId']));
+        }
+
+        return $targetsArray;
+    }
+
+    private function getCurrentFormEmotions($formId)
+    {
+        $sql = "SELECT emotionName, emotions.emotionId FROM emotions LEFT JOIN formEmotions 
+        ON emotions.emotionId = formEmotions.emotionId WHERE formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $emotionsArray = array();
+        foreach ($results as $result)
+        {
+            array_push($emotionsArray, array($result['emotionName'], $result['emotionId']));
+        }
+
+        return $emotionsArray;
+    }
+
+    private function doesClientDataAlreadyExist($clientId, $date)
+    {
+        $formId = $this->getCurrentFormId($clientId);
+
+        $sql = "SELECT skillId FROM dateSubmissionSkills WHERE $formId=:formId AND dateSubmitted=:currentdate";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->bindParam("currentdate", $date, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results != null;
+    }
+
     //---------------------------------Update  Form Table------------------------------
     /**
      * Creates a new form with open end date and closes previous form
