@@ -111,10 +111,10 @@ function preventSQLInjections($string, $db)
  * @param $skills The skills array
  * @return bool Whether or not the form data was valid
  */
-function validateForm(&$post, $skills)
+function validateForm(&$post, $skills, $targets)
 {
     validateNotes($post);
-    return validateSelects($post) && validateCheckboxes($post, $skills);
+    return validateSelects($post) && validateCheckboxes($post, $skills, $targets);
 }
 
 /**
@@ -159,17 +159,16 @@ function validateSelects($post)
  * @param $skills The skills array
  * @return bool Whether or not the data is valid
  */
-function validateCheckboxes($post, $skills)
+function validateCheckboxes($post, $skills, $targets)
 {
-    $numTargets = count($post['urges']);
     $actions = $post['actions'];
     $used = $post['coreskills'];
 
     if($actions)
     {
-        for($i = 0; $i < $numTargets; $i++)
+        foreach ($targets as $target)
         {
-            if ($actions[$i] != '1' || $actions[$i] != null)
+            if ($actions[$target] != '1' || $actions[$target] != null)
             {
                 return false;
             }
@@ -182,9 +181,10 @@ function validateCheckboxes($post, $skills)
         {
             foreach ($coreskill as $skill)
             {
-                if ($used[$skill] != "1" || $used[$skill] != null)
+                if ($used[$skill['skillName']] != "1" || $used[$skill['skillName']] != null)
                 {
-                    return false;
+                    var_dump($used[$skill['skillName']]);
+                    //return false;
                 }
             }
         }

@@ -875,7 +875,7 @@ class database
         return $allSkills;
     }
 
-    private function getCurrentFormTargets($formId)
+    public function getCurrentFormTargets($formId)
     {
         $sql = "SELECT targetName, targets.targetId FROM targets LEFT JOIN formTargets ON targets.targetId = formTargets.targetId 
         WHERE formId=:formId";
@@ -915,7 +915,7 @@ class database
     {
         $formId = $this->getCurrentFormId($clientId);
 
-        $sql = "SELECT skillId FROM dateSubmissionSkills WHERE $formId=:formId AND dateSubmitted=:currentdate";
+        $sql = "SELECT skillId FROM dateSubmissionSkills WHERE formId=:formId AND dateSubmitted=:currentdate";
         $statement = $this->_dbh->prepare($sql);
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->bindParam("currentdate", $date, PDO::PARAM_STR);
