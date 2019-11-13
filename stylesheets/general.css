@@ -1,13 +1,32 @@
+/*
+ * Name: Alicia Buehner, Bruce Turner, Michael Britt, Zack Lindgren
+ * Date: 11.12.19
+ * Description: This file contains the general web app styles.
+ */
+
 body {
     background-color: #fefaf1;
     color: #333333;
     font-family: 'Merriweather', serif;
 }
 
-.btn-primary:hover {
-    background-color: #999999 !important;
+/** General primary button styles ******************************/
+
+.btn-primary {
+    background-color: #FBAF3b;
+    text-shadow: .1px .1px .1px #333333;
+    font-family: 'Merriweather', serif;
+    font-weight: bold;
+    color: white;
 }
 
+.btn-primary:hover {
+    background-color: #ed9d25;
+    text-shadow: .1px .1px .1px #333333;
+    font-family: 'Merriweather', serif;
+    font-weight: bold;
+    color: white;
+}
 
 /* General Background Colors **********************************/
 .bgdkblue {
@@ -101,7 +120,6 @@ body {
         page-break-after: always;
     }
 }
-
 
 /* Style Colors:
 Recruitment Colors

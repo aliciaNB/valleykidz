@@ -1,5 +1,11 @@
+/*
+ * Name: Alicia Buehner, Bruce Turner, Michael Britt, Zack Lindgren
+ * Date: 11.12.19
+ * Description: This file contains the memberprofile dashboard styles for the date picker.
+ */
+
 .arrow {
-    background-color: black;
+    background-color: #333333;
     padding-top: 30px;
     padding-bottom: 30px;
 }
