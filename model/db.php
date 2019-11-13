@@ -234,17 +234,14 @@ class database
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($result) // Client
-        {
+        if ($result) {// Client
             $sql = "SELECT * FROM users WHERE user_id=:user_id and password=:pass";
             $statement= $this->_dbh->prepare($sql);
             $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
             $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
-        }
-        else // couldn't find user id
-        {
+        } else {
             // check if clinician
             $sql = "SELECT * FROM clinician WHERE user_name=:user_id";
             $statement= $this->_dbh->prepare($sql);
@@ -252,8 +249,7 @@ class database
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if ($result)
-            {
+            if ($result) {
                 $sql = "SELECT * FROM clinician INNER JOIN users 
                 ON users.user_id = clinician.clinician_id WHERE clinician.user_name=:user_name and users.password=:pass";
                 $statement= $this->_dbh->prepare($sql);
@@ -261,16 +257,13 @@ class database
                 $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
                 $statement->execute();
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
-            }
-            else
-            {
+            } else {
                 return "User id does not exist";
             }
         }
 
         //if both are not correct this means only password is left
-        if(!$result)
-        {
+        if(!$result) {
             return "Password doest not match id";
         }
         return $result['client'];
@@ -288,8 +281,7 @@ class database
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if(!$result)
-        {
+        if(!$result) {
             return "User ID does not exist";
         }
     }
@@ -320,23 +312,17 @@ class database
      */
     public function addClient($clinicianid, $clientid)
     {
-        if($this->isClient($clientid))//verify client exists
-        {
-            if($this->isLinked($clinicianid,$clientid))//verify if a link already exists
-            {
+        if($this->isClient($clientid)) {//verify client exists
+            if($this->isLinked($clinicianid,$clientid)) {//verify if a link already exists
                 return "Client is already connected to profile";
-            }
-            else//link does not exist and client exists
-            {
+            } else {//link does not exist and client exists
                 $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
                 $statement = $this->_dbh->prepare($sql);
                 $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
                 $statement->bindParam("client", $clientid, PDO::PARAM_STR);
                 $statement->execute();
             }
-        }
-        else//client not found
-        {
+        } else {//client not found
             return "Client does not exist check with admin to add";
         }
     }
@@ -396,23 +382,17 @@ class database
      */
     public function removeClient($clinicianid, $clientid)
     {
-        if($this->isClient($clientid))//check if client number exists
-        {
-            if(!($this->isLinked($clinicianid,$clientid)))//link does not exist cant remove
-            {
+        if($this->isClient($clientid)) {//check if client number exists
+            if(!($this->isLinked($clinicianid,$clientid))) {//link does not exist cant remove
                 return "Customer Not Connected To Your Profile";
-            }
-            else//link does exist remove from db
-            {
+            } else {//link does exist remove from db
                 $sql= "DELETE FROM profilelinks WHERE client_id=:client and clinician_id=:clinician";
                 $statement = $this->_dbh->prepare($sql);
                 $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
                 $statement->bindParam("client", $clientid, PDO::PARAM_STR);
                 $statement->execute();
             }
-        }
-        else//id does not exist
-        {
+        } else {//id does not exist
             return "Client does not exist check with admin to add";
         }
     }
@@ -430,19 +410,15 @@ class database
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if($result['admin'] ==="1")//is admin
-        {
+        if($result['admin'] ==="1") {//is admin
             return "a";
-        }
-        elseif ($result['client']==="0")//is clinician
+        } elseif ($result['client']==="0")//is clinician
         {
             return "cln";
-        }
-        elseif ($result['client']==="1")//is client
+        } elseif ($result['client']==="1")//is client
         {
             return "cl";
-        }
-        else//not any table
+        } else//not any table
         {
             return "n";
         }
@@ -497,8 +473,7 @@ class database
     {
         $defaults =$this->getDefaultSkills();
         $sql = "INSERT INTO formSkills(formId,skillsId) VALUES";
-        foreach ($defaults as $value)
-        {
+        foreach ($defaults as $value) {
             $sql.='('.$formId.','.$value["skillId"].'),';
         }
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
@@ -513,8 +488,7 @@ class database
     {
         $defaults =$this->getDefaultEmotions();
         $sql = "INSERT INTO formEmotions(formId,emotionId) VALUES";
-        foreach ($defaults as $value)
-        {
+        foreach ($defaults as $value) {
             $sql.='('.$formId.','.$value["emotionId"].'),';
         }
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
@@ -529,8 +503,7 @@ class database
     {
         $defaults=$this->getDefaultTargets();
         $sql = "INSERT INTO formTargets(formId,targetId) VALUES";
-        foreach ($defaults as $value)
-        {
+        foreach ($defaults as $value) {
             $sql.='('.$formId.','.$value["targetId"].'),';
         }
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
@@ -644,8 +617,7 @@ class database
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($results == null)
-        {
+        if ($results == null) {
             return null;
         }
 
@@ -654,12 +626,10 @@ class database
         $dateCounter = $startDate;
         $dateArray = array();
 
-        while (true)
-        {
+        while (true) {
             $dateArray[$dateCounter->format('l')] = array($dateCounter->format('M. d'),
                 $dateCounter->format('Y-m-d'));
-            if ($dateCounter == $currentDate)
-            {
+            if ($dateCounter == $currentDate) {
                 break;
             }
             $dateCounter->add(new DateInterval('P1D'));
@@ -678,12 +648,9 @@ class database
     {
         $dataExists = $this->doesClientDataAlreadyExist($clientId, $post['date']);
 
-        if($dataExists)
-        {
+        if($dataExists) {
             $this->updateClientData($post, $clientId);
-        }
-        else
-        {
+        } else {
             $this->addClientData($post, $clientId);
         }
     }
@@ -712,8 +679,7 @@ class database
     {
         $formTargets = $this->getCurrentFormTargets($formId);
 
-        foreach ($formTargets as $targets)
-        {
+        foreach ($formTargets as $targets) {
             $urge = ($urges[$targets[0]] == "" ? null : $urges[$targets[0]]);
             $action = ($actions[$targets[0]] == null ? 0 : $actions[$targets[0]]);
 
@@ -734,8 +700,7 @@ class database
     {
         $formTargets = $this->getCurrentFormTargets($formId);
 
-        foreach ($formTargets as $targets)
-        {
+        foreach ($formTargets as $targets) {
             $urge = ($urges[$targets[0]] == "" ? null : $urges[$targets[0]]);
             $action = ($actions[$targets[0]] == null ? 0 : $actions[$targets[0]]);
 
@@ -756,8 +721,7 @@ class database
     {
         $formEmotions = $this->getCurrentFormEmotions($formId);
 
-        foreach ($formEmotions as $emotions)
-        {
+        foreach ($formEmotions as $emotions) {
             $intensity = ($intensities[$emotions[0]] == "" ? null : $intensities[$emotions[0]]);
 
             $sql = "INSERT INTO dateSubmissionsEmotions (formId, dateSubmitted, emotionId, intensity) VALUES 
@@ -776,8 +740,7 @@ class database
     {
         $formEmotions = $this->getCurrentFormEmotions($formId);
 
-        foreach ($formEmotions as $emotions)
-        {
+        foreach ($formEmotions as $emotions) {
             $intensity = ($intensities[$emotions[0]] == "" ? null : $intensities[$emotions[0]]);
 
             $sql = "UPDATE dateSubmissionsEmotions SET intensity=:intensity
@@ -796,8 +759,7 @@ class database
     {
         $allSkills = $this->getSkillsArray();
 
-        foreach ($allSkills as $skillId => $skill)
-        {
+        foreach ($allSkills as $skillId => $skill) {
             $degree = ($degrees[$skillId - 1] == "" ? null : $degrees[$skillId - 1]);
             $used = ($coreskills[$skill] == null ? 0 : 1);
 
@@ -818,8 +780,7 @@ class database
     {
         $allSkills = $this->getSkillsArray();
 
-        foreach ($allSkills as $skillId => $skill)
-        {
+        foreach ($allSkills as $skillId => $skill) {
             $degree = ($degrees[$skillId - 1] == "" ? null : $degrees[$skillId - 1]);
             $used = ($coreskills[$skill] == null ? 0 : 1);
 
@@ -868,8 +829,7 @@ class database
 
         $allSkills = array();
 
-        foreach ($results as $result)
-        {
+        foreach ($results as $result) {
             $allSkills[$result['skillId']] = $result['skillName'];
         }
         return $allSkills;
@@ -885,8 +845,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $targetsArray = array();
-        foreach ($results as $result)
-        {
+        foreach ($results as $result) {
             array_push($targetsArray, array($result['targetName'], $result['targetId']));
         }
 
@@ -903,8 +862,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $emotionsArray = array();
-        foreach ($results as $result)
-        {
+        foreach ($results as $result) {
             array_push($emotionsArray, array($result['emotionName'], $result['emotionId']));
         }
 
@@ -955,8 +913,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $targets = array();
-        foreach($results as $result)
-        {
+        foreach($results as $result) {
             $targets[$result['targetName']] = array($result['urge'], $result['action']);
         }
         return $targets;
@@ -973,8 +930,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $emotions = array();
-        foreach($results as $result)
-        {
+        foreach($results as $result) {
             $emotions[$result['emotionName']] = $result['intensity'];
         }
         return $emotions;
@@ -991,19 +947,16 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $clientSkills = array();
-        foreach($results as $result)
-        {
+        foreach($results as $result) {
             $clientSkills[$result['skillName']] = array($result['degree'], $result['used']);
         }
 
         $allSkills = $this->getSkills();
         $skillsData = array();
 
-        foreach ($allSkills as $coreSkill => $subSkills)
-        {
+        foreach ($allSkills as $coreSkill => $subSkills) {
             $tempArray = array();
-            foreach ($subSkills as $skill)
-            {
+            foreach ($subSkills as $skill) {
                 $skillName = $skill['skillName'];
                 $tempArray[$skillName] = array($clientSkills[$skillName][0],
                     $clientSkills[$skillName][1]);
@@ -1055,8 +1008,7 @@ class database
         $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if(isset($result))//has an open form
-        {
+        if(isset($result)) { //has an open form
             //grab today's date
             $today = date("Y-m-d");
             $sql= "UPDATE forms SET endDate =:today WHERE clientId=:clientId and endDate IS NULL";
