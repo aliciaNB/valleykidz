@@ -1,4 +1,10 @@
 <?php
+/**
+ * This class sets up a db object and includes pdo for db interactions
+ * @author ValleyKidz team
+ * @date 11/13/2019
+ */
+
 /*
 
 CREATE TABLE users(

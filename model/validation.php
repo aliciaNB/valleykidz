@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file is used to validate client input
+ * @author Valley Kidz Team
+ * @date 11/13/2019
+ */
+
 
 /**
  * Validates client number provided is numericall and correct length

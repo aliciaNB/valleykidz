@@ -1,6 +1,8 @@
 <?php
 /**
  * Class formsplitter creates divs for weeks between two given dates. formating divs to be monday-saturday
+ * @author Valley Kidz team
+ * @date 11/13/2019
  */
 
 class Formsplitter
