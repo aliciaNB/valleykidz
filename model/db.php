@@ -925,6 +925,77 @@ class database
         return $results != null;
     }
 
+    public function getClientFormData($clientId, $date)
+    {
+        $formId = $this->getCurrentFormId($clientId);
+
+        $clientData['targets'] = $this->getClientTargetData($formId, $date);
+        $clientData['emotions'] = $this->getClientEmotionData($formId, $date);
+        $clientData['skills'] = $this->getClientSkillData($formId, $date);
+        $clientData['notes'] = $this->getClientNotesData($formId, $date);
+
+        return $clientData;
+    }
+
+    private function getClientTargetData($formId, $date)
+    {
+        $sql = "SELECT targetName, urge, action FROM targets INNER JOIN dateSubmissionTargets 
+        ON targets.targetId=dateSubmissionTargets.targetId WHERE formId=:formId AND dateSubmitted=:date";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->bindParam("date", $date, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $targets = array();
+        foreach($results as $result)
+        {
+            $targets[$result['targetName']] = array($result['urge'], $result['action']);
+        }
+        return $targets;
+    }
+
+    private function getClientEmotionData($formId, $date)
+    {
+        $sql = "SELECT emotionName, intensity FROM emotions INNER JOIN dateSubmissionsEmotions 
+        ON emotions.emotionId=dateSubmissionsEmotions.emotionId WHERE formId=:formId AND dateSubmitted=:date";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->bindParam("date", $date, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $emotions = array();
+        foreach($results as $result)
+        {
+            $targets[$result['targetName']] = array($result['urge'], $result['action']);
+        }
+        return $targets;
+    }
+
+    private function getClientSkillData($formId, $date)
+    {
+        $sql = "SELECT skillName, degree, used FROM skills INNER JOIN dateSubmissionSkills 
+        ON skills.skillId=dateSubmissionSkills.skillId WHERE formId=:formId AND dateSubmitted=:date";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->bindParam("date", $date, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results;
+    }
+
+    private function getClientNotesData($formId, $date)
+    {
+        $sql = "SELECT noteInfo FROM noteSubmission WHERE formId=:formId AND dateSubmitted=:date";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+        $statement->bindParam("date", $date, PDO::PARAM_STR);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $results[0]['noteInfo'];
+    }
+
     //---------------------------------Update  Form Table------------------------------
     /**
      * Creates a new form with open end date and closes previous form

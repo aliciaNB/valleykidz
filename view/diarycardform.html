@@ -97,17 +97,57 @@
                         </td>
                         <td>
                             <select name="urges[{{@target['targetName']}}]" class="custom-select col col-sm-6 col-md-4">
-                                <option value="" selected>--</option>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
+                                <option value=""
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === null}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>--</option>
+                                <option value="0"
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === '0'}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>0</option>
+                                <option value="1"
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === '1'}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>1</option>
+                                <option value="2"
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === '2'}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>2</option>
+                                <option value="3"
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === '3'}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>3</option>
+                                <option value="4"
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === '4'}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>4</option>
+                                <option value="5"
+                                    <check if="{{@SESSION.clientData['targets'][@target['targetName']][0] === '5'}}">
+                                        <true>
+                                            selected
+                                        </true>
+                                    </check>>5</option>
                             </select>
                         </td>
                         <td>
-                            <input name="actions[{{@target['targetName']}}]" value="1" type="checkbox" class="urge">
+                            <input name="actions[{{@target['targetName']}}]" value="1" type="checkbox" class="urge"
+                            <check if="{{@SESSION.clientData['targets'][@target['targetName']][1] == 1}}">
+                                <true>
+                                    checked
+                                </true>
+                            </check>>
                         </td>
                     </tr>
                 </repeat>

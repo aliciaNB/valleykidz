@@ -153,7 +153,7 @@ $f3->route('GET|POST /branchprofile', function ($f3) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if(isset($_POST['id']))
         {
-            $db->closeForm($_POST['id']);
+            $db->closeForm(filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT));
         }
         else{
             $arrayErr = array("addErr" => validateClientNumber($_POST['clientnum']),);
@@ -197,6 +197,9 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
     }
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['chosenDate'] = $_POST['date'];
+        $clientData = $f3->get('db')->getClientFormData($_SESSION['uuid'], $_SESSION['chosenDate']);
+        $_SESSION['clientData'] = $clientData;
+        //var_dump($_SESSION['clientData']);
         $f3->reroute('/dbtdiary');
     }
 
