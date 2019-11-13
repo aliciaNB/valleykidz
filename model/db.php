@@ -925,6 +925,13 @@ class database
         return $results != null;
     }
 
+    /**
+     * Takes the client ID and the selected date and returns an associative array of the client's targets, emotions,
+     * skills, and notes for the selected date
+     * @param $clientId The client's ID number
+     * @param $date The selected date
+     * @return mixed An associative array of the client's targets, emotions, skills, and notes
+     */
     public function getClientFormData($clientId, $date)
     {
         $formId = $this->getCurrentFormId($clientId);
@@ -968,9 +975,9 @@ class database
         $emotions = array();
         foreach($results as $result)
         {
-            $targets[$result['targetName']] = array($result['urge'], $result['action']);
+            $emotions[$result['emotionName']] = $result['intensity'];
         }
-        return $targets;
+        return $emotions;
     }
 
     private function getClientSkillData($formId, $date)
@@ -982,7 +989,28 @@ class database
         $statement->bindParam("date", $date, PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
+
+        $clientSkills = array();
+        foreach($results as $result)
+        {
+            $clientSkills[$result['skillName']] = array($result['degree'], $result['used']);
+        }
+
+        $allSkills = $this->getSkills();
+        $skillsData = array();
+
+        foreach ($allSkills as $coreSkill => $subSkills)
+        {
+            $tempArray = array();
+            foreach ($subSkills as $skill)
+            {
+                $skillName = $skill['skillName'];
+                $tempArray[$skillName] = array($clientSkills[$skillName][0],
+                    $clientSkills[$skillName][1]);
+            }
+            $skillsData[$coreSkill] = $tempArray;
+        }
+        return $skillsData;
     }
 
     private function getClientNotesData($formId, $date)
