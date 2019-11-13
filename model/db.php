@@ -1044,7 +1044,7 @@ class database
     {
         $escapedString  =filter_var($targetString, FILTER_SANITIZE_STRING);
         $targetString= strtolower($escapedString);//return escaped string and lowercase it
-        $sql = "INSERT INTO targets(targetName, isDefault) VALUES(:targetString ,0);";
+        $sql = "INSERT INTO targets(targetName, isDefault) VALUES(:targetString ,0)";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":targetString", $targetString, PDO::PARAM_STR);
         $statement->execute();
