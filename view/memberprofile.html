@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<!-- Navbar -------------------------------------------------------->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bgdkblue">
     <a class="navbar-brand mus" href="memberprofile">
         Valley <span class="lgold">|</span> Cities DBT Portal
@@ -82,7 +82,11 @@
                         rounded-0 border-0 text-center mt-5">Complete Today's Diary Entry</button>
 
                 <!-- Confirmation message when the client submits -->
-                <h3 class="text-center text-success mt-4">{{@GET.confirm}}</h3>
+                <check if="{{@GET.confirm}}">
+                    <true>
+                        <h3 class="text-center text-success mt-4">{{@GET.confirm}}</h3>
+                    </true>
+                </check>
             </form>
         </div>
     </false>
