@@ -1,0 +1,17 @@
+/*
+ * Name: Alicia Buehner, Bruce Turner, Michael Britt, Zack Lindgren
+ * Date: 11.12.19
+ * Description: This file contains the create dbt confirmation card styles.
+ */
+
+/* Heading styles *******************************************/
+h1 {
+    font-size: 2rem;
+    margin-top: 1.0rem;
+    margin-bottom: 1.0rem;
+}
+
+.summary-h {
+    font-size: 1.40rem;
+}
+
