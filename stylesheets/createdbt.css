@@ -1,0 +1,20 @@
+/*
+ * Name: ValleyKidz team
+ * Date: 11.12.19
+ * Description: This file contains the createdbt dashboard styles.
+ */
+
+/*Button Styles */
+
+.create-btn {
+    background-color: #99c24d !important;
+
+}
+
+.creat-btn:hover, .create-btn:active, .create-btn:focus {
+    background-color: #7e9f40 !important;
+}
+
+button{
+    width:200px;
+}

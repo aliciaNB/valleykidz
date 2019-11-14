@@ -28,9 +28,6 @@ Date:11/13/2019
     <div id="navbarNavDropdown" class="navbar-collapse collapse text-right mus">
         <ul class="navbar-nav ml-auto flex-nowrap">
             <li class="nav-item">
-                <a href="#" class="nav-link mus font-weight-bold">Quicksearch</a>
-            </li>
-            <li class="nav-item">
                 <a href="./" class="nav-link mus font-weight-bold">Logout</a>
             </li>
         </ul>
@@ -62,10 +59,6 @@ Date:11/13/2019
     </form>
 
     <hr class="col-10">
-    <div class="text-center mb-5">
-        <h3 class="quick-sr">Use quick search to access clients not in your group</h3>
-        <a href="#" class="btn quicksearch-btn btn-primary rounded-0 border-0">QUICK SEARCH</a>
-    </div>
     <check if="{{@links==null}}">
         <true>
             <h5 class="text-center">No Current Clients Connected To Your Profile</h5>
@@ -98,13 +91,13 @@ Date:11/13/2019
                                     <false>
                                         <td>
                                             <a href="createdbt?id={{@value.client_id}}"
-                                            class="btn btn-primary rounded-0 border-0">
+                                            class="btn btn-primary rounded-0 border-0 hrefBut">
                                             CREATE NEW  DBT</a>
                                         </td>
                                     </false>
                                 </check>
                             <td><a href="formtable?id={{@value.client_id}}"
-                                   class="btn viewform-btn btn-primary rounded-0 border-0">VIEW</a></td>
+                                   class="btn viewform-btn btn-primary rounded-0 border-0 hrefBut">VIEW</a></td>
                         </tr>
                     </repeat>
                 </table>
