@@ -228,6 +228,11 @@ $f3->route('GET|POST /dbtdiary', function ($f3) {
 
 //confirmation page
 $f3->route('GET|POST /confirmdbtform', function($f3) {
+    global $db;
+    if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
     $view = new Template();
 
     $check = isEmptyStringOrNUll($_SESSION['confirmTargets']);
@@ -241,6 +246,11 @@ $f3->route('GET|POST /confirmdbtform', function($f3) {
 
 //view form page
 $f3->route('GET|POST /viewform', function($f3) {
+    global $db;
+    if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
     $view = new Template();
     $f3->set('id', $_GET['id']);
 
@@ -266,6 +276,17 @@ $f3->route('GET|POST /viewform', function($f3) {
 $f3->route('GET|POST /formtable', function($f3) {
     $view = new Template();
     global $db;
+
+    if(!$_SESSION['uuid']) {
+        $f3->reroute('/');
+    }
+    if ($db->getuserType($_SESSION['uuid'])==="cl") { //check if appropriate user on page redirect to home if not
+        if($_SESSION['uuid'] !== $_GET['id'])
+        {
+            $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+            $f3->reroute('/');
+        }
+    }
     $type =$db->getuserType($_SESSION['uuid']);//get the user type
 
     if ($type!=="cln") { //this page only viewable by clinicians

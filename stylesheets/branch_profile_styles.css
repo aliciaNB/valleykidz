@@ -38,3 +38,11 @@
 .viewform-btn:hover, .viewform-btn:active, .viewform-btn:focus {
     background-color: #467fa6 !important;
 }
+
+button{
+    width:200px;
+}
+
+.hrefBut{
+    width:200px;
+}

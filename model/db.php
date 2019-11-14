@@ -431,6 +431,10 @@ class database
      */
     public function getuserType($uuid)
     {
+        if($uuid===null)
+        {
+            return "n";
+        }
         $sql = "SELECT * FROM users WHERE user_id=:uuid";
         $statement = $this->_dbh->prepare($sql);
         $statement->bindParam("uuid", $uuid, PDO::PARAM_STR);
@@ -445,9 +449,6 @@ class database
         } elseif ($result['client']==="1")//is client
         {
             return "cl";
-        } else//not any table
-        {
-            return "n";
         }
     }
 
@@ -1180,4 +1181,34 @@ class database
         return $result;
     }
 
+    //---------------------Pull Forms--------------------------
+
+    /**
+     * Grabs a list of all current forms in sorted order by most current date to least current
+     * @param $clientId the id of a customer
+     * @return mixed an array of form information including id,start, and end date
+     */
+    public function getAllForms($clientId)
+    {
+        $sql="SELECT formId,startDate,endDate FROM forms WHERE clientId=:clientId ORDER BY startDate DESC";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getSkillsBetweenDates($startDate, $endDate, $formNum, $client)
+    {
+    }
+
+    public function getEmotionsBetweenDates($startDate, $endDate, $formNum, $client)
+    {
+
+    }
+
+    public function getTargetsBetweenDates($startDate, $endDate, $formNum, $client)
+    {
+
+    }
 }
