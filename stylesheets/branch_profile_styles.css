@@ -19,7 +19,7 @@
     background-color: #99c24d !important;
 }
 
-.addclient-btn:hover {
+.addclient-btn:hover, .addclient-btn:active, .addclient-btn:focus {
     background-color: #7e9f40 !important;
 }
 
@@ -27,7 +27,7 @@
     background-color: #559bca !important;
 }
 
-.removeclient-btn:hover {
+.removeclient-btn:hover, .removeclient-btn:active, .removeclient-btn:focus {
     background-color: #467fa6 !important;
 }
 
@@ -35,6 +35,6 @@
     background-color: #559bca !important;
 }
 
-.viewform-btn:hover {
+.viewform-btn:hover, .viewform-btn:active, .viewform-btn:focus {
     background-color: #467fa6 !important;
 }
