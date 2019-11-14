@@ -1,5 +1,5 @@
 /*
- * Name: Alicia Buehner, Bruce Turner, Michael Britt, Zack Lindgren
+ * Name: ValleyKidz team
  * Date: 11.12.19
  * Description: This file contains the general web app styles.
  */
@@ -21,7 +21,7 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #ed9d25;
+    background-color: #ed9d25 !important;
     text-shadow: .1px .1px .1px #333333;
     font-family: 'Merriweather', serif;
     font-weight: bold;

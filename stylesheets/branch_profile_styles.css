@@ -1,5 +1,5 @@
 /*
- * Name: Alicia Buehner, Bruce Turner, Michael Britt, Zack Lindgren
+ * Name: ValleyKidz team
  * Date: 11.12.19
  * Description: This file contains the branchprofile dashboard styles.
  */
@@ -16,25 +16,25 @@
 /* Custom Button Styles ***************************************/
 
 .addclient-btn {
-    background-color: #99c24d;
+    background-color: #99c24d !important;
 }
 
 .addclient-btn:hover {
-    background-color: #7e9f40;
+    background-color: #7e9f40 !important;
 }
 
 .removeclient-btn {
-    background-color: #559bca;
+    background-color: #559bca !important;
 }
 
 .removeclient-btn:hover {
-    background-color: #467fa6;
+    background-color: #467fa6 !important;
 }
 
 .viewform-btn {
-    background-color: #559bca;
+    background-color: #559bca !important;
 }
 
 .viewform-btn:hover {
-    background-color: #467fa6;
+    background-color: #467fa6 !important;
 }
