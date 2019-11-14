@@ -169,6 +169,27 @@ INSERT INTO formTargets (formId, targetId) VALUES (1, 1),(1,2),(1,3),(1,4);
 
 INSERT INTO formEmotions(formId,emotionId) VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10);
 
+ALTER TABLE `dateSubmissionSkills`
+  DROP PRIMARY KEY,
+   ADD PRIMARY KEY(
+     `formId`,
+     `dateSubmitted`,
+     `skillId`);
+
+ALTER TABLE `dateSubmissionTargets`
+  DROP PRIMARY KEY,
+   ADD PRIMARY KEY(
+     `formId`,
+     `targetId`,
+     `dateSubmitted`);
+
+ALTER TABLE `dateSubmissionsEmotions`
+  DROP PRIMARY KEY,
+   ADD PRIMARY KEY(
+     `formId`,
+     `dateSubmitted`,
+     `emotionId`);
+
  */
 /**
  * @author Michael Britt
