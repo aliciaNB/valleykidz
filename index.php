@@ -205,6 +205,14 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
     echo $view->render('view/memberprofile.html');
 });
 
+//admin portal route
+$f3->route('GET|POST /adminprofile', function ($f3) {
+    $view = new Template();
+    global $db;
+
+    echo $view->render('view/adminprofile.html');
+});
+
 //diary card form page
 $f3->route('GET|POST /dbtdiary', function ($f3) {
     $view = new Template();
