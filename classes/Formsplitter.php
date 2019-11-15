@@ -25,7 +25,7 @@ class Formsplitter
         {
             $futuredate = new DateTime($dates);//convert date time object to be converted to next saturday
             $displayStart = $futuredate->format("M d,Y");//format date for route get hive
-            $futuredate->modify('next saturday');//grab saturday of the weeks monday date provided
+            $futuredate->modify('next sunday');//grab saturday of the weeks monday date provided
             $futuredate->format("Y-m-d");//format for route get hive
 
             $displayEnd =$futuredate->format("M d,Y");//format for html example (October 31, 2018)
@@ -79,11 +79,12 @@ class Formsplitter
         }else{
 
             //start first card
-            echo'    <div class="row mt-3">
+            echo'<div class="row mt-3 mb-5">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
-                             <h5 class="list-group-item list-group-item-primary bglblue white list-group-flush">Current DBT FORM<h5>
-                             <ul class="list-group list-group-flush">';
+                             <h3 class="list-group-item list-group-item-primary bgdkgold white list-group-flush clickable">CURRENT SESSION FORM
+                             <span class="swap">-</span></h3>
+                             <ul class="list-group list-group-flush expandable">';
             if($result[0]['endDate']===null) {//if recent form is open
                 echo self::printWeeks($result[0]['startDate'],date("Y-m-d"), $result[0]['formId'], $id);
             } else {
@@ -92,34 +93,49 @@ class Formsplitter
             self::closeCardGroup();//close first card
 
 
-            //Iterate over remaining results if any
-            for($i=1; $i<count($result);$i++)
+            //Check if second cards exist and add seperators
+            if(count($result)>1)
             {
+                echo '
+                <div class="row mt-3 mb-5">
+                <div class="col-md-2 col-1 col-lg-2"></div>
+                <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
+                <h3 class="list-group-item list-group-item-primary bgdkblue white list-group-flush clickable">PRIOR SESSION FORMS
+                      <span class="swap">+</span></h3><div class="expandable">';
 
-                //format datetime
-                $start = new DateTime($result[$i]["startDate"]);
-                $start = $start->format("M d,Y");
-                $end = new DateTime($result[$i]["endDate"]);
-                $end =$end->format("M d,Y");
-                //start card
-                echo'<div class="row mt-3">
+                //Iterate over remaining results if any
+                for($i=1; $i<count($result);$i++)
+                {
+
+                    //format datetime
+                    $start = new DateTime($result[$i]["startDate"]);
+                    $start = $start->format("M d,Y");
+                    $end = new DateTime($result[$i]["endDate"]);
+                    $end =$end->format("M d,Y");
+                    //start card
+                    echo'<div class="row mt-3">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
-                             <h5 class="list-group-item list-group-item-primary bglblue white list-group-flush clickable">DBT FORM SUBMITTED: '.$end.
-                             ' <span class="swap">+</span></h5>
+                             <h3 class="list-group-item list-group-item-primary bglblue white list-group-flush clickable">DBT FORM SUBMITTED: '.$end.
+                        ' <span class="swap">+</span></h3>
                              <ul class="list-group list-group-flush expandable">';
 
-                echo self::printWeeks($result[$i]['startDate'],$result[$i]['endDate'], $result[$i]['formId'], $id);
+                    echo self::printWeeks($result[$i]['startDate'],$result[$i]['endDate'], $result[$i]['formId'], $id);
 
-                self::closeCardGroup();
-                //close card
+                    self::closeCardGroup();
+                    //close card
+                }
+                //close expandable div
+                echo '</div>';
             }
+
+
         }
 
     }
 
     private static function closeCardGroup()
     {
-        echo '</div><div class="col-md-2 col-1 col-lg-2"></div></div>';
+        echo '</ul></div><div class="col-md-2 col-1 col-lg-2"></div></div>';
     }
 }
