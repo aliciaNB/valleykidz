@@ -1190,7 +1190,7 @@ class database
      */
     public function getAllForms($clientId)
     {
-        $sql="SELECT formId,startDate,endDate FROM forms WHERE clientId=:clientId ORDER BY startDate DESC";
+        $sql="SELECT formId,startDate,endDate FROM forms WHERE clientId=:clientId ORDER BY (endDate IS NOT NULL), startDate DESC";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
         $statement->execute();

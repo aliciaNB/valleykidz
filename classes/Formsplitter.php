@@ -7,7 +7,6 @@
 
 class Formsplitter
 {
-
     /**
      * This method will take two dates and find all the monday-saturday's containeed between these dates
      * It will then prints these in most recent order and pass form/id to the new route
@@ -18,7 +17,7 @@ class Formsplitter
      * @return string returns divs that contain hrefs that pass get information
      * @throws Exception Date time error if can not be converted
      */
-    static function printWeeks($startDate, $endDate, $formNum, $id)
+    private static function printWeeks($startDate, $endDate, $formNum, $id)
     {
         $newDate = self::splitDates($startDate,$endDate);//retrive array of monday dates
         $divs ="";
@@ -30,9 +29,8 @@ class Formsplitter
             $futuredate->format("Y-m-d");//format for route get hive
 
             $displayEnd =$futuredate->format("M d,Y");//format for html example (October 31, 2018)
-
             //put together href utilizing all the information provided
-            $divs = "<li><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
+            $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
                 $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
                 " - ". $displayEnd."</a></li>" . $divs;
 
@@ -67,5 +65,40 @@ class Formsplitter
             $startDate->modify("+1 week");//increment date by a week to the next monday
         }
         return $dates;
+    }
+
+
+    public static function printDetailedForm($id)
+    {
+        $db = new database();
+        $result = $db->getAllForms($id);
+
+
+        if(!$result) {//no forms created
+            echo '<h2 class="mt-5 text-center">No Forms Created For Client </h2>';
+        }else{
+            //start card
+            echo'    <div class="row mt-3">
+                        <div class="col-md-2 col-1 col-lg-2"></div>
+                            <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
+                             <h5 class="list-group-item list-group-item-primary bglblue white list-group-flush">Current DBT FORM<h5>
+                             <ul class="list-group list-group-flush">';
+            if($result[0]['endDate']===null) {//if recent form is open
+                echo self::printWeeks($result[0]['startDate'],date("Y-m-d"), $result[0]['formId'], $id);
+            } else {
+                echo self::printWeeks($result[0]['startDate'],$result[0]['endDate'], $result[0]['formId'], $id);
+            }
+            self::closeCardGroup();
+            for($i=1; $i<count($result);$i++)
+            {
+
+            }
+        }
+
+    }
+
+    private static function closeCardGroup()
+    {
+        echo '</div><div class="col-md-2 col-1 col-lg-2"></div></div>';
     }
 }
