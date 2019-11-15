@@ -16,7 +16,6 @@ Date:11/13/2019
     <title>Group Leader | Dashboard</title>
 </head>
 <body>
-
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bgdkblue">
     <a class="navbar-brand mus" href="branchprofile">
@@ -33,14 +32,12 @@ Date:11/13/2019
         </ul>
     </div>
 </nav>
-
+<!-- End of Navbar -->
 <div class="container-fluid">
     <!--Header-->
     <h1 class="text-center mt-4">View Weekly DBT</h1>
     <h2 class="text-center">Client# {{@GET.id}}</h2>
     <h3 class="text-center">{{@displayStart}} - {{@displayEnd}}</h3>
-
-
     <!-- Target Table -->
     <h2 class="text-center mt-5">Targets</h2>
     <div class=" table-responsive pagination">
@@ -53,7 +50,6 @@ Date:11/13/2019
                     <th class="bglblue white">{{@value}}</th>
                 </repeat>
             </tr>
-
             <repeat group="{{ @targets }}" key="{{ @index }}" value="{{ @target }}">
                 <tr>
                     <td rowspan="2">{{@target}}</td>
@@ -75,7 +71,6 @@ Date:11/13/2019
             </repeat>
         </table>
     </div>
-
     <!-- Emotion Table -->
     <h2 class="text-center mt-5 bgwhite">Emotions</h2>
     <div class="mt-5 table-responsive pagination">
@@ -100,7 +95,6 @@ Date:11/13/2019
             </repeat>
         </table>
     </div>
-
     <!-- Skills Table -->
     <h2 class="mt-5 text-center">Skills</h2>
     <div class="mt-5 table-responsive pagination">
@@ -131,17 +125,13 @@ Date:11/13/2019
             </repeat>
         </table>
     </div>
-
     <h2 class="mt-5 text-center">Notes</h2>
     <p class="text-center">This is a note</p>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script src="model/js/viewformtables.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
 </body>
 </html>

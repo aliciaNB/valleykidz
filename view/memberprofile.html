@@ -38,7 +38,7 @@ Date:11/13/2019
         </ul>
     </div>
 </nav>
-
+<!-- End of Navbar -->
 <!-- Makes sure that the client has a form to fill out -->
 <check if="{{ @dateRange == null }}">
     <true>
@@ -50,7 +50,6 @@ Date:11/13/2019
         <div class="container text-center">
             <div class="row mt-5">
                 <div class="col-sm-3 col-lg-4"></div>
-
                 <!-- Date Carousel -->
                 <div id="datepicker" class="carousel col" data-interval="false" data-ride="carousel" data-wrap="false">
                     <!-- The slideshow -->
@@ -66,7 +65,6 @@ Date:11/13/2019
                             </div>
                         </repeat>
                     </div>
-
                     <!-- Left and right controls -->
                     <a class="carousel-control-prev arrow" href="#datepicker" data-slide="prev">
                         <span class="carousel-control-prev-icon"></span>
@@ -75,7 +73,6 @@ Date:11/13/2019
                         <span class="carousel-control-next-icon"></span>
                     </a>
                 </div>
-
                 <div class="col-sm-3 col-lg-4"></div>
             </div>
             <form action="#" method="post">
@@ -84,14 +81,12 @@ Date:11/13/2019
                 <!-- Submit button -->
                 <button id="submit" type="submit" class="btn btn-lg btn-primary
                         rounded-0 border-0 text-center mt-5">Complete Today's Diary Entry</button>
-
                 <!-- Confirmation message when the client submits -->
                 <h3 class="text-center text-success mt-4">{{@GET.confirm}}</h3>
             </form>
         </div>
     </false>
 </check>
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
