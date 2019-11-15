@@ -52,7 +52,8 @@ Create Table skills
     skillId int AUTO_INCREMENT PRIMARY KEY,
     skillName varchar(255),
     skillCategory char(4),
-    isDefault boolean
+    isDefault boolean,
+    skillDescriptions varchar(255)
 );
 
 CREATE TABLE emotions
