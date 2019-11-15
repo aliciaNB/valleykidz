@@ -77,7 +77,8 @@ class Formsplitter
         if(!$result) {//no forms created
             echo '<h2 class="mt-5 text-center">No Forms Created For Client </h2>';
         }else{
-            //start card
+
+            //start first card
             echo'    <div class="row mt-3">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
@@ -88,10 +89,30 @@ class Formsplitter
             } else {
                 echo self::printWeeks($result[0]['startDate'],$result[0]['endDate'], $result[0]['formId'], $id);
             }
-            self::closeCardGroup();
+            self::closeCardGroup();//close first card
+
+
+            //Iterate over remaining results if any
             for($i=1; $i<count($result);$i++)
             {
 
+                //format datetime
+                $start = new DateTime($result[$i]["startDate"]);
+                $start = $start->format("M d,Y");
+                $end = new DateTime($result[$i]["endDate"]);
+                $end =$end->format("M d,Y");
+                //start card
+                echo'<div class="row mt-3">
+                        <div class="col-md-2 col-1 col-lg-2"></div>
+                            <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
+                             <h5 class="list-group-item list-group-item-primary bglblue white list-group-flush clickable">DBT FORM SUBMITTED: '.$end.
+                             ' <span class="swap">+</span></h5>
+                             <ul class="list-group list-group-flush expandable">';
+
+                echo self::printWeeks($result[$i]['startDate'],$result[$i]['endDate'], $result[$i]['formId'], $id);
+
+                self::closeCardGroup();
+                //close card
             }
         }
 
