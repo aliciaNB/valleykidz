@@ -39,6 +39,7 @@ $f3->set('skillcategory', array(
 //default route
 $f3->route('GET|POST /', function ($f3) {
     global $db;
+
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->getUser($_POST['user'],$_POST['pass']);
@@ -55,6 +56,7 @@ $f3->route('GET|POST /', function ($f3) {
             $f3->set('error', $result);
         }
     }
+
     $f3->set('redirect', $_SESSION['redirect']);
     //destroy old sessions
     session_destroy();
@@ -81,8 +83,6 @@ $f3->route('GET|POST /createdbt', function ($f3) {
     $f3->set('priorTarg', $priorFormTargets);
     $f3->set('priorEmo', $priorFormEmotions);
 
-
-
     //-------------------------------------------POST LOGIC--------------------------------------------
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //set session variable for custoer targets
@@ -98,16 +98,16 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         $db->insertDefaultTargets($formNum);
 
         //-------------------------Add custom emotions and targets on post----------------------------------
-        if ($_POST['feelings'])//check if post array has values
-        {
-            foreach ($_POST['feelings'] as $feeling)//check each feeling
-            {
-                if($feeling!=="")//if feeling in post was empty ignore and do not place in db
-                {
+        if ($_POST['feelings']) {//check if post array has values
+
+            foreach ($_POST['feelings'] as $feeling) {//check each feeling
+
+                if($feeling!=="") {//if feeling in post was empty ignore and do not place in db
+
                     $result = $db->getEmotionId($feeling);
                     var_dump($result);
-                    if(!$result)//id does not exist in table
-                    {
+                    if(!$result) {//id does not exist in table
+
                         $result=$db->insertEmotion($feeling);//add to table
                     }
                     $db->insertCustomEmotions($formNum, $result);//insert into association table to create form
@@ -115,15 +115,14 @@ $f3->route('GET|POST /createdbt', function ($f3) {
             }
         }
 
-        if($_POST['targets'])
-        {
-            foreach ($_POST['targets'] as $target)
-            {
-                if($target!=="")
-                {
+        if($_POST['targets']) {
+            foreach ($_POST['targets'] as $target) {
+
+                if($target!=="") {
                     $result = $db->getTargetId($target);
-                    if(!$result)//id does not exist in table
-                    {
+
+                    if(!$result) {//id does not exist in table
+
                         $result=$db->insertTarget($target);//add to table
                     }
                     $db->insertCustomTargets($formNum, $result);//insert into association table to create form
@@ -133,7 +132,6 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 
         $f3->reroute('/confirmdbtform');
     }
-
 
     $f3->set("targets", $defaultTargets);
     $f3->set("emotions", $defaultEmotions);
@@ -145,27 +143,31 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 $f3->route('GET|POST /branchprofile', function ($f3) {
     global $db;
     $f3->set('db', $db);
+
     if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if(isset($_POST['id']))
-        {
+
+        if(isset($_POST['id'])) {
             $db->closeForm(filter_var($_POST['id'], FILTER_SANITIZE_NUMBER_INT));
-        }
-        else{
+        } else{
             $arrayErr = array("addErr" => validateClientNumber($_POST['clientnum']),);
-            if (checkErrArray($arrayErr))
-            {
+
+            if (checkErrArray($arrayErr)) {
+
                 if (isset($_POST['add'])) { //if add client update db on groups leader to reference client #
                     $error=$db->addClient($_SESSION['uuid'], $_POST['clientnum']);
+
                     if ($error) {
                        $f3->set('dberror', $error);
                     }
+
                 } elseif (isset($_POST['remove'])) { //if remove selected remove from goupp leader reference to client
                     $error=$db->removeClient($_SESSION['uuid'], $_POST['clientnum']);
+
                     if($error) {
                         $f3->set('dberror', $error);
                     }
@@ -195,6 +197,7 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['chosenDate'] = $_POST['date'];
         $clientData = $f3->get('db')->getClientFormData($_SESSION['uuid'], $_SESSION['chosenDate']);
@@ -209,13 +212,20 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
 $f3->route('GET|POST /adminprofile', function ($f3) {
     $view = new Template();
     global $db;
-
+    //ToDo: check db for usertype admin, check if appropriate user on page redirect to home if not
     echo $view->render('view/adminprofile.html');
 });
 
 //diary card form page
 $f3->route('GET|POST /dbtdiary', function ($f3) {
+    global $db;
     $view = new Template();
+
+    if ($db->getuserType($_SESSION['uuid'])!=="cl") { //check if appropriate user on page redirect to home if not
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
+
     $f3->set('customTargets', $f3->get('db')->getFormTargets($_SESSION['uuid']));
     $f3->set('customEmotions', $f3->get('db')->getFormEmotions($_SESSION['uuid']));
     $f3->set('skills', $f3->get('db')->getSkills());
@@ -223,10 +233,10 @@ $f3->route('GET|POST /dbtdiary', function ($f3) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $isValid = validateForm($_POST, $f3->get('skills'), $f3->get('db')->getCurrentFormTargets($_SESSION['uuid']));
 
-        if(!$isValid)
-        {
+        if(!$isValid) {
             $f3->reroute('/memberprofile?confirm=An Error Occurred While Saving the Form');
         }
+
         $f3->get('db')->submitClientData($_POST, $_SESSION['uuid']);
         $f3->reroute('/memberprofile?confirm=Your Diary Entry Has Been Saved Successfully');
     }
@@ -237,10 +247,12 @@ $f3->route('GET|POST /dbtdiary', function ($f3) {
 //confirmation page
 $f3->route('GET|POST /confirmdbtform', function($f3) {
     global $db;
+
     if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
+
     $view = new Template();
 
     $check = isEmptyStringOrNUll($_SESSION['confirmTargets']);
@@ -255,10 +267,12 @@ $f3->route('GET|POST /confirmdbtform', function($f3) {
 //view form page
 $f3->route('GET|POST /viewform', function($f3) {
     global $db;
+
     if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
+
     $view = new Template();
     $f3->set('id', $_GET['id']);
 
@@ -288,18 +302,20 @@ $f3->route('GET|POST /formtable', function($f3) {
     if(!$_SESSION['uuid']) {
         $f3->reroute('/');
     }
+
     if ($db->getuserType($_SESSION['uuid'])==="cl") { //check if appropriate user on page redirect to home if not
-        if($_SESSION['uuid'] !== $_GET['id'])
-        {
+        if($_SESSION['uuid'] !== $_GET['id']) {
             $_SESSION['redirect']="Your session has timed out. Please login to continue.";
             $f3->reroute('/');
         }
     }
+
     $type =$db->getuserType($_SESSION['uuid']);//get the user type
 
     if ($type!=="cln") { //this page only viewable by clinicians
         $f3->reroute('/');
     }
+
     $formsplit = new Formsplitter();
     $f3->set('formsplit', $formsplit);
     echo $view->render('view/clienttable.html');
