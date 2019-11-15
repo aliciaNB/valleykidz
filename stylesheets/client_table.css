@@ -7,3 +7,7 @@
 .expandable{
     display:none;
 }
+
+li{
+    font-size:1.5em;
+}
