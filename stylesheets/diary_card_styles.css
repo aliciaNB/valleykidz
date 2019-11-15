@@ -82,3 +82,17 @@
     text-decoration: none;
     color: #333333;
 }
+
+/** Info Icon Styles ******************************/
+.infoimg {
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.tooltip-inner {
+    background-color: #23446e;
+}
+
+.tooltip-arrow {
+    border-bottom-color: #23446e;
+}
