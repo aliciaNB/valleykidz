@@ -282,7 +282,7 @@ Date:11/13/2019
                                 <repeat group="{{ @skill }}" value="{{ @skillname }}">
                                     <tr>
                                         <td colspan="1"></td>
-                                        <td >{{ ucwords(@skillname['skillName']) }}</td>
+                                        <td >{{ ucwords(@skillname['skillName']) }} {{ @skillname['skillDescriptions'] }}</td>
                                         <td >
                                             <div class="form-check text-center">
                                                 <input name="coreskills[{{@skillname['skillName']}}]"
