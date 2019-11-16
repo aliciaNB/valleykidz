@@ -83,16 +83,32 @@
     color: #333333;
 }
 
-/** Info Icon Styles ******************************/
+/** Info Icon Styles for Skills Form Tab ******************************/
 .infoimg {
     max-width: 20px;
     max-height: 20px;
 }
 
-.tooltip-inner {
+.tooltip .tooltip-inner {
     background-color: #23446e;
 }
 
-.tooltip-arrow {
-    border-bottom-color: #23446e;
+.tooltip.show {
+    opacity: 1 !important;
+}
+
+.bs-tooltip-auto[x-placement^=bottom] .arrow::before, .bs-tooltip-bottom .arrow::before {
+    border-bottom-color: #23446e !important;
+}
+
+.bs-tooltip-auto[x-placement^=top] .arrow::before, .bs-tooltip-top .arrow::before {
+    border-top-color: #23446e !important;
+}
+
+.bs-tooltip-auto[x-placement^=left] .arrow::before, .bs-tooltip-left .arrow::before {
+    border-left-color: #23446e !important;
+}
+
+.bs-tooltip-auto[x-placement^=right] .arrow::before, .bs-tooltip-right .arrow::before {
+    border-right-color: #23446e !important;
 }
