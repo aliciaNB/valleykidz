@@ -8,6 +8,18 @@
     padding: 20px;
 }
 
+.nav-pills .nav-link {
+    color: #559bca;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: #333333;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: #559bca;
+}
+
 .update-btn {
     margin-top: 2.0rem !important;
 }
