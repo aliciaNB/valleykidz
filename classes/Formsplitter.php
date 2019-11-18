@@ -53,7 +53,7 @@ class Formsplitter
 
                 $displayEnd =$futuredate->format("M d,Y");//format for html example (October 31, 2018)
                 //put together href utilizing all the information provided
-                $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
+                $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$newDate[$i]."&weekEnd=".
                     $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
                     " - ". $displayEnd."</a></li>" . $divs;
             }
@@ -67,7 +67,7 @@ class Formsplitter
 
             $displayEnd =$futuredate->format("M d,Y");//format for html example (October 31, 2018)
             //put together href utilizing all the information provided
-            $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
+            $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$newDate[count($newDate)-1]."&weekEnd=".
                 $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
                 " - ". $displayEnd."</a></li>" . $divs;
 
