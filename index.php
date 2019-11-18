@@ -228,9 +228,7 @@ $f3->route('GET|POST /dbtdiary', function ($f3) {
 
     $f3->set('customTargets', $f3->get('db')->getFormTargets($_SESSION['uuid']));
     $f3->set('customEmotions', $f3->get('db')->getFormEmotions($_SESSION['uuid']));
-    //var_dump($db->getSkills());
     $f3->set('skills', $f3->get('db')->getSkills());
-
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $isValid = validateForm($_POST, $f3->get('skills'), $f3->get('db')->getCurrentFormTargets($_SESSION['uuid']));
