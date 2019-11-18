@@ -282,8 +282,12 @@ Date:11/13/2019
                                 <repeat group="{{ @skill }}" value="{{ @skillname }}">
                                     <tr>
                                         <td colspan="1"></td>
-                                        <td >{{ ucwords(@skillname['skillName']) }} {{ @skillname['skillDescriptions'] }}</td>
-                                        <td >
+                                        <td >{{ ucwords(@skillname['skillName']) }}
+                                            <span data-toggle="tooltip" data-placement="right" title="{{ @skillname['skillDescriptions'] }}">
+                                                <img class="infoimg" src="img/info_icon50px.png" alt="skill information">
+                                            </span>
+                                        </td>
+                                        <td>
                                             <div class="form-check text-center">
                                                 <input name="coreskills[{{@skillname['skillName']}}]"
                                                        class="form-check-input" type="checkbox"
@@ -379,5 +383,6 @@ Date:11/13/2019
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script src="model/js/tooltip.js"></script>
 </body>
 </html>

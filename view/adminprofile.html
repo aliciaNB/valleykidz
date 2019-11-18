@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="stylesheets/general.css" lang="en">
+    <link type="text/css" rel="stylesheet" href="stylesheets/admin_profile_styles.css" lang="en">
     <link href="https://fonts.googleapis.com/css?family=Merriweather&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,7 +16,8 @@
     <a class="navbar-brand mus" href="branchprofile">
         Valley <span class="lgold">|</span> Cities DBT Portal
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div id="navbarNavDropdown" class="navbar-collapse collapse text-right mus">
@@ -27,9 +29,116 @@
     </div>
 </nav>
 <!-- End of Navbar -->
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<div class="container">
+    <div class="card mx-auto col-lg-8 mt-3 mb-3">
+        <div class="card-body">
+            <!-- Dynamic Select Nav -->
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-add-client-tab" data-toggle="pill" href="#pills-add-client"
+                       role="tab" aria-controls="pills-add-client" aria-selected="true"> + Client Account</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-add-clinician-tab" data-toggle="pill" href="#pills-add-clinician"
+                       role="tab" aria-controls="pills-add-clinician" aria-selected="false"> + Clinician Account</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-add-client" role="tabpanel"
+                     aria-labelledby="pills-add-client-tab">
+                    <!-- TODO Start of Create New Client Account Form-->
+                    <form method="post" action="#">
+                        <div class="form-group">
+                            <label for="inputId">Client Id</label>
+                            <input type="text" class="form-control" id="inputId"
+                                   placeholder="Client Id">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword">Password</label>
+                            <input type="password" class="form-control" id="inputPassword"
+                                   placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword"
+                                   placeholder="Conform Password">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" value="create client"
+                                    class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Create</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="pills-add-clinician" role="tabpanel"
+                     aria-labelledby="pills-add-clinician-tab">
+                    <!-- TODO Start of Create Clinician Account Form-->
+                    <form method="post" action="#">
+                        <div class="form-group">
+                            <label for="inputId2">Id Number</label>
+                            <input type="text" class="form-control" id="inputId2"
+                                   placeholder="Id Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputUsername">Username</label>
+                            <input type="text" class="form-control" id="inputUsername"
+                                   placeholder="Username">
+                            <small id="usernameHelp"
+                                   class="form-text text-muted">Format: First Letter of First Name,
+                                followed by Last Name</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword2">Password</label>
+                            <input type="password" class="form-control" id="inputPassword2"
+                                   placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword2">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword2"
+                                   placeholder="Conform Password">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" value="create clinician"
+                                    class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- TODO Start of reset account password -->
+    <div class="card mx-auto mt-3 mb-3">
+        <div class="card-body">
+            <form method="post" action="#">
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="inputIdNew">Id Number</label>
+                        <input type="text" class="form-control" id="inputIdNew" placeholder="Id">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputPasswordNew">New Password</label>
+                        <input type="password" class="form-control" id="inputPasswordNew" placeholder="New Password">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="inputPasswordNewConfirm">Confirm Password</label>
+                        <input type="password" class="form-control" id="inputPasswordNewConfirm" placeholder="New Password">
+                    </div>
+                    <div class="text-center form-group col-md-3">
+                        <button type="submit" value="update password"
+                                class="btn btn-primary update-btn rounded-0 border-0">Confirm Change</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
