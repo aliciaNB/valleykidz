@@ -21,11 +21,48 @@ class Formsplitter
     {
         $newDate = self::splitDates($startDate,$endDate);//retrive array of monday dates
         $divs ="";
-        foreach ($newDate as $dates)
-        {
-            $futuredate = new DateTime($dates);//convert date time object to be converted to next saturday
+        $numDates = count($newDate);
+        if($numDates===0){//no future mondays meaning end date and start date only range of values
+            $futuredate= new DateTime($startDate);
             $displayStart = $futuredate->format("M d,Y");//format date for route get hive
-            $futuredate->modify('next sunday');//grab saturday of the weeks monday date provided
+            $futuredate= new DateTime($endDate);
+            $displayEnd= $futuredate->format("M d,Y");
+            $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$startDate."&weekEnd=".
+                $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
+                " - ". $displayEnd."</a></li>" . $divs;
+        } else{//multiple weeks
+
+            //display start day to saturday
+            $futuredate= new DateTime($startDate);
+            if($futuredate->format('N')!=1)// if start date does not fall on a monday create first div
+            {
+                $displayStart = $futuredate->format("M d,Y");//format date for route get hive
+                $futuredate= $futuredate->modify('next sunday');
+                $displayEnd= $futuredate->format("M d,Y");
+                $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$startDate."&weekEnd=".
+                    $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
+                    " - ". $displayEnd."</a></li>" . $divs;
+            }
+            //display all but last week
+            for($i=0; $i<count($newDate)-1; $i++)
+            {
+                $futuredate = new DateTime($newDate[$i]);//convert date time object to be converted to next saturday
+                $displayStart = $futuredate->format("M d,Y");//format date for route get hive
+                $futuredate->modify('next sunday');//grab saturday of the weeks monday date provided
+                $futuredate->format("Y-m-d");//format for route get hive
+
+                $displayEnd =$futuredate->format("M d,Y");//format for html example (October 31, 2018)
+                //put together href utilizing all the information provided
+                $divs = "<li class='list-group-item'><a href='viewform?form=".$formNum. "&weekStart=".$dates."&weekEnd=".
+                    $futuredate->format("Y-m-d")."&id=".$id."'>". $displayStart.
+                    " - ". $displayEnd."</a></li>" . $divs;
+            }
+
+            //print last week making end date forms end date
+            $futuredate = new DateTime($newDate[count($newDate)-1]);//convert date time object to be converted to next saturday
+            $displayStart = $futuredate->format("M d,Y");//format date for route get hive
+            $futuredate= new DateTime($endDate);//grab saturday of the weeks monday date provided
+
             $futuredate->format("Y-m-d");//format for route get hive
 
             $displayEnd =$futuredate->format("M d,Y");//format for html example (October 31, 2018)
@@ -57,7 +94,7 @@ class Formsplitter
         }
         if(1 !=$startDate->format('N'))//if start date is not a monday grab previous monday
         {
-            $startDate->modify('last monday');
+            $startDate->modify('next monday');
         }
         while($startDate<=$endDate)//while start date is not past end of form date
         {
@@ -72,7 +109,6 @@ class Formsplitter
     {
         $db = new database();
         $result = $db->getAllForms($id);
-
 
         if(!$result) {//no forms created
             echo '<h2 class="mt-5 text-center">No Forms Created For Client </h2>';
@@ -116,7 +152,7 @@ class Formsplitter
                     echo'<div class="row mt-3">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
-                             <h3 class="list-group-item list-group-item-primary bglblue white list-group-flush clickable">DBT FORM SUBMITTED: '.$end.
+                             <h3 class="list-group-item list-group-item-primary bglblue white list-group-flush clickable">SESSION: '.$start.'-'.$end.
                         ' <span class="swap">+</span></h3>
                              <ul class="list-group list-group-flush expandable">';
 
