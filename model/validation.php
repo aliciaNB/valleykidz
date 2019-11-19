@@ -5,13 +5,11 @@
  * @date 11/13/2019
  */
 
-
 /**
  * Validates client number provided is numericall and correct length
  * @param $data int client number
  * @return string error message or empty if error-free
  */
-
 function validateClientNumber($data)
 {
     if ($data == "") {
