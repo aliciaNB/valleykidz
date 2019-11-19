@@ -275,13 +275,21 @@ $f3->route('GET|POST /viewform', function($f3) {
 
     $view = new Template();
     $f3->set('id', $_GET['id']);
-
+    $tableCreate = new BuildTable();
+    $f3->set('table', $tableCreate);
     //Format Dates to be displayed
     $displayStart = new DateTime($_GET['weekStart']);
+    if($displayStart->format("N")!==1)
+    {
+        $displayStart= $displayStart->modify('last monday');
+    }
     $displayEnd = new DateTime($_GET['weekEnd']);
+    if($displayEnd->format("N")!==7)
+    {
+        $displayEnd= $displayEnd->modify('next sunday');
+    }
     $f3->set('displayStart', $displayStart->format("M d,Y"));
     $f3->set('displayEnd', $displayEnd->format("M d, Y"));
-
     //GRAB ALL INFORMATION FOR Tables
     global $defaultEmotions;
     global $defaultTargets;

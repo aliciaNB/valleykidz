@@ -1199,14 +1199,6 @@ class database
         return $result;
     }
 
-    /**
-     * @param $startDate
-     * @param $endDate
-     * @param $formNum
-     */
-    public function getSkillsFromForm($startDate, $endDate, $formNum)
-    {
-    }
 
     /**
      * Retrieve emotion names from form id provided
@@ -1216,7 +1208,7 @@ class database
     public function getEmotionsFromForm($formId)
     {
         $sql="SELECT emotions.emotionName FROM formEmotions INNER JOIN emotions on formEmotions.emotionId = emotions.emotionId
-            WHERE formEmotions.formId=:formId";
+            WHERE formEmotions.formId=:formId ORDER BY emotions.emotionId ASC";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
         $statement->execute();
@@ -1224,19 +1216,32 @@ class database
         return $result;
     }
 
-    public function getTargetsBetweenDates($startDate, $endDate, $formNum)
+    /**
+     * Grab emotions results from db between target dates with form id provided
+     * @param $startDate starting date of form
+     * @param $endDate ending date of form
+     * @param $formId id of form
+     * @return mixed a result of
+     * @throws Exception
+     */
+    public function getEmotionsBetweenDates($startDate, $endDate, $formId)
     {
-        $start = new DateTime($startDate);
-        $start = $start->format('Y-m-d');
-        $end = new DateTime($endDate);
-        $end = $end->format('Y-m-d');
-        $sql="SELECT formId,startDate,endDate FROM forms WHERE clientId=:clientId ORDER BY (endDate IS NOT NULL), startDate DESC";
+        $startDate= new DateTime($startDate);
+        $startDate= $startDate->format("Y-m-d");
+        $endDate = new DateTime($endDate);
+        $endDate= $endDate->format("Y-m-d");
+
+        $sql= "SELECT dateSubmissionsEmotions.dateSubmitted, emotions.emotionName FROM dateSubmissionsEmotions 
+        INNER JOIN emotions on dateSubmissionsEmotions.emotionId = emotions.emotionId WHERE dateSubmissionsEmotions.formId=:formId AND dateSubmissionsEmotions.dateSubmitted 
+        BETWEEN :start and :end";
+
         $statement= $this->_dbh->prepare($sql);
-        $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
+        $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
-
     }
 
     /**
@@ -1246,7 +1251,8 @@ class database
      */
     public function getTargetsFromForm($formId)
     {
-        $sql="SELECT targets.targetName from formTargets INNER JOIN targets on formTargets.targetId= targets.targetId WHERE formId =:formId;";
+        $sql="SELECT targets.targetName from formTargets INNER JOIN targets on formTargets.targetId= targets.targetId WHERE formId =:formId 
+        ORDER BY tagets.targetId ASC";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
         $statement->execute();

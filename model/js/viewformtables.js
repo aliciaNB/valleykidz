@@ -1,7 +1,15 @@
 //Calls data tables for viewforms
 
-// Scripts for data tables
 
+
+$(document).ready( function(){
+    $.post("model/ajax/emotiontable.php", function(results)
+        {
+
+        });
+});
+
+// Scripts for data tables
 //targets table
 $(document).ready( function () {
     $('#targets').DataTable();
