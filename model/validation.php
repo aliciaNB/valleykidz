@@ -5,26 +5,22 @@
  * @date 11/13/2019
  */
 
-
 /**
  * Validates client number provided is numericall and correct length
  * @param $data int client number
  * @return string error message or empty if error-free
  */
-
 function validateClientNumber($data)
 {
-    if($data=="")
-    {
+    if ($data == "") {
         return "Must Fill in Field to add/remove client";
     }
-    if(!is_numeric($data))
-    {
+
+    if (!is_numeric($data)) {
         return "Client number can not contain letters or special characters";
     }
 
-    if(strlen($data)!=6)
-    {
+    if (strlen($data) != 6) {
         return "Invalid Entry client numbers must be 6 in length";
     }
     return "";
@@ -37,7 +33,7 @@ function validateClientNumber($data)
  */
 function validateInputGroup($data)
 {
-    if($data !=null) {
+    if ($data != null) {
         foreach ($data as $input) {
             if (validateInput($input) != "") {
                 return validateInput($input);
@@ -54,10 +50,9 @@ function validateInputGroup($data)
  */
 function validateInput($data)
 {
-    if($data!=null)
+    if ($data != null)
      //TODO Add db connection to escape $data =mysqli_real_escape_string($data);
-     if($data=="")
-     {
+     if ($data == "") {
          return "Fields can not be empty";
      }
      return "";
@@ -71,7 +66,7 @@ function validateInput($data)
 function checkErrArray($data)
 {
     foreach ($data as $key => $value) {
-        if($value!="") {
+        if ($value != "") {
             return false;
         }
     }
@@ -85,14 +80,11 @@ function checkErrArray($data)
  */
 function isEmptyStringOrNUll($array)
 {
-    if($array===null)
-    {
+    if($array === null) {
         return true;
     }
-    foreach ($array as $item)
-    {
-        if($item!=="")
-        {
+    foreach ($array as $item) {
+        if ($item !== "") {
             return false;
         }
     }
@@ -131,28 +123,22 @@ function validateForm(&$post, $skills, $targets)
 function validateSelects($post)
 {
     $urges = $post['urges'];
-    foreach ($urges as $urge)
-    {
-        if (!($urge === "" || in_array($urge, range(0,5))))
-        {
+    foreach ($urges as $urge) {
+        if (!($urge === "" || in_array($urge, range(0,5)))) {
             return false;
         }
     }
 
     $intensities = $post['intensity'];
-    foreach ($intensities as $intensity)
-    {
-        if (!($intensity === "" || in_array($intensity, range(0,5))))
-        {
+    foreach ($intensities as $intensity) {
+        if (!($intensity === "" || in_array($intensity, range(0,5)))) {
             return false;
         }
     }
 
     $degrees = $post['degree'];
-    foreach ($degrees as $degree)
-    {
-        if (!($degree === "" || in_array($degree, range(1,5))))
-        {
+    foreach ($degrees as $degree) {
+        if (!($degree === "" || in_array($degree, range(1,5)))) {
             return false;
         }
     }
@@ -170,25 +156,18 @@ function validateCheckboxes($post, $skills, $targets)
     $actions = $post['actions'];
     $used = $post['coreskills'];
 
-    if($actions)
-    {
-        foreach ($targets as $target)
-        {
-            if ($actions[$target] != '1' || $actions[$target] != null)
-            {
+    if($actions) {
+        foreach ($targets as $target) {
+            if ($actions[$target] != '1' || $actions[$target] != null) {
                 return false;
             }
         }
     }
 
-    if ($used)
-    {
-        foreach($skills as $coreskill)
-        {
-            foreach ($coreskill as $skill)
-            {
-                if ($used[$skill['skillName']] != "1" || $used[$skill['skillName']] != null)
-                {
+    if ($used) {
+        foreach($skills as $coreskill) {
+            foreach ($coreskill as $skill) {
+                if ($used[$skill['skillName']] != "1" || $used[$skill['skillName']] != null) {
                     var_dump($used[$skill['skillName']]);
                     //return false;
                 }

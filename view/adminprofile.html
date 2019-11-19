@@ -29,7 +29,7 @@
     </div>
 </nav>
 <!-- End of Navbar -->
-<div class="container">
+<div class="container mt-4">
     <div class="card mx-auto col-lg-8 mt-3 mb-3">
         <div class="card-body">
             <!-- Dynamic Select Nav -->
@@ -42,16 +42,23 @@
                     <a class="nav-link" id="pills-add-clinician-tab" data-toggle="pill" href="#pills-add-clinician"
                        role="tab" aria-controls="pills-add-clinician" aria-selected="false"> + Clinician Account</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-change-password-tab" data-toggle="pill" href="#pills-change-password"
+                       role="tab" aria-controls="pills-change-password" aria-selected="false">Change Password</a>
+                </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-add-client" role="tabpanel"
                      aria-labelledby="pills-add-client-tab">
+                    <h1>Create Client Account</h1>
                     <!-- TODO Start of Create New Client Account Form-->
                     <form method="post" action="#">
                         <div class="form-group">
                             <label for="inputId">Client Id</label>
                             <input type="text" class="form-control" id="inputId"
                                    placeholder="Client Id">
+                            <small id="clientIDHelp"
+                                   class="form-text text-muted">Client Id must be 6 digits</small>
                         </div>
                         <div class="form-group">
                             <label for="inputPassword">Password</label>
@@ -71,6 +78,7 @@
                 </div>
                 <div class="tab-pane fade" id="pills-add-clinician" role="tabpanel"
                      aria-labelledby="pills-add-clinician-tab">
+                    <h1>Create Clinician Account</h1>
                     <!-- TODO Start of Create Clinician Account Form-->
                     <form method="post" action="#">
                         <div class="form-group">
@@ -102,32 +110,32 @@
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- TODO Start of reset account password -->
-    <div class="card mx-auto mt-3 mb-3">
-        <div class="card-body">
-            <form method="post" action="#">
-                <div class="form-row">
-                    <div class="form-group col-md-3">
-                        <label for="inputIdNew">Id Number</label>
-                        <input type="text" class="form-control" id="inputIdNew" placeholder="Id">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputPasswordNew">New Password</label>
-                        <input type="password" class="form-control" id="inputPasswordNew" placeholder="New Password">
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="inputPasswordNewConfirm">Confirm Password</label>
-                        <input type="password" class="form-control" id="inputPasswordNewConfirm" placeholder="New Password">
-                    </div>
-                    <div class="text-center form-group col-md-3">
-                        <button type="submit" value="update password"
-                                class="btn btn-primary update-btn rounded-0 border-0">Confirm Change</button>
-                    </div>
+                <div class="tab-pane fade" id="pills-change-password" role="tabpanel"
+                     aria-labelledby="pills-change-password-tab">
+                    <h1>Change Account Password</h1>
+                    <!-- TODO Start of reset account password -->
+                    <form method="post" action="#">
+                        <div class="form-group">
+                            <label for="inputIdNew">Client Id -or- Id Number</label>
+                            <input type="text" class="form-control" id="inputIdNew" placeholder="Client Id / Id Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPasswordNew">New Password</label>
+                            <input type="password" class="form-control" id="inputPasswordNew"
+                                   placeholder="New Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPasswordNewConfirm">Confirm Password</label>
+                            <input type="password" class="form-control" id="inputPasswordNewConfirm"
+                                   placeholder="Confirm Password">
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" value="update password"
+                                    class="btn btn-primary update-btn rounded-0 border-0">Confirm Change</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

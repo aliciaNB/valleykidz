@@ -6,6 +6,7 @@
  */
 
 /*
+************************* USER TABLES ***********************************
 
 CREATE TABLE users(
 	user_id int(8) primary key not null,
@@ -22,6 +23,11 @@ CREATE table clinician(
     user_name varchar(255)
 );
 
+CREATE table admin(
+    admin_id int(8) primary key,
+    user_name varchar(255)
+);
+
 CREATE TABLE profilelinks(
     client_id int(8),
     clinician_id int(8),
@@ -30,7 +36,17 @@ CREATE TABLE profilelinks(
     FOREIGN KEY (clinician_id) REFERENCES clinician(clinician_id)
 );
 
-************************Form Table*******************************************
+************************* SAMPLE USERS ****************************************
+
+INSERT INTO users (admin, client, password, user_id)
+VALUES (0, 1, 'test', 123456), (0, 0, 'test', 1234), (1, 0, 'test', 2345);
+
+INSERT INTO clinician (clinician_id, user_name) VALUES (1234, 'jelzughbi');
+INSERT INTO client (client_id) VALUES (123456);
+INSERT INTO admin (admin_id, user_name) VALUES (2345, 'admin');
+
+************************ FORM TABLES *******************************************
+
 CREATE TABLE forms
 (
 	formId int AUTO_INCREMENT PRIMARY KEY,
@@ -45,7 +61,7 @@ CREATE TABLE targets
 	targetId int PRIMARY KEY AUTO_INCREMENT,
 	targetName varchar(255),
     isDefault boolean
- );
+);
 
 Create Table skills
 (
@@ -79,7 +95,7 @@ Create Table formEmotions
 	PRIMARY KEY (formId, EmotionId),
 	FOREIGN KEY (formId) REFERENCES forms(formId),
 	FOREIGN KEY (emotionId) REFERENCES emotions(emotionId)
-    );
+);
 
 Create Table formSkills
 (
@@ -90,7 +106,6 @@ Create Table formSkills
 	FOREIGN KEY (skillsId) REFERENCES skills(skillsId)
 );
 
-
 CREATE Table dateSubmissionTargets
 (
     formId int,
@@ -98,10 +113,10 @@ CREATE Table dateSubmissionTargets
 	dateSubmitted dateTime,
 	urge int(1),
 	action boolean,
-	PRIMARY KEY(formId,targetId),
+	PRIMARY KEY(formId,targetId, dateSubmitted),
 	FOREIGN KEY (formId) REFERENCES forms(formId),
 	FOREIGN KEY (targetId) REFERENCES targets(targetId)
-	);
+);
 
 CREATE TABLE dateSubmissionsEmotions
 (
@@ -109,10 +124,9 @@ CREATE TABLE dateSubmissionsEmotions
     dateSubmitted dateTime,
 	emotionId int,
 	intensity int(1),
-	PRIMARY KEY (formId, EmotionId),
+	PRIMARY KEY (formId, EmotionId, dateSubmitted),
 	FOREIGN KEY (formId) REFERENCES forms(formId),
 	FOREIGN KEY (emotionId) REFERENCES emotions(emotionId)
-
 );
 
 CREATE TABLE dateSubmissionSkills
@@ -122,7 +136,7 @@ CREATE TABLE dateSubmissionSkills
     skillId int,
 	degree int(1),
 	used boolean,
-	PRIMARY KEY (formId, skillId),
+	PRIMARY KEY (formId, skillId, dateSubmitted),
 	FOREIGN KEY (formId) REFERENCES forms(formId),
 	FOREIGN KEY (skillId) REFERENCES skills(skillId)
 );
@@ -135,83 +149,77 @@ CREATE TABLE noteSubmission
     noteInfo varchar(255),
    	FOREIGN KEY (formId) REFERENCES forms(formId)
 );
-*************************SAMPLE USERS****************************************
 
-INSERT INTO users (admin, client, password, user_id) VALUES (0, 1, 'test', 123456), (0, 0, 'test', 1234);
-INSERT INTO clinician (clinician_id, user_name) VALUES (1234, 'jelzughbhi');
-INSERT INTO client (client_id) VALUES (123456);
+************************* DEFAULT FORM DATA ***********************************
 
-UPDATE `clinician` SET `user_name` = 'jelzughbi' WHERE `clinician`.`clinician_id` = 1234;
-
-*************************DEFAULT FORM DATA***********************************
-
-INSERT INTO emotions (emotionId,emotionName,isDefault) VALUES (1,'joy',1),(2,'gratitude',1),(3,'compassion',1),(4,'vulnerability',1),
+INSERT INTO emotions (emotionId,emotionName,isDefault)
+VALUES (1,'joy',1),(2,'gratitude',1),(3,'compassion',1),(4,'vulnerability',1),
 (5,'self acceptance',1),(6,'sadness',1),(7,'depression',1),(8,'anger',1),(9,'frustration',1),(10,'anxiety',1);
 
-INSERT INTO targets (targetName,isDefault) VALUES ('suicidal ideation',1),('self harm',1), ('substance use',1), ('medication',1);
+INSERT INTO targets (targetName,isDefault)
+VALUES ('suicidal ideation',1),('self harm',1), ('substance use',1), ('medication',1);
 
-INSERT INTO skills (skillName, skillCategory,isDefault,skillDescriptions) VALUES('wise mind', 'cm',1, "Accessed wisdom.  Know truth.  Be centered and calm.  Balanced Emotional Mind and Reasonable Mind.  Meditate."),('observe', 'cm',1, "Just notice the experience.  \"Teflon mind.\"  Control your attention.  Smell the roses.  Experience\" what is happening."), ('describe','cm',1, "Put experiences into words.  Describe to yourself what is happening.  Put words on the experience."),
-('participate','cm',1, "Enter into the experience.  Act intuitively from wise mind.  Practice changing the harmful and accepting yourself."),('nonjudgmental stance', 'cm',1,"See but don't evaluate.  Unglue your opinions.  Accept each moment."),('one-mindfully','cm',1,"Be in-the-moment.  Do one thing at a time.  Let go of distractions.  Concentrate your mind on the task at hand."), ('efectiveness','cm',1, "Focus on what works.  Learn the rules.  Play by the rules.  Act skillfully.  Let go of vengeance and useless anger.");
+INSERT INTO skills (skillName, skillCategory,isDefault,skillDescriptions)
+VALUES('wise mind', 'cm',1, "Accessed wisdom.  Know truth.  Be centered and calm.  Balanced Emotional Mind and Reasonable Mind.  Meditate."),
+('observe', 'cm',1, "Just notice the experience.  \"Teflon mind.\"  Control your attention.  Smell the roses.  Experience\" what is happening."),
+('describe','cm',1, "Put experiences into words.  Describe to yourself what is happening.  Put words on the experience."),
+('participate','cm',1, "Enter into the experience.  Act intuitively from wise mind.  Practice changing the harmful and accepting yourself."),
+('nonjudgmental stance', 'cm',1,"See but don't evaluate.  Unglue your opinions.  Accept each moment."),
+('one-mindfully','cm',1,"Be in-the-moment.  Do one thing at a time.  Let go of distractions.  Concentrate your mind on the task at hand."),
+('efectiveness','cm',1, "Focus on what works.  Learn the rules.  Play by the rules.  Act skillfully.  Let go of vengeance and useless anger.");
 
-INSERT INTO skills (skillName, skillCategory, isDefault, skillDescriptions) VALUES('objective effectiveness','ie',1, "DEAR MAN:  Describe. Express. Assert. Reinforce. Mindful. Appear confident. Negotiate."),
-('relationship effectiveness','ie',1, "GIVE:  Gentle. Interested. Validation. Easy manner."), ('self-respect effectiveness','ie',1,"FAST:  Fair. No Apologies. Stick to values. Be Truthful.  Cheerleading.");
+INSERT INTO skills (skillName, skillCategory, isDefault, skillDescriptions)
+VALUES('objective effectiveness','ie',1, "DEAR MAN:  Describe. Express. Assert. Reinforce. Mindful. Appear confident. Negotiate."),
+('relationship effectiveness','ie',1, "GIVE:  Gentle. Interested. Validation. Easy manner."),
+('self-respect effectiveness','ie',1,"FAST:  Fair. No Apologies. Stick to values. Be Truthful.  Cheerleading.");
 
-INSERT INTO skills(skillName, skillCategory, isDefault, skillDescriptions) VALUES('identifying primary emotions','er',1,"Use the model of emotions to identify your primary emotions."), ('checking the facts','er',1,"Identify the facts of the situation (rather than thoughts, interpretations, or beliefs)."),
-('problem solving','er',1,"Identify the problem, check the facts, identify your goal, brainstorm solutions, evaluate solutions, and put a solution into action."), ('opposite-to-emotion action','er',1,"Change emotions by acting opposite to the current emotion (when it isn't justified). Approach rather than avoid."), ('acquire positives in the Short-term','er',1,"Doing pleasurable things that you can do now."),
-('acquire positives in the long-term','er',1,"Making choices that match morals and values."), ('build mastery','er',1,"Try to do one (hard or challenging) thing a day to make yourself feel competent and in control."), ('cope ahead','er',1,"Imagine how you would skillfully cope with a situation before you are in it."), ('please','er',1,"Reduce vulnerability, treat: Physical illness, balance Eating. Avoid drugs, balance Sleep. Exercise daily."),
+INSERT INTO skills(skillName, skillCategory, isDefault, skillDescriptions)
+VALUES('identifying primary emotions','er',1,"Use the model of emotions to identify your primary emotions."),
+('checking the facts','er',1,"Identify the facts of the situation (rather than thoughts, interpretations, or beliefs)."),
+('problem solving','er',1,"Identify the problem, check the facts, identify your goal, brainstorm solutions, evaluate solutions, and put a solution into action."),
+('opposite-to-emotion action','er',1,"Change emotions by acting opposite to the current emotion (when it isn't justified). Approach rather than avoid."),
+('acquire positives in the Short-term','er',1,"Doing pleasurable things that you can do now."),
+('acquire positives in the long-term','er',1,"Making choices that match morals and values."),
+('build mastery','er',1,"Try to do one (hard or challenging) thing a day to make yourself feel competent and in control."),
+('cope ahead','er',1,"Imagine how you would skillfully cope with a situation before you are in it."),
+('please','er',1,"Reduce vulnerability, treat: Physical illness, balance Eating. Avoid drugs, balance Sleep. Exercise daily."),
 ('mindfulness to current emotion','er',1,null);
 
-INSERT INTO skills(skillName,skillCategory, isDefault, skillDescriptions) VALUES('tipp','dt',1, "Temperature.   Intense exercise.    Progressive muscle relaxation.  Paced breathing."), ('distract','dt',1,"Wise Mind ACCEPTS Activities.  Contributing.  Comparisons.  Emotions.  Pushing away.  Thoughts.  Sensations."),
-('self-soothe','dt',1,"with the 5 senses.  Enjoy sights, sounds, smells, tastes and touch.  Be mindful of soothing sensations."),('improve','dt',1,"the moment: Imagery.  Meaning.  Prayer.  Relaxation.  One thing in the moment.  Vacation.  Encouragement."), ('pros and cons','dt',1,"think about the +/- aspects of tolerating distress and the +/- aspects of not tolerating distress (engaging in impulsive behavior)"), ('half-smile','dt',1,"If you can't change your feelings, change your face. Create posture of acceptance, willingness, and openness to experience."),
-('radical acceptance','dt',1,"Choose to recognize and accept reality.  Freedom from suffering = acceptance of facts from deep within / not approval."), ('turning the mind','dt',1,"Choosing over and over again to accept even though emotion mind wants to reject reality."),('willingness','dt',1,"Doing what is needed in each situation.");
+INSERT INTO skills(skillName,skillCategory, isDefault, skillDescriptions)
+VALUES('tipp','dt',1, "Temperature.   Intense exercise.    Progressive muscle relaxation.  Paced breathing."),
+('distract','dt',1,"Wise Mind ACCEPTS Activities.  Contributing.  Comparisons.  Emotions.  Pushing away.  Thoughts.  Sensations."),
+('self-soothe','dt',1,"with the 5 senses.  Enjoy sights, sounds, smells, tastes and touch.  Be mindful of soothing sensations."),
+('improve','dt',1,"the moment: Imagery.  Meaning.  Prayer.  Relaxation.  One thing in the moment.  Vacation.  Encouragement."),
+('pros and cons','dt',1,"think about the +/- aspects of tolerating distress and the +/- aspects of not tolerating distress (engaging in impulsive behavior)"),
+('half-smile','dt',1,"If you can't change your feelings, change your face. Create posture of acceptance, willingness, and openness to experience."),
+('radical acceptance','dt',1,"Choose to recognize and accept reality.  Freedom from suffering = acceptance of facts from deep within / not approval."),
+('turning the mind','dt',1,"Choosing over and over again to accept even though emotion mind wants to reject reality."),
+('willingness','dt',1,"Doing what is needed in each situation.");
+
+***************** SAMPLE FORM FOR SAMPLE USER 123456 ***********************************
 
 INSERT INTO forms(clientId, startDate) VALUES (123456, '2019-11-07');
 INSERT INTO formTargets (formId, targetId) VALUES (1, 1),(1,2),(1,3),(1,4);
-
 INSERT INTO formEmotions(formId,emotionId) VALUES (1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10);
 
-ALTER TABLE `dateSubmissionSkills`
-  DROP PRIMARY KEY,
-   ADD PRIMARY KEY(
-     `formId`,
-     `dateSubmitted`,
-     `skillId`);
+*/
 
-ALTER TABLE `dateSubmissionTargets`
-  DROP PRIMARY KEY,
-   ADD PRIMARY KEY(
-     `formId`,
-     `targetId`,
-     `dateSubmitted`);
+//----------------- DEFINE CONFIG FILE USED AND PATHING ----------------------------
 
-ALTER TABLE `dateSubmissionsEmotions`
-  DROP PRIMARY KEY,
-   ADD PRIMARY KEY(
-     `formId`,
-     `dateSubmitted`,
-     `emotionId`);
-
- */
-/**
- * @author Michael Britt
- * @version 1.0
- * Date: 10/22/2019
- * Class database connects to database for dbt
- */
-
-
-//-----------------DEFINE CONFIG FILE USED AND PATHING----------------------------
 $user = $_SERVER['USER'];
 if ($user == NULL) {
     $path = "/home/valleyki/config.php";
 } else if ($user == 'mbrittgr'){
     $path = "/home2/$user/config.php";
+} else if ($user == 'abuehner') {
+    $path = "/home/$user/valleykidz_config.php";
 } else {
     $path = "/home/$user/config.php";
 }
 require_once($path);
 require_once("validation.php");
-//--------------------------Start of Class---------------------------------------
+
+//-------------------------- Start of Class ---------------------------------------
 
 /**
  * Class database Creates a database connection using config file
@@ -238,14 +246,13 @@ class database
     public function connect()
     {
         try {
-            $this->_dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD
-            );
+            $this->_dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
         } catch (PDOException $e) {
             $this->_errormessage = $e->getMessage();
         }
     }
 
-    //-----------------------------Validate user in db------------------------------------------
+    //----------------------------- Validate user in db ------------------------------------------
 
     /**
      * Finds out if user is a client/clinician then verifies password is correct
@@ -255,6 +262,8 @@ class database
      */
     public function getUser($userid, $pass)
     {
+        $isAdmin = false;
+
         // check if client
         $sql = "SELECT * FROM users WHERE user_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
@@ -286,15 +295,42 @@ class database
                 $statement->execute();
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
             } else {
-                return "User id does not exist";
+                // check if admin
+                $sql = "SELECT * FROM admin WHERE user_name=:user_id";
+                $statement= $this->_dbh->prepare($sql);
+                $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+                if ($result) {
+                    $sql = "SELECT * FROM admin INNER JOIN users 
+                    ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
+                    $statement= $this->_dbh->prepare($sql);
+                    $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
+                    $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+                    $statement->execute();
+                    $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+                    if ($result) {
+                        $isAdmin = true;
+                    }
+                } else {
+                    return "User id does not exist";
+                }
             }
         }
 
-        //if both are not correct this means only password is left
-        if(!$result) {
+        //if all three are not correct this means only password is left
+        if (!$result && !$isAdmin) {
             return "Password doest not match id";
         }
-        return $result['client'];
+
+        //if user is admin return a different result other than 1 or 0
+        if ($isAdmin) {
+            return $result['client'] = "2";
+        } else {
+            return $result['client'];
+        }
     }
 
     /**
@@ -309,14 +345,14 @@ class database
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if(!$result) {
+        if (!$result) {
             return "User ID does not exist";
         }
     }
 
     /**
      * Gets clinician id provided Clinician user_name
-     * @param $user_name Represnet username of clinician
+     * @param $user_name Represents username of clinician
      * @return mixed string representation of clinician id
      */
     public function getClinicianID($user_name)
@@ -330,8 +366,24 @@ class database
         return $result['clinician_id'];
     }
 
+    /**
+     * Gets admin id provided admin user_name
+     * @param $user_name Represents username of admin
+     * @return mixed string representation of admin id
+     */
+    public function getAdminID($user_name)
+    {
+        $sql = "SELECT admin_id FROM admin WHERE user_name=:user_name";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":user_name", $user_name, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-    //---------------------------Update profiles links----------------------------------------------
+        return $result['admin_id'];
+    }
+
+    //--------------------------- Update profiles links ----------------------------------------------
+
     /**
      * Takes a clinican and client id and links their profile if possible
      * @param $clinicianid String clinicians id
@@ -340,8 +392,8 @@ class database
      */
     public function addClient($clinicianid, $clientid)
     {
-        if($this->isClient($clientid)) {//verify client exists
-            if($this->isLinked($clinicianid,$clientid)) {//verify if a link already exists
+        if ($this->isClient($clientid)) {//verify client exists
+            if ($this->isLinked($clinicianid,$clientid)) {//verify if a link already exists
                 return "Client is already connected to profile";
             } else {//link does not exist and client exists
                 $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
@@ -410,8 +462,8 @@ class database
      */
     public function removeClient($clinicianid, $clientid)
     {
-        if($this->isClient($clientid)) {//check if client number exists
-            if(!($this->isLinked($clinicianid,$clientid))) {//link does not exist cant remove
+        if ($this->isClient($clientid)) {//check if client number exists
+            if (!($this->isLinked($clinicianid,$clientid))) {//link does not exist cant remove
                 return "Customer Not Connected To Your Profile";
             } else {//link does exist remove from db
                 $sql= "DELETE FROM profilelinks WHERE client_id=:client and clinician_id=:clinician";
@@ -432,8 +484,7 @@ class database
      */
     public function getuserType($uuid)
     {
-        if($uuid===null)
-        {
+        if ($uuid===null) {
             return "n";
         }
         $sql = "SELECT * FROM users WHERE user_id=:uuid";
@@ -442,19 +493,17 @@ class database
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if($result['admin'] ==="1") {//is admin
+        if ($result['admin'] ==="1") {//is admin
             return "a";
-        } elseif ($result['client']==="0")//is clinician
-        {
+        } elseif ($result['client']==="0") { //is clinician
             return "cln";
-        } elseif ($result['client']==="1")//is client
-        {
+        } elseif ($result['client']==="1") {//is client
             return "cl";
         }
     }
 
+    //--------------------------------- Insert defaults -----------------------------------------
 
-    //---------------------------------Insert defaults-----------------------------------------
     /**
      * Grabs default skills from db
      * @return mixed Array of all the default skills
@@ -540,7 +589,7 @@ class database
     }
 
 
-    //------------------------------------Retrieve existing forms---------------------------------------------
+    //------------------------------------ Retrieve existing forms ---------------------------------------------
     /**
      * Takes a client Id number and returns all the targets on their current form
      * @param $clientId int client id
@@ -677,7 +726,7 @@ class database
     {
         $dataExists = $this->doesClientDataAlreadyExist($clientId, $post['date']);
 
-        if($dataExists) {
+        if ($dataExists) {
             $this->updateClientData($post, $clientId);
         } else {
             $this->addClientData($post, $clientId);
@@ -942,7 +991,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $targets = array();
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $targets[$result['targetName']] = array($result['urge'], $result['action']);
         }
         return $targets;
@@ -959,7 +1008,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $emotions = array();
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $emotions[$result['emotionName']] = $result['intensity'];
         }
         return $emotions;
@@ -976,7 +1025,7 @@ class database
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         $clientSkills = array();
-        foreach($results as $result) {
+        foreach ($results as $result) {
             $clientSkills[$result['skillName']] = array($result['degree'], $result['used']);
         }
 
@@ -1006,7 +1055,8 @@ class database
         return $results[0]['noteInfo'];
     }
 
-    //---------------------------------Update  Form Table------------------------------
+    //--------------------------------- Update  Form Table ------------------------------
+
     /**
      * Creates a new form with open end date and closes previous form
      * @param $clientId id of customer within db
@@ -1037,7 +1087,7 @@ class database
         $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if(isset($result)) { //has an open form
+        if (isset($result)) { //has an open form
             //grab today's date
             $today = date("Y-m-d");
             $sql= "UPDATE forms SET endDate =:today WHERE clientId=:clientId and endDate IS NULL";
@@ -1048,8 +1098,8 @@ class database
         }
     }
 
+    //------------------------------ UPDAtE EMOTIONS ----------------------------------------------
 
-    //------------------------------UPDAtE EMOTIONS----------------------------------------------
     /**
      * Retrieves an emotion id if one exists from emotions table
      * @param $emotionString string name of emotion
@@ -1066,6 +1116,7 @@ class database
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['emotionId'];
     }
+
     /**
      * This method inserts new emotions into the emotion table and returns its id of new insert
      * @param $emotionString represents the name of an emotions entered in custom form
@@ -1097,7 +1148,8 @@ class database
         $statement->execute();
     }
 
-    //-----------------------------Update Targets----------------------
+    //----------------------------- Update Targets ----------------------
+
     /**
      * Retrieves an taget id if one exists from target table
      * @param $targetString string name of target
@@ -1163,7 +1215,6 @@ class database
         return $result;
     }
 
-
     /**
      * This will retrieve the custom targets from the most recent form submitted by the client
      * @param $clientId id of the client being worked with
@@ -1182,7 +1233,7 @@ class database
         return $result;
     }
 
-    //---------------------Pull Forms--------------------------
+    //--------------------- Pull Forms --------------------------
 
     /**
      * Grabs a list of all current forms in sorted order by most current date to least current
