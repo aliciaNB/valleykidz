@@ -1,7 +1,7 @@
 <?php
-$start = $_GET['weekStart'];
-$end = $_GET['weekEnd'];
-$form = $_GET['form'];
+$start = $_SESSION['start'];
+$end = $_SESSION['end'];
+$form = $_SESSION['form'];
 
 $db= new database();
 $result = $db->getEmotionsBetweenDates($start, $end, $form);

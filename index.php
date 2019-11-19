@@ -283,15 +283,18 @@ $f3->route('GET|POST /viewform', function($f3) {
     $f3->set('id', $_GET['id']);
     $tableCreate = new BuildTable();
     $f3->set('table', $tableCreate);
+
+    $_SESSION['form'] = $_GET['form'];
+    $_SESSION['start'] = $_GET['weekStart'];
+    $_SESSION['end']=$_GET['weekEnd'];
+
     //Format Dates to be displayed
     $displayStart = new DateTime($_GET['weekStart']);
-    if($displayStart->format("N")!==1)
-    {
+    if($displayStart->format("N")!==1) {
         $displayStart= $displayStart->modify('last monday');
     }
     $displayEnd = new DateTime($_GET['weekEnd']);
-    if($displayEnd->format("N")!==7)
-    {
+    if($displayEnd->format("N")!==7) {
         $displayEnd= $displayEnd->modify('next sunday');
     }
     $f3->set('displayStart', $displayStart->format("M d,Y"));
