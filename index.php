@@ -44,14 +44,15 @@ $f3->route('GET|POST /', function ($f3) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->getUser($_POST['user'],$_POST['pass']);
 
-        if ($result==="0") { //clinician
+        if ($result === "0") { //clinician
             $_SESSION['uuid'] = $db->getClinicianID($_POST['user']);
             $f3->reroute('/branchprofile');
-
-        } elseif ($result==="1") { //member
+        } elseif ($result === "1") { //member
             $_SESSION['uuid'] = $_POST['user'];
             $f3->reroute('/memberprofile');
-
+        } else if ($result === "2") { //admin
+            $_SESSION['uuid'] = $db->getAdminID($_POST['user']);
+            $f3->reroute('/adminprofile');
         } else {
             $f3->set('error', $result);
         }
@@ -212,7 +213,12 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
 $f3->route('GET|POST /adminprofile', function ($f3) {
     $view = new Template();
     global $db;
-    //ToDo: check db for usertype admin, check if appropriate user on page redirect to home if not
+
+    if ($db->getuserType($_SESSION['uuid'])!=="a") { //check if appropriate user on page redirect to home if not
+        $_SESSION['redirect']="Your session has timed out. Please login to continue.";
+        $f3->reroute('/');
+    }
+
     echo $view->render('view/adminprofile.html');
 });
 

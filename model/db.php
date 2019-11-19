@@ -211,6 +211,8 @@ if ($user == NULL) {
     $path = "/home/valleyki/config.php";
 } else if ($user == 'mbrittgr'){
     $path = "/home2/$user/config.php";
+} else if ($user == 'abuehner') {
+    $path = "/home/$user/valleykidz_config.php";
 } else {
     $path = "/home/$user/config.php";
 }
@@ -260,6 +262,8 @@ class database
      */
     public function getUser($userid, $pass)
     {
+        $isAdmin = false;
+
         // check if client
         $sql = "SELECT * FROM users WHERE user_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
@@ -291,15 +295,42 @@ class database
                 $statement->execute();
                 $result = $statement->fetch(PDO::FETCH_ASSOC);
             } else {
-                return "User id does not exist";
+                // check if admin
+                $sql = "SELECT * FROM admin WHERE user_name=:user_id";
+                $statement= $this->_dbh->prepare($sql);
+                $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
+                $statement->execute();
+                $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+                if ($result) {
+                    $sql = "SELECT * FROM admin INNER JOIN users 
+                    ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
+                    $statement= $this->_dbh->prepare($sql);
+                    $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
+                    $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+                    $statement->execute();
+                    $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+                    if ($result) {
+                        $isAdmin = true;
+                    }
+                } else {
+                    return "User id does not exist";
+                }
             }
         }
 
-        //if both are not correct this means only password is left
-        if (!$result) {
+        //if all three are not correct this means only password is left
+        if (!$result && !$isAdmin) {
             return "Password doest not match id";
         }
-        return $result['client'];
+
+        //if user is admin return a different result other than 1 or 0
+        if ($isAdmin) {
+            return $result['client'] = "2";
+        } else {
+            return $result['client'];
+        }
     }
 
     /**
@@ -321,7 +352,7 @@ class database
 
     /**
      * Gets clinician id provided Clinician user_name
-     * @param $user_name Represnet username of clinician
+     * @param $user_name Represents username of clinician
      * @return mixed string representation of clinician id
      */
     public function getClinicianID($user_name)
@@ -333,6 +364,22 @@ class database
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $result['clinician_id'];
+    }
+
+    /**
+     * Gets admin id provided admin user_name
+     * @param $user_name Represents username of admin
+     * @return mixed string representation of admin id
+     */
+    public function getAdminID($user_name)
+    {
+        $sql = "SELECT admin_id FROM admin WHERE user_name=:user_name";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":user_name", $user_name, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result['admin_id'];
     }
 
     //--------------------------- Update profiles links ----------------------------------------------
