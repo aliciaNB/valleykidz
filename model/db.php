@@ -1199,17 +1199,58 @@ class database
         return $result;
     }
 
-    public function getSkillsBetweenDates($startDate, $endDate, $formNum, $client)
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param $formNum
+     */
+    public function getSkillsFromForm($startDate, $endDate, $formNum)
     {
     }
 
-    public function getEmotionsBetweenDates($startDate, $endDate, $formNum, $client)
+    /**
+     * Retrieve emotion names from form id provided
+     * @param $formId form numb provided for db retrieval
+     * @return mixed return an array of form information which includes all emotions within form
+     */
+    public function getEmotionsFromForm($formId)
     {
+        $sql="SELECT emotions.emotionName FROM formEmotions INNER JOIN emotions on formEmotions.emotionId = emotions.emotionId
+            WHERE formEmotions.formId=:formId";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getTargetsBetweenDates($startDate, $endDate, $formNum)
+    {
+        $start = new DateTime($startDate);
+        $start = $start->format('Y-m-d');
+        $end = new DateTime($endDate);
+        $end = $end->format('Y-m-d');
+        $sql="SELECT formId,startDate,endDate FROM forms WHERE clientId=:clientId ORDER BY (endDate IS NOT NULL), startDate DESC";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
 
     }
 
-    public function getTargetsBetweenDates($startDate, $endDate, $formNum, $client)
+    /**
+     * Grabs all the targets associated to a form id returnin there name as an array
+     * @param $formId from number provided associated to db
+     * @return mixed returns array of targets names
+     */
+    public function getTargetsFromForm($formId)
     {
-
+        $sql="SELECT targets.targetName from formTargets INNER JOIN targets on formTargets.targetId= targets.targetId WHERE formId =:formId;";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
