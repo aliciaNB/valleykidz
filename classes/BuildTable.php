@@ -5,6 +5,66 @@ class BuildTable
 {
 
     /**
+     * Prints all notes form a form withing a range of dates
+     * @param $start start date wanted from form
+     * @param $end end dates wanted from form
+     * @param $formId form number that is currently being displayed
+     * @throws Exception if can not convert to a datetime object
+     */
+    public static function printNotes($start, $end, $formId)
+    {
+        $db = new database();
+        $result=$db->getNotesBetweenDates($start,$end,$formId);
+        //build table head
+        echo'<h2 class="text-center mt-5 bgwhite">Notes</h2>
+        <div class="mt-5 data">
+            <table id="notes" class="table table-bordered cell-border">
+            <thead>
+                <tr>
+                    <th id="noteHead" class="bglblue white">Days of Week</th>
+                    <th class="bglblue white">Notes</th>
+                </tr>
+            </thead>';
+
+        $dates = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
+        $current = new DateTime($start);
+        if($current->format("N")!=1)//find out if current date is a monday
+        {
+            $current=$current->modify('last monday');//grab monday if not
+        }
+        $index = 0;
+        echo '<tbody>';
+        foreach ($dates as $date)
+        {
+            echo '<tr>';//open row
+            echo '<td>'.$date.'</td>';
+
+            if($result) {
+                if($index<count($result)) {
+                    $resultDate = new DateTime($result[$index]['dateSubmitted']);
+                    if($resultDate->format("Y-m-d")==$current->format("Y-m-d"))
+                    {
+                        echo '<td>'. $result[$index]['noteInfo'].'</td>';
+                        $index++;
+                    }
+                    else{
+                        echo '<td></td>';
+                    }
+
+                }else{
+                    echo '<td></td>';
+                }
+            }else{
+                echo '<td></td>';
+            }
+
+            $current=$current->modify("+1 day");
+            echo '</tr>';//close row
+        }
+        //close table
+        echo '</tbody></table></div>';
+    }
+    /**
      * Prints a default table of targets from current form. Adding id's to be targeted by a later ajax/json request.
      * @param $formId form id currently being viewed
      */
@@ -14,6 +74,7 @@ class BuildTable
         $result=$db->getTargetsFromForm($formId);
         self::printTargetHeader();
 
+        echo '<tbody>';
         foreach ($result as $item)
         {
             $upper = ucwords($item['targetName']);
@@ -35,7 +96,7 @@ class BuildTable
 
         }
         //close table
-        echo '</table></div>';//close table and div
+        echo '</tbody></table></div>';//close table and div
     }
 
 
@@ -49,6 +110,7 @@ class BuildTable
         $db = new database();
         $result=$db->getEmotionsFromForm($formId);
         self::printEmotionHeader();
+        echo '<tbody>';
         foreach ($result as $item) {
             $uppper = ucwords($item['emotionName']);
            echo '<tr><td>'.$uppper.'</td>';
@@ -60,7 +122,7 @@ class BuildTable
            echo '</tr>';
         }
 
-        echo '</table></div>';//close table and div
+        echo '</tbody></table></div>';//close table and div
     }
 
     /**
@@ -72,19 +134,15 @@ class BuildTable
     {
         $db = new database();
         $result=$db->getSkillsFromForm($formId);
-        self::printSkillHeader();
 
+        echo '<h2 class="mt-5 text-center">Skills</h2>';
         foreach ($result as $core => $skills)
         {
-            echo "<tr " . ($core === "Emotion Regulation" ? "class='paginateBefore'" : "") .">
-                    <td rowspan=\"". sizeof($skills)*2 . "\">$core</td>";
+            self::printSkillHeader($core);
+            echo "<tbody>";
             foreach ($skills as $key => $skill)
             {
-                if ($key != 0)
-                {
-                    echo "<tr>";
-                }
-
+                echo '<tr>';
                 echo "<td rowspan='2'>" . ucwords($skill['skillName']) . "</td>
                     <td>Degree</td>";
 
@@ -101,9 +159,9 @@ class BuildTable
                 }
                 echo "</tr>";
             }
-        }
-        echo "</table>
+            echo "</tbody></table>
             </div>";
+        }
     }
 
     /**
@@ -113,12 +171,14 @@ class BuildTable
     {
         //build table head
         echo'<h2 class="text-center mt-5 bgwhite">Emotions</h2>
-        <div class="mt-5 table-responsive pagination">
-            <table id="feelings" class="cell-border">
+        <div class="mt-5 data pagination">
+            <table id="feelings" class="table table-bordered cell-border">
+            <thead>
                 <tr>
                     <th class="bglblue white">Emotions</th>';
 
         self::printDateRow();
+        echo '</thead>';
     }
 
     /**
@@ -126,27 +186,36 @@ class BuildTable
      */
     private static function printTargetHeader()
     {
-        echo "<h2 class=\"text-center mt-5\">Targets</h2>
-                <div class=\" table-responsive pagination\">
-                    <table id=\"targets\" class=\"cell-border\">
+        echo "<h2 class=\"text-center mt-5 bgwhite\">Targets</h2>
+                <div class=\"mt-5 data pagination\">
+                    <table id=\"targets\" class=\"table table-bordered cell-border\">
+                       <thead>
                         <tr>
                             <th class=\"bglblue white\" colspan=\"2\">Targets</th>";
-
         self::printDateRow();
+        echo '</thead>';
     }
 
     /**
      * prints header for skllls table
      */
-    private static function printSkillHeader()
+    private static function printSkillHeader($core)
     {
-        echo "<h2 class=\"mt-5 text-center paginateBefore\">Skills</h2>
-                <div class=\"mt-5 table-responsive\">
-                    <table id=\"skill\" class=\"cell-border\">
+        if($core!="Core Mindfulness")
+        {
+            echo "<div class=\"mt-5 data pagination\">";
+        } else {
+            echo '<div class="mt-5 data">';
+        }
+        $stripped = str_replace(' ', '',$core);
+        echo "<table id=\"$stripped\" class=\"table table-bordered cell-border\">
+                    <caption class='caption text-center white bgdkblue'>$core</caption>
+                    <thead>
                         <tr>
-                            <th class=\"bglblue white\" colspan=\"3\">DBT Skills</th>";
+                            <th class=\"bglblue white\" colspan=\"2\">DBT Skills</th>";
 
         self::printDateRow();
+        echo"</thead>";
     }
 
     /**

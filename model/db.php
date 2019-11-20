@@ -1286,6 +1286,24 @@ class database
         return $result;
     }
 
+    /**
+     * Grabs all notes between a date range from a form id provided
+     * @param $startDate the beginning date to be selected from form
+     * @param $endDate end date to be selected from form
+     * @param $formId the form id that is currently being used
+     */
+    public function getNotesBetweenDates($startDate, $endDate, $formId)
+    {
+        $sql="SELECT dateSubmitted, noteInfo FROM noteSubmission WHERE formId=:formId AND dateSubmitted BETWEEN :start AND :end ";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
+        $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+
+    }
 
     /**
      * Retrieve emotion names from form id provided

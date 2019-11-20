@@ -1,0 +1,41 @@
+/*
+    Valley Kidz
+    11/20/19
+    view_form_styles.css
+    Stylings for the form view page
+ */
+
+td {
+    background-color: white;
+    word-wrap: break-word;
+}
+
+div.data {
+    overflow-x: auto;
+    width: 90%;
+    margin: auto;
+}
+
+#printTop {
+    float: right;
+    margin-right: 5%;
+}
+
+#noteHead {
+    width: 10%;
+}
+
+/* pagination on media request in order to create page breaks for tables*/
+@media print {
+    .pagination {
+        page-break-after: always;
+    }
+
+    tr {
+        font-size: .8em;
+    }
+
+    .print {
+        display: none;
+    }
+}
