@@ -687,6 +687,12 @@ class database
         return $skills;
     }
 
+    /**
+     * Selects recent open form and returns start date to determine how far back the date picker can go
+     * @param $clientId current client from session information
+     * @return array|null a result either the current start date of an open form or null if none exists
+     * @throws Exception error if can not convert to a date time object
+     */
     public function getDateRange($clientId)
     {
         $sql = "SELECT startDate FROM forms WHERE clientId=:clientId AND endDate IS NULL";
@@ -733,6 +739,11 @@ class database
         }
     }
 
+    /**
+     * Post values for a form date submitted
+     * @param $post represent a post array of values
+     * @param $clientId client associated with form submisssion
+     */
     private function addClientData($post, $clientId)
     {
         $formId = $this->getCurrentFormId($clientId);
@@ -743,6 +754,11 @@ class database
         $this->addClientNotes($post['notes'], $formId, $post['date']);
     }
 
+    /**
+     * Updates existing db with new posted information
+     * @param $post represents post array of a user
+     * @param $clientId the client id that is submitting the form
+     */
     private function updateClientData($post, $clientId)
     {
         $formId = $this->getCurrentFormId($clientId);
@@ -753,6 +769,13 @@ class database
         $this->updateClientNotes($post['notes'], $formId, $post['date']);
     }
 
+    /**
+     * Adds client targets to submittedTargets table
+     * @param $urges number value of urgers selected
+     * @param $actions true false of wether action was taken via checkbox input
+     * @param $formId form number currently working with
+     * @param $date the date of the form submission
+     */
     private function addClientTargets($urges, $actions, $formId, $date)
     {
         $formTargets = $this->getCurrentFormTargets($formId);
@@ -774,6 +797,13 @@ class database
         }
     }
 
+    /**
+     * Update a existing target submitted date with new information
+     * @param $urges urge 0-5 for the target updating
+     * @param $actions true/false of wether action taken for current target
+     * @param $formId the form id number currently being submitted
+     * @param $date date of submission
+     */
     private function updateClientTargets($urges, $actions, $formId, $date)
     {
         $formTargets = $this->getCurrentFormTargets($formId);
@@ -795,6 +825,12 @@ class database
         }
     }
 
+    /**
+     * Add client emotion from submitted form
+     * @param $intensities represents emotions level of intensity
+     * @param $formId the form being submitted
+     * @param $date the date the form is submitted on
+     */
     private function addClientEmotions($intensities, $formId, $date)
     {
         $formEmotions = $this->getCurrentFormEmotions($formId);
@@ -1378,6 +1414,14 @@ class database
         return $skills;
     }
 
+    /**
+     * Retrieves the value of skills between two dates matching a form id
+     * @param $startDate start date of form data requested
+     * @param $endDate end date of form data requested
+     * @param $formId form that data is desired from
+     * @return mixed null if no data exists or an array of skill information containing degree,used,skillname and date
+     * @throws Exception if datetime object can not be created
+     */
     public function getSkillsBetweenDates($startDate, $endDate, $formId)
     {
         $startDate= new DateTime($startDate);

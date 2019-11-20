@@ -107,6 +107,11 @@ class Formsplitter
     }
 
 
+    /**
+     * Prints all the current form and prior session information in card format using self split methods to format internal dates withing card groups
+     * @param $id client id in db
+     * @throws Exception if date can not be formatted into a date time object
+     */
     public static function printDetailedForm($id)
     {
         $db = new database();

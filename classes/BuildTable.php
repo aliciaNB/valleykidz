@@ -4,6 +4,10 @@
 class BuildTable
 {
 
+    /**
+     * Prints a default table of targets from current form. Adding id's to be targeted by a later ajax/json request.
+     * @param $formId form id currently being viewed
+     */
     public static function printEmptyTargets($formId)
     {
         $db = new database();
@@ -34,12 +38,10 @@ class BuildTable
         echo '</table></div>';//close table and div
     }
 
+
     /**
-     * Create an empty table of emotions for form
-     * @param $startDate represents the start date of the form
-     * @param $endDate representts
-     * @param $formId
-     * @throws Exception
+     * Prints a default table of emotions from current form. Adding id's to be targeted by a later ajax/json request.
+     * @param $formId current form being worked with.
      */
     public static function printEmptyEmotions($formId)
     {
@@ -61,6 +63,11 @@ class BuildTable
         echo '</table></div>';//close table and div
     }
 
+    /**
+     * Prints a default table for all skills asssociated with current form. To be updated later by an ajax/json call.
+     * Marking each td with an id to be used by the ajax request.
+     * @param $formId current form number being viewed
+     */
     public static function printEmptySkills($formId)
     {
         $db = new database();
@@ -99,6 +106,9 @@ class BuildTable
             </div>";
     }
 
+    /**
+     * Prints header for emotions table
+     */
     private static function printEmotionHeader()
     {
         //build table head
@@ -111,6 +121,9 @@ class BuildTable
         self::printDateRow();
     }
 
+    /**
+     * Prints header for targets table
+     */
     private static function printTargetHeader()
     {
         echo "<h2 class=\"text-center mt-5\">Targets</h2>
@@ -122,6 +135,9 @@ class BuildTable
         self::printDateRow();
     }
 
+    /**
+     * prints header for skllls table
+     */
     private static function printSkillHeader()
     {
         echo "<h2 class=\"mt-5 text-center paginateBefore\">Skills</h2>
@@ -133,6 +149,9 @@ class BuildTable
         self::printDateRow();
     }
 
+    /**
+     * Prints th for date rows
+     */
     private static function printDateRow()
     {
         $dates = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
