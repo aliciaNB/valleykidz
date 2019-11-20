@@ -15,3 +15,9 @@ $( ".clickable" ).click(function() {
         $(this).children('.swap').html('+');
     }
 });
+
+$(".clickable").click(function() {
+    $('html,body').animate({
+            scrollTop: $(this).offset().top},
+        'slow');
+});
