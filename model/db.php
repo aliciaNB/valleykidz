@@ -659,25 +659,25 @@ class database
     public function getSkills()
     {
         // Getting all Core Mindfulness skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'cm' AND isDefault=1";
+        $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'cm' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $cm = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Getting all Interpersonal Effectiveness skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'ie' AND isDefault=1";
+        $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'ie' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $ie = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Getting all Emotion Regulation skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'er' AND isDefault=1";
+        $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'er' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $er = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Getting all Distress Tolerance skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'dt' AND isDefault=1";
+        $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'dt' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $dt = $statement->fetchAll(PDO::FETCH_ASSOC);
