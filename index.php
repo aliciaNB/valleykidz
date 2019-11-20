@@ -284,10 +284,10 @@ $f3->route('GET|POST /viewform', function($f3) {
     $tableCreate = new BuildTable();
     $f3->set('table', $tableCreate);
 
+    //set sessions
     $_SESSION['form'] = $_GET['form'];
     $_SESSION['start'] = $_GET['weekStart'];
-    $_SESSION['end']=$_GET['weekEnd'];
-
+    $_SESSION['end'] = $_GET['weekEnd'];
     //Format Dates to be displayed
     $displayStart = new DateTime($_GET['weekStart']);
     if($displayStart->format("N")!==1) {

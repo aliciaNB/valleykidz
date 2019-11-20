@@ -34,6 +34,8 @@ class Formsplitter
 
             //display start day to saturday
             $futuredate= new DateTime($startDate);
+            $startDate = new DateTime($startDate);
+            $startDate= $startDate->format("Y-m-d");
             if($futuredate->format('N')!=1)// if start date does not fall on a monday create first div
             {
                 $displayStart = $futuredate->format("M d,Y");//format date for route get hive

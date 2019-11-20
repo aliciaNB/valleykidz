@@ -659,25 +659,25 @@ class database
     public function getSkills()
     {
         // Getting all Core Mindfulness skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'cm'";
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'cm' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $cm = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Getting all Interpersonal Effectiveness skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'ie'";
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'ie' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $ie = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Getting all Emotion Regulation skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'er'";
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'er' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $er = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Getting all Distress Tolerance skills
-        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'dt'";
+        $sql = "SELECT skillName FROM skills WHERE skillCategory = 'dt' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $dt = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -1282,7 +1282,7 @@ class database
         $endDate = new DateTime($endDate);
         $endDate= $endDate->format("Y-m-d");
 
-        $sql= "SELECT dateSubmissionsEmotions.dateSubmitted, emotions.emotionName FROM dateSubmissionsEmotions 
+        $sql= "SELECT dateSubmissionsEmotions.dateSubmitted, emotions.emotionName, dateSubmissionsEmotions.intensity FROM dateSubmissionsEmotions 
         INNER JOIN emotions on dateSubmissionsEmotions.emotionId = emotions.emotionId WHERE dateSubmissionsEmotions.formId=:formId AND dateSubmissionsEmotions.dateSubmitted 
         BETWEEN :start and :end";
 
@@ -1303,9 +1303,97 @@ class database
     public function getTargetsFromForm($formId)
     {
         $sql="SELECT targets.targetName from formTargets INNER JOIN targets on formTargets.targetId= targets.targetId WHERE formId =:formId 
-        ORDER BY tagets.targetId ASC";
+        ORDER BY targets.targetId ASC";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Retrieves all targets between two dates from a given form
+     * @param $startDate the start date of the form
+     * @param $endDate end date of the form
+     * @param $formId represents from num in db
+     * @return mixed returns an array including date submitted, urge, action, and name
+     */
+    public function getTargetsBetweenDates($startDate, $endDate, $formId)
+    {
+        $sql="SELECT dateSubmissionTargets.dateSubmitted, dateSubmissionTargets.urge, dateSubmissionTargets.action, 
+        targets.targetName FROM dateSubmissionTargets INNER JOIN targets on 
+        dateSubmissionTargets.targetId = targets.targetId WHERE dateSubmissionTargets.formId=:formId AND 
+        dateSubmissionTargets.dateSubmitted BETWEEN :start and :end";
+
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
+        $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    /**
+     * Grabs all the skills associated to a form id returnin there name as an array
+     * @param $formId from number provided associated to db
+     * @return mixed returns array of skills names, catagory
+     */
+    public function getSkillsFromForm($formId)
+    {
+        // Getting all Core Mindfulness skills
+        $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
+                WHERE skillCategory = 'cm' AND formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $cm = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Getting all Interpersonal Effectiveness skills
+        $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
+                WHERE skillCategory = 'ie' AND formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $ie = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Getting all Emotion Regulation skills
+        $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
+                WHERE skillCategory = 'er' AND formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $er = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Getting all Distress Tolerance skills
+        $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
+                WHERE skillCategory = 'dt' AND formId=:formId";
+        $statement = $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->execute();
+        $dt = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $skills = array('Core Mindfulness'=>$cm, 'Interpersonal Effectiveness'=>$ie,
+            'Emotion Regulation'=>$er, 'Distress Tolerance'=>$dt);
+        return $skills;
+    }
+
+    public function getSkillsBetweenDates($startDate, $endDate, $formId)
+    {
+        $startDate= new DateTime($startDate);
+        $startDate= $startDate->format("Y-m-d");
+        $endDate = new DateTime($endDate);
+        $endDate= $endDate->format("Y-m-d");
+
+        $sql= "SELECT dateSubmitted, skillName, degree, used FROM dateSubmissionSkills 
+        INNER JOIN skills on dateSubmissionSkills.skillId = skills.skillId WHERE dateSubmissionSkills.formId=:formId 
+        AND dateSubmitted 
+        BETWEEN :start and :end";
+
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+        $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
+        $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;

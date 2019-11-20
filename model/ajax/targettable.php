@@ -6,5 +6,5 @@ $end = $_SESSION['end'];
 $form = $_SESSION['form'];
 
 $db= new database();
-$result = $db->getEmotionsBetweenDates($start, $end, $form);
+$result = $db->getTargetsBetweenDates($start, $end, $form);
 echo json_encode($result);

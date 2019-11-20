@@ -61,6 +61,10 @@ body {
     background-color: #f1bc33;
 }
 
+.empty {
+    background-color: #F0F0F0;
+}
+
 /* General colors *********************************************/
 
 .white {
@@ -121,6 +125,16 @@ body {
     }
 }
 
+@media print {
+    .paginateBefore {
+        page-break-before: always;
+    }
+}
+
+
+.check{
+    font-size: 1.5em;
+}
 /* Style Colors:
 Recruitment Colors
 Light BlueHex:      559BCA
