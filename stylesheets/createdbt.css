@@ -11,7 +11,7 @@
 
 }
 
-.creat-btn:hover, .create-btn:active, .create-btn:focus {
+.create-btn:hover, .create-btn:active, .create-btn:focus {
     background-color: #7e9f40 !important;
 }
 
