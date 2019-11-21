@@ -52,15 +52,15 @@ $( document ).ready(function() {
 });
 
 //on click of hidshow div swaps between hide show verbage and d-none d-inline
-$( ".hideshow" ).click(function() {
-    $(this).parent().next('.showing').toggle();
-    if($(this).html()=="Hide")
+$( ".hide" ).click(function() {
+    $(this).next('.showing').toggle();
+    if($(this).find('.hideshow').html()=="Hide")
     {
-        $(this).html("Show");
+        $(this).find('.hideshow').html("Show");
     }
     else
     {
-        $(this).html("Hide");
+        $(this).find('.hideshow').html("Hide");
     }
 });
 

@@ -125,7 +125,7 @@ class Formsplitter
             echo'<div class="row mt-3 mb-5">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
-                             <h3 class="list-group-item list-group-item-primary bgdkgold white list-group-flush clickable">CURRENT SESSION FORM
+                             <h3 id="current" class="list-group-item list-group-item-primary bgdkgold white list-group-flush clickable">CURRENT SESSION FORM
                              <span class="swap">-</span></h3>
                              <ul class="list-group list-group-flush expandable">';
             if($result[0]['endDate']===null) {//if recent form is open
@@ -143,7 +143,7 @@ class Formsplitter
                 <div class="row mt-3 mb-5">
                 <div class="col-md-2 col-1 col-lg-2"></div>
                 <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
-                <h3 class="list-group-item list-group-item-primary bgdkblue white list-group-flush clickable">PRIOR SESSION FORMS
+                <h3 id="prior" class="list-group-item list-group-item-primary bgdkblue white list-group-flush clickable">PRIOR SESSION FORMS
                       <span class="swap">+</span></h3><div class="expandable">';
 
                 //Iterate over remaining results if any
@@ -156,10 +156,10 @@ class Formsplitter
                     $end = new DateTime($result[$i]["endDate"]);
                     $end =$end->format("M d,Y");
                     //start card
-                    echo'<div class="row mt-3">
+                    echo'<div class="row mt-3 mb-3">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
-                             <h3 class="list-group-item list-group-item-primary bglblue white list-group-flush clickable">SESSION: '.$start.'-'.$end.
+                             <h3 class="priors list-group-item list-group-item-primary bglblue white list-group-flush clickable">SESSION: '.$start.'-'.$end.
                         ' <span class="swap">+</span></h3>
                              <ul class="list-group list-group-flush expandable">';
 

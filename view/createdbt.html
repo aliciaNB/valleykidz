@@ -36,10 +36,18 @@ Date:11/13/2019
 <div class="container-fluid">
     <h1 class="text-center mt-4 m-2"><strong>Create Weekly DBT</strong></h1>
     <h2 class="text-center">Client#:{{@id}}</h2>
-    <div class="border  rounded m-4">
+    <div class="border rounded m-4">
         <form id="form" action="#" method="post">
             <div class="col-12 mt-3 ml-2">
                 <h3 class="form-row">Targets:</h3>
+                <p class="mt-1 hide">View Default Targets Included-<span class="btn hideshow btn-link">Show</span></p>
+                <div class="mt-1 mb-4 form-row showing">
+                    <repeat group="{{ @targets}}"
+                            key="{{ @key }}"
+                            value="{{ @value }}">
+                        <input disabled type="text" value="{{ucwords(@value['targetName'])}}" class="form-control mt-1 col-12" name="targets[]" required/>
+                    </repeat>
+                </div>
                 <span class="text-danger text-center">{{@errors.feelings}}</span>
                 <div class="target_wrapper mb-1" id="targets">
                     <div class="form-row">
@@ -56,19 +64,19 @@ Date:11/13/2019
                     </repeat>
                 </div>
                 <hr>
-                <p class="text-center mt-1">Targets Included In All DBT Forms-<span class="btn hideshow btn-link">Show</span></p>
-                <div class="mt-1 mb-1 form-row showing">
-                    <repeat group="{{ @targets}}"
-                            key="{{ @key }}"
-                            value="{{ @value }}">
-                        <input disabled type="text" value="{{ucwords(@value['targetName'])}}" class="form-control mt-1 col-12" name="targets[]" required/>
-                    </repeat>
-                </div>
             </div>
 
             <hr>
             <div class="col-12 ml-2">
                 <h3 class="form-row">Emotions: </h3>
+                <p class="mt-1 hide">View Default Emotions Included-<span class="hideshow btn btn-link">Show</span></p>
+                <div class="mt-1 mb-4 form-row showing">
+                    <repeat group="{{ @emotions}}"
+                            key="{{ @key }}"
+                            value="{{ @value }}">
+                        <input disabled type="text" value="{{ucwords(@value['emotionName'])}}" class="form-control mt-1 col-12" name="feelings[]" required/>
+                    </repeat>
+                </div>
                 <div class="input_fields_wrap mb-1" id="emotions">
                     <div class="form-row">
                         <button type="button" class="add_field_button btn btn-sm btn-primary rounded-0
@@ -84,14 +92,6 @@ Date:11/13/2019
                     </repeat>
                 </div>
                 <hr>
-                <p class="text-center mt-1">Emotions Included In All DBT Forms-<span class="hideshow btn btn-link">Show</span></p>
-                <div class="mt-1 mb-1 form-row showing">
-                    <repeat group="{{ @emotions}}"
-                            key="{{ @key }}"
-                            value="{{ @value }}">
-                        <input disabled type="text" value="{{ucwords(@value['emotionName'])}}" class="form-control mt-1 col-12" name="feelings[]" required/>
-                    </repeat>
-                </div>
                 <div class="text-right mt-2 mb-2">
                     <button type="submit" class="btn btn-primary rounded-0 border-0">Submit</button>
                 </div>

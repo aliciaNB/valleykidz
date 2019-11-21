@@ -28,6 +28,10 @@ body {
     color: white;
 }
 
+nav button{
+    width:auto;
+}
+
 /* General Background Colors **********************************/
 .bgdkblue {
     background-color: #23446e;
@@ -61,9 +65,6 @@ body {
     background-color: #f1bc33;
 }
 
-.empty {
-    background-color: #e6e6e6;
-}
 
 /* General colors *********************************************/
 
@@ -118,23 +119,21 @@ body {
     width: 100%;
 }
 
-/* pagination on media request in order to create page breaks for tables*/
-@media print {
-    .pagination {
-        page-break-after: always;
-    }
-}
-
-@media print {
-    .paginateBefore {
-        page-break-before: always;
-    }
-}
-
-
 .check{
     font-size: 1.5em;
 }
+
+
+/* Table Styles ******************************************************/
+
+.empty {
+    background-color: #e6e6e6;
+}
+
+.caption{
+    caption-side: top;
+}
+
 /* Style Colors:
 Recruitment Colors
 Light BlueHex:      559BCA

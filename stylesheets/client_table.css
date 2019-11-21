@@ -11,3 +11,20 @@
 li{
     font-size:1.5em;
 }
+
+li:hover{
+    background-color: rgba(166, 155, 120, 0.21) !important;
+}
+
+.priors:hover{
+    background-color: #467fa6 !important;
+}
+
+#current:hover{
+    background-color: #ed9d25 !important;
+    text-shadow: .1px .1px .1px #333333;
+}
+
+#prior:hover{
+    background-color: #316094 !important;
+}

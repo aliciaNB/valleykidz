@@ -91,27 +91,6 @@ $(document).ready( function(){
     );
 });
 
-// Scripts for data tables
-//targets table
-$(document).ready( function () {
-    $('#targets').DataTable();
-} );
-$('#branchtable').DataTable( {
-    responsive: true
+$(".print").on("click", function(){
+    window.print();
 });
-
-//feelings table
-$(document).ready( function () {
-    $('#feelings').DataTable();
-} );
-$('#branchtable').DataTable( {
-    responsive: true
-} );
-
-//skills table
-$(document).ready( function () {
-    $('#skill').DataTable();
-} );
-$('#branchtable').DataTable( {
-    responsive: true
-} );

@@ -46,3 +46,15 @@ button{
 .hrefBut{
     width:200px;
 }
+
+td,th {
+    background-color: white;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: rgba(166, 155, 120, 0.21) !important;
+}
+
+caption{
+    font-size: 1.2em;
+}
