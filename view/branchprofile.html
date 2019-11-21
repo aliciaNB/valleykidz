@@ -62,7 +62,7 @@ Date:11/13/2019
         </true>
         <false>
             <div class="table-responsive mt-5">
-                <table id="branchtable" class="table table-hover dt-responsive display nowrap">
+                <table id="branchtable" class="table table-hover display nowrap">
                     <caption class='caption text-center white bgdkblue'>Current Clients</caption>
                     <tr>
                         <th>Client #</th>
@@ -81,7 +81,7 @@ Date:11/13/2019
                                         <input name="id" type="text" value="{{@value.client_id}}" class="d-none">
                                         <button type="submit"
                                         onclick="return confirm('Are you sure you want to submit form for client# {{@value.client_id}}?')";
-                                        class="btn btn-primary rounded-0 border-0 addclient-btn">
+                                        class="smaller btn btn-primary rounded-0 border-0 addclient-btn">
                                         SUBMIT PRIOR DBT</button>
                                         </form>
                                         </td>
@@ -89,13 +89,13 @@ Date:11/13/2019
                                     <false>
                                         <td>
                                             <a href="createdbt?id={{@value.client_id}}"
-                                            class="btn btn-primary rounded-0 border-0 hrefBut">
+                                            class="smaller btn btn-primary rounded-0 border-0 hrefBut">
                                             CREATE NEW  DBT</a>
                                         </td>
                                     </false>
                                 </check>
                             <td><a href="formtable?id={{@value.client_id}}"
-                                   class="btn viewform-btn btn-primary rounded-0 border-0 hrefBut">VIEW</a></td>
+                                   class="smaller btn viewform-btn btn-primary rounded-0 border-0 hrefBut">VIEW</a></td>
                         </tr>
                     </repeat>
                 </table>
