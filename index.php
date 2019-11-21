@@ -219,6 +219,128 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
         $f3->reroute('/');
     }
 
+    //Check if create client account form is the form submitted on the page
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'createClient') {
+        $clientId = $_POST['newClientId'];
+        $password = $_POST['ncPassword'];
+        $password2 = $_POST['ncPasswordConfirm'];
+
+        $f3->set('clientId', $clientId);
+        $f3->set('password', $password);
+        $f3->set('password2', $password2);
+
+        //validate the form, if not valid display error
+        if (validCreateClientForm()) {
+            //check if client id does not already exists
+            if ($f3->get('db')->checkIfClientExists($clientId)) {
+                $f3->set("errors['newClientId']", 'Client ID already exists');
+            } else { //otherwise valid create the account
+                $result = $f3->get('db')->insertClientAccount($clientId, $password);
+
+                if ($result) { // success
+                    $f3->set('clientAccSuccess', "Account for Client Id: " . $clientId . " successfully created.");
+                } else {
+                    // otherwise display something went wrong.
+                    $f3->set("errors['clientAccFail']", 'Something went wrong on our end. Please try again.');
+                }
+            }
+        }
+    }
+
+    //Check if create clinician/group leader account is the form submitted on the page
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'createClinician') {
+        $clnId = $_POST['newClinicianId'];
+        $clnUsername = $_POST['nClnUsername'];
+        $clnPassword = $_POST['nclnPassword'];
+        $clnPassword2 = $_POST['nclnPasswordConfirm'];
+
+        $f3->set('clnId', $clnId);
+        $f3->set('clnUsername', $clnUsername);
+        $f3->set('clnPassword', $clnPassword);
+        $f3->set('clnPassword2', $clnPassword2);
+
+        //validate the form, if not valid display error
+        if (validCreateClinicianForm()) {
+
+            //add additional digit so that user_id in users table is unique from client ids **important**
+            $uniqueClnId = $clnId . 0;
+
+            //check if the clinician id does not already exist
+            if ($f3->get('db')->checkIfClinicianExists($uniqueClnId, $clnUsername)) {
+                //FIXME case where username is used but does not belong to client id && client id is used but belongs to another username
+                $f3->set("errors['clnId']", 'ID already exists');
+                $f3->set("errors['clnUsername']", 'Username already exists');
+            } else { // otherwise valid create the account,
+                //call db inserts
+                $result = $f3->get('db')->insertClinicianAccount($uniqueClnId, $clnPassword, $clnUsername);
+                if ($result) {
+                    $f3->set('clnAccSuccess', "Account for Clinician: " . $clnUsername . " successfully created.");
+                } else {
+                    $f3->set("errors['clnAccFail']", 'Something went wrong on our end. Please try again.');
+                }
+            }
+        }
+    }
+
+    //Check if change client account password is the form submitted on the page
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'changeClientPassword') {
+        $clientId = $_POST['chgClientPwId'];
+        $chgPwNewPw = $_POST['chgPwNewPw'];
+        $chgPwNewPw2 = $_POST['chgPwNewPwConfirm'];
+
+        $f3->set('chgClientPwId', $clientId);
+        $f3->set('chgPwNewPw', $chgPwNewPw);
+        $f3->set('chgPwNewPw2', $chgPwNewPw2);
+
+        //validate the form, if not valid display error
+        if (validChangeClientPasswordForm()) {
+
+            //check if client exists
+            if ($f3->get('db')->checkIfClientIdExists($clientId)) {
+
+                // if exists run update password for client statement
+                $result = $f3->get('db')->changeClientPassword($clientId, $chgPwNewPw);
+                if ($result) {
+                    $f3->set('updatePwSuccess', "Password changed successfully for Client Id: " . $clientId);
+                } else {
+                    $f3->set("errors['updatePwFail']", 'Something went wrong on our end. Please try again.');
+                }
+            } else {
+                $f3->set("errors['chgClientPwId']", 'Client id does not match any existing records.');
+            }
+        }
+    }
+
+    //Check if change clinician account password is the form submitted on the page
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'changeClnPassword') {
+        $clnUsername = $_POST['chgPwClnUsername'];
+        $chgPwClnNewPw = $_POST['chgPwClnNewPw'];
+        $chgPwClnNewPw2 = $_POST['chgPwClnNewPw2'];
+
+        $f3->set('chgPwClnUsername', $clnUsername);
+        $f3->set('chgPwClnNewPw', $chgPwClnNewPw);
+        $f3->set('chgPwClnNewPw2', $chgPwClnNewPw2);
+
+        if (validChangeClnPasswordForm()) {
+            //check if clinician username exists
+            if ($f3->get('db')->checkIfClinicianUsernameExists($clnUsername)) {
+
+                //if exists run update, retrieve clinician_id and run update password for clinician statement
+                $id = $f3->get('db')->checkIfClinicianUsernameExists($clnUsername);
+                $result = $f3->get('db')->changeClinicianPassword($id, $chgPwClnNewPw);
+
+                if ($result) {
+                    $f3->set('updateClnPwSuccess', "Password changed successfully for Clinician: " . $clnUsername);
+                } else {
+                    $f3->set("errors['updateClnPwFail']", 'Something went wrong on our end. Please try again.');
+                }
+            } else {
+                $f3->set("errors['chgPwClnUsername']", 'Username does not match any existing records.');
+            }
+        }
+    }
+
+    //TODO keep submitted form tab as the active tab/pill
     echo $view->render('view/adminprofile.html');
 });
 

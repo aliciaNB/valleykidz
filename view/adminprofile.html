@@ -43,96 +43,191 @@
                        role="tab" aria-controls="pills-add-clinician" aria-selected="false"> + Clinician Account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-change-password-tab" data-toggle="pill" href="#pills-change-password"
-                       role="tab" aria-controls="pills-change-password" aria-selected="false">Change Password</a>
+                    <a class="nav-link" id="pills-change-client-password-tab" data-toggle="pill"
+                       href="#pills-change-client-password"role="tab" aria-controls="pills-change-client-password"
+                       aria-selected="false">Change Client Password</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-change-cln-password-tab" data-toggle="pill"
+                       href="#pills-change-cln-password" role="tab" aria-controls="pills-change-cln-password"
+                       aria-selected="false">Change Clinician Password</a>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-add-client" role="tabpanel"
                      aria-labelledby="pills-add-client-tab">
                     <h1>Create Client Account</h1>
-                    <!-- TODO Start of Create New Client Account Form-->
-                    <form method="post" action="#">
+                    <!-- Start of Create New Client Account Form-->
+                    <form method="post" action="#" id="createClient">
                         <div class="form-group">
-                            <label for="inputId">Client Id</label>
-                            <input type="text" class="form-control" id="inputId"
+                            <label for="newClientId">Client Id</label>
+                            <input type="text" class="form-control" id="newClientId" name="newClientId"
                                    placeholder="Client Id">
-                            <small id="clientIDHelp"
-                                   class="form-text text-muted">Client Id must be 6 digits</small>
+                            <check if="{{ @errors['newClientId'] }}">
+                                <small id="clientIDHelp"
+                                       class="form-text text-muted"> {{ @errors['newClientId'] }}</small>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="inputPassword">Password</label>
-                            <input type="password" class="form-control" id="inputPassword"
+                            <label for="ncPassword">Password</label>
+                            <input type="password" class="form-control" id="ncPassword" name="ncPassword"
                                    placeholder="Password">
+                            <check if="{{ @errors['password'] }}">
+                                <small id="clientPwHelp1"
+                                       class="form-text text-muted"> {{ @errors['password'] }}</small>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="confirmPassword">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword"
+                            <label for="ncPasswordConfirm">Confirm Password</label>
+                            <input type="password" class="form-control" id="ncPasswordConfirm" name="ncPasswordConfirm"
                                    placeholder="Conform Password">
+                            <check if="{{ @errors['password2'] }}">
+                                <small id="clientPWHelp2"
+                                       class="form-text text-muted"> {{ @errors['password2'] }}</small>
+                            </check>
                         </div>
                         <div class="text-center">
-                            <button type="submit" value="create client"
+                            <button type="submit" value="createClient" name="action"
                                     class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Create</button>
+                            <h2 class="success_h2 text-center">{{ @clientAccSuccess }}</h2>
+                            <h2 class="failure_h2 text-center">{{ @errors['clientAccFail'] }}</h2>
                         </div>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="pills-add-clinician" role="tabpanel"
                      aria-labelledby="pills-add-clinician-tab">
                     <h1>Create Clinician Account</h1>
-                    <!-- TODO Start of Create Clinician Account Form-->
-                    <form method="post" action="#">
+                    <!-- Start of Create Clinician Account Form-->
+                    <form method="post" action="#" id="createClinician">
                         <div class="form-group">
-                            <label for="inputId2">Id Number</label>
-                            <input type="text" class="form-control" id="inputId2"
+                            <label for="newClinicianId">Id Number</label>
+                            <input type="text" class="form-control" id="newClinicianId" name="newClinicianId"
                                    placeholder="Id Number">
+                            <check if="{{ @errors['clnId'] }}">
+                                <small id="clnIDHelp"
+                                       class="form-text text-muted"> {{ @errors['clnId'] }}</small>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="inputUsername">Username</label>
-                            <input type="text" class="form-control" id="inputUsername"
+                            <label for="nClnUsername">Username</label>
+                            <input type="text" class="form-control" id="nClnUsername" name="nClnUsername"
                                    placeholder="Username">
-                            <small id="usernameHelp"
-                                   class="form-text text-muted">Format: First Letter of First Name,
-                                followed by Last Name</small>
+                            <check if="{{ @errors['clnUsername'] }}">
+                                <true>
+                                    <small id="usernameHelp"
+                                           class="form-text text-muted"> {{ @errors['clnUsername'] }}</small>
+                                </true>
+                                <false>
+                                    <small id="usernameHelp1"
+                                           class="form-text text-muted">Format: First letter of first name,
+                                        followed by last name</small>
+                                </false>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="inputPassword2">Password</label>
-                            <input type="password" class="form-control" id="inputPassword2"
+                            <label for="nclnPassword">Password</label>
+                            <input type="password" class="form-control" id="nclnPassword" name="nclnPassword"
                                    placeholder="Password">
+                            <check if="{{ @errors['clnPassword'] }}">
+                                <small id="nclnPwHelp"
+                                       class="form-text text-muted"> {{ @errors['clnPassword'] }}</small>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="confirmPassword2">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword2"
+                            <label for="nclnPasswordConfirm">Confirm Password</label>
+                            <input type="password" class="form-control" id="nclnPasswordConfirm" name="nclnPasswordConfirm"
                                    placeholder="Conform Password">
+                            <check if="{{ @errors['clnPassword2'] }}">
+                                <small id="nclnPwHelp2"
+                                       class="form-text text-muted"> {{ @errors['clnPassword2'] }}</small>
+                            </check>
                         </div>
                         <div class="text-center">
-                            <button type="submit" value="create clinician"
+                            <button type="submit" value="createClinician" name="action"
                                     class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Create</button>
                         </div>
+                        <h2 class="success_h2 text-center">{{ @clnAccSuccess }}</h2>
+                        <h2 class="failure_h2 text-center">{{ @errors['clnAccFail'] }}</h2>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="pills-change-password" role="tabpanel"
-                     aria-labelledby="pills-change-password-tab">
-                    <h1>Change Account Password</h1>
+                <div class="tab-pane fade" id="pills-change-client-password" role="tabpanel"
+                     aria-labelledby="pills-change-client-password-tab">
+                    <h1>Change Client Account Password</h1>
                     <!-- TODO Start of reset account password -->
-                    <form method="post" action="#">
+                    <form method="post" action="#" id="changeClientPassword">
                         <div class="form-group">
-                            <label for="inputIdNew">Client Id -or- Id Number</label>
-                            <input type="text" class="form-control" id="inputIdNew" placeholder="Client Id / Id Number">
+                            <label for="chgClientPwId">Client Id</label>
+                            <input type="text" class="form-control" id="chgClientPwId" name="chgClientPwId"
+                                   placeholder="Client Id">
+                            <check if="{{ @errors['chgClientPwId'] }}">
+                                <small id="chgClientPwIdHelp"
+                                       class="form-text text-muted"> {{ @errors['chgClientPwId'] }}</small>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="inputPasswordNew">New Password</label>
-                            <input type="password" class="form-control" id="inputPasswordNew"
+                            <label for="chgPwNewPw">New Password</label>
+                            <input type="password" class="form-control" id="chgPwNewPw" name="chgPwNewPw"
                                    placeholder="New Password">
+                            <check if="{{ @errors['chgPwNewPw'] }}">
+                                <small id="chgPwHelp"
+                                       class="form-text text-muted"> {{ @errors['chgPwNewPw'] }}</small>
+                            </check>
                         </div>
                         <div class="form-group">
-                            <label for="inputPasswordNewConfirm">Confirm Password</label>
-                            <input type="password" class="form-control" id="inputPasswordNewConfirm"
+                            <label for="chgPwNewPwConfirm">Confirm Password</label>
+                            <input type="password" class="form-control" id="chgPwNewPwConfirm" name="chgPwNewPwConfirm"
                                    placeholder="Confirm Password">
+                            <check if="{{ @errors['chgPwNewPw2'] }}">
+                                <small id="chgPwHelp2"
+                                       class="form-text text-muted"> {{ @errors['chgPwNewPw2'] }}</small>
+                            </check>
                         </div>
                         <div class="text-center">
-                            <button type="submit" value="update password"
-                                    class="btn btn-primary update-btn rounded-0 border-0">Confirm Change</button>
+                            <button type="submit" value="changeClientPassword" name="action"
+                                    class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Confirm Change</button>
                         </div>
+                        <h2 class="success_h2 text-center">{{ @updatePwSuccess }}</h2>
+                        <h2 class="failure_h2 text-center">{{ @errors['updatePwFail'] }}</h2>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="pills-change-cln-password" role="tabpanel"
+                     aria-labelledby="pills-change-cln-password-tab">
+                    <h1>Change Clinician Account Password</h1>
+                    <!-- TODO Start of Admin reset account password -->
+                    <form method="post" action="#" id="changeClnPassword">
+                        <div class="form-group">
+                            <label for="chgPwClnUsername">Username</label>
+                            <input type="text" class="form-control" id="chgPwClnUsername" name="chgPwClnUsername"
+                                   placeholder="Username">
+                            <check if="{{ @errors['chgPwClnUsername'] }}">
+                                <small id="chgPwClnUsernameHelp"
+                                       class="form-text text-muted"> {{ @errors['chgPwClnUsername'] }}</small>
+                            </check>
+                        </div>
+                        <div class="form-group">
+                            <label for="chgPwClnNewPw">New Password</label>
+                            <input type="password" class="form-control" id="chgPwClnNewPw" name="chgPwClnNewPw"
+                                   placeholder="New Password">
+                            <check if="{{ @errors['chgPwClnNewPw'] }}">
+                                <small id="chgPwClnNewPwHelp"
+                                       class="form-text text-muted"> {{ @errors['chgPwClnNewPw'] }}</small>
+                            </check>
+                        </div>
+                        <div class="form-group">
+                            <label for="chgPwClnNewPw2">Confirm Password</label>
+                            <input type="password" class="form-control" id="chgPwClnNewPw2" name="chgPwClnNewPw2"
+                                   placeholder="Confirm Password">
+                            <check if="{{ @errors['chgPwClnNewPw2'] }}">
+                                <small id="chgPwClnNewPwConfirmHelp"
+                                       class="form-text text-muted"> {{ @errors['chgPwClnNewPw2'] }}</small>
+                            </check>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" value="changeClnPassword" name="action"
+                                    class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Confirm Change</button>
+                        </div>
+                        <h2 class="success_h2 text-center">{{ @updateClnPwSuccess }}</h2>
+                        <h2 class="failure_h2 text-center">{{ @errors['updateClnPwFail'] }}</h2>
                     </form>
                 </div>
             </div>

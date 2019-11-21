@@ -382,7 +382,249 @@ class database
         return $result['admin_id'];
     }
 
-    //--------------------------- Update profiles links ----------------------------------------------
+    //--------------------------- Add New User Accounts/Change PW ---------------------------------------------------
+
+    /**
+     * This function checks if the users db table already contains a client id.
+     *
+     * @param $clientId Client Id to check db for.
+     * @return boolean If the client id exists already.
+     */
+    public function checkIfClientExists($clientId)
+    {
+        $sql = "SELECT client_id FROM `client` WHERE client_id=:client_id";
+        $statement= $this->_dbh->prepare($sql);
+
+        $statement->bindParam(":client_id", $clientId, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return true; //form not valid if result is true (already exists)
+        } else {
+            return false; //form valid if result is false
+        }
+    }
+
+    /**
+     * This function checks if a clinician account exists for creating a new
+     * clinician account.
+     *
+     * @param $clnId User provided clinician Id.
+     * @param $clnUsername User provided username.
+     * @return boolean Clinician already exists.
+     */
+    public function checkIfClinicianExists($clnId, $clnUsername)
+    {
+        //FIXME might have to split this into two methods
+        $sql = "SELECT clinician_id, user_name FROM `clinician` WHERE clinician_id=:clinician_id AND user_name=:user_name";
+        $statement= $this->_dbh->prepare($sql);
+
+        $statement->bindParam(":clinician_id", $clnId, PDO::PARAM_INT);
+        $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
+
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return true; //form not valid if result is true (already exists)
+        } else {
+            return false; //form valid if result is false
+        }
+    }
+
+    /**
+     * This function checks if a client id already exists for updating
+     * a client account password.
+     *
+     * @param $clientId User provided client id.
+     * @return boolean client id exists.
+     */
+    public function checkIfClientIdExists($clientId)
+    {
+        $sql = "SELECT user_id, client FROM `users` WHERE user_id=:user_id AND client=:client";
+        $statement= $this->_dbh->prepare($sql);
+
+        $client = 1; //is a client
+
+        $statement->bindParam(":user_id", $clientId, PDO::PARAM_INT);
+        $statement->bindParam(":client", $client, PDO::PARAM_INT);
+
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return true; //is a client account
+        } else {
+            return false; //is not a client account
+        }
+    }
+
+    /**
+     * This function checks if a clinician username exists for
+     * updating clinician account password.
+     *
+     * @param $clnUsername User provided clinician username.
+     * @return integer/boolean Clinician id or username does not exist.
+     */
+    public function checkIfClinicianUsernameExists($clnUsername)
+    {
+        $sql = "SELECT clinician_id FROM `clinician` WHERE user_name=:user_name";
+        $statement= $this->_dbh->prepare($sql);
+
+        $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
+
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            return $result['clinician_id']; //is a clinician account
+        } else {
+            return false; //is not a clinician account
+        }
+    }
+
+    /**
+     * This function inserts a New client Account into the db.
+     *
+     * @param $clientId int New client id.
+     * @param $password string New client password.
+     * @return boolean Success of new client account insert.
+     */
+    public function insertClientAccount($clientId, $password)
+    {
+        try {
+            //insert statement for the user table
+            $sql = "INSERT INTO users VALUES (:user_id, :password, :admin, :client);";
+            $statement= $this->_dbh->prepare($sql);
+
+            $admin = 0; //not a admin
+            $client = 1; //is a client
+
+            //bind params
+            $statement->bindParam(":user_id", $clientId, PDO::PARAM_INT);
+            $statement->bindParam(":password", $password, PDO::PARAM_STR);
+            $statement->bindParam(":admin", $admin, PDO::PARAM_BOOL);
+            $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
+
+            //run the statement
+            $statement->execute();
+
+            //FIXME may want to check if ($result) statement ran
+
+            //insert statement for the client table
+            $sql = "INSERT INTO client VALUES (:client_id);";
+            $statement= $this->_dbh->prepare($sql);
+
+            //bind param
+            $statement->bindParam(":client_id", $clientId, PDO::PARAM_INT);
+
+            //run the statement
+            $statement->execute();
+
+        } catch (PDOException $ex) {
+            return false; //something went wrong
+        }
+        return true;
+    }
+
+    /**
+     * This function inserts a new clinician account into the db.
+     *
+     * @param $clnId User provided clinician id.
+     * @param $clnPassword User provided password.
+     * @param $clnUsername User provided clinician username.
+     * @return boolean Success of new clinician account insert.
+     */
+    public function insertClinicianAccount($clnId, $clnPassword, $clnUsername)
+    {
+        try {
+            //insert clinician into users table
+            $sql = "INSERT INTO users VALUES (:user_id, :password, :admin, :client);";
+            $statement= $this->_dbh->prepare($sql);
+
+            $admin = 0; //not a admin
+            $cln = 0; //not a client
+
+            //bind params
+            $statement->bindParam(":user_id", $clnId, PDO::PARAM_INT);
+            $statement->bindParam(":password", $clnPassword, PDO::PARAM_STR);
+            $statement->bindParam(":admin", $admin, PDO::PARAM_BOOL);
+            $statement->bindParam(":client", $cln, PDO::PARAM_BOOL);
+
+            //run the statement
+            $statement->execute();
+
+            //FIXME may want to check if ($result) statement ran
+
+            //insert into clinician table
+            $sql = "INSERT INTO clinician VALUES (:clinician_id, :user_name);";
+            $statement= $this->_dbh->prepare($sql);
+
+            //bind param
+            $statement->bindParam(":clinician_id", $clnId, PDO::PARAM_INT);
+            $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
+
+            //run the statement
+            $statement->execute();
+
+        } catch (PDOException $ex) {
+            return false; //something went wrong
+        }
+        return true;
+    }
+
+    /**
+     * This function changes the password of a current client account in the db.
+     *
+     * @param $clientId Client id to update password for.
+     * @param $newPassword New client password.
+     * @return boolean update password success.
+     */
+    public function changeClientPassword($clientId, $newPassword)
+    {
+        try {
+            //update client password in the db table
+            $sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
+            $statement = $this->_dbh->prepare($sql);
+
+            $client = 1; //is a client
+
+            //bind params
+            $statement->bindParam(":user_id", $clientId, PDO::PARAM_INT);
+            $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
+            $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
+
+            //run the statement
+            $statement->execute();
+        } catch (PDOException $ex) {
+            return false; //something went wrong
+        }
+        return true;
+    }
+
+    //TODO php doc
+    public function changeClinicianPassword($clnId, $newPassword)
+    {
+        try {
+            $sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
+            $statement = $this->_dbh->prepare($sql);
+
+            $client = 0; //clinician is not a client
+
+            //bind params
+            $statement->bindParam(":user_id", $clnId, PDO::PARAM_INT);
+            $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
+            $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
+
+            //run the statement
+            $statement->execute();
+        } catch (PDOException $ex) {
+            return false; //something went wrong
+        }
+        return true;
+    }
+
+    //--------------------------- Update profiles links -----------------------------------------------------------
 
     /**
      * Takes a clinican and client id and links their profile if possible

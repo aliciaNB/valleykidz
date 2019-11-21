@@ -20,12 +20,17 @@
     background-color: #559bca;
 }
 
-.update-btn {
-    margin-top: 2.0rem !important;
-}
-
 h1 {
     font-size: 1.5rem;
     text-align: center;
     font-weight: bold;
+}
+
+.success_h2 {
+    font-size: 1.25rem;
+    color: #99c24d;
+}
+
+.failure_h2 {
+    font-size: 1.25rem;
 }
