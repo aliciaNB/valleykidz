@@ -16,9 +16,6 @@ $db = new database();
 $f3->set('db', $db);
 //-----------------------------------------------------Arrays-----------------------------------------------------------
 
-$defaultTargets = $db->getDefaultTargets();
-$defaultEmotions=$db->getDefaultEmotions();
-
 $dates = array(
   "Mon","Tue","Wed","Thurs","Fri","Sat","Sun"
 );
@@ -75,9 +72,6 @@ $f3->route('GET|POST /createdbt', function ($f3) {
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
-    //collect default emoitons and targets form db
-    global $defaultEmotions;
-    global $defaultTargets;
 
     $priorFormEmotions = $db->getRecentCustomEmotions($_GET['id']);
     $priorFormTargets =$db->getRecentCustomTargets($_GET['id']);
@@ -133,7 +127,9 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 
         $f3->reroute('/confirmdbtform');
     }
-
+    //grab default targets and emotions
+    $defaultTargets = $db->getDefaultTargets();
+    $defaultEmotions=$db->getDefaultEmotions();
     $f3->set("targets", $defaultTargets);
     $f3->set("emotions", $defaultEmotions);
     $view = new Template();
@@ -300,13 +296,6 @@ $f3->route('GET|POST /viewform', function($f3) {
     $f3->set('displayStart', $displayStart->format("M d,Y"));
     $f3->set('displayEnd', $displayEnd->format("M d, Y"));
     //GRAB ALL INFORMATION FOR Tables
-    global $defaultEmotions;
-    global $defaultTargets;
-    global $dates;
-
-    $f3->set("dates", $dates);
-    $f3->set("targets", $defaultTargets);//TODO pull from db
-    $f3->set("emotions", $defaultEmotions);//TODO pull from db
 
     echo $view->render('view/viewform.html');
 });
