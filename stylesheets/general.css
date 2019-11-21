@@ -28,6 +28,10 @@ body {
     color: white;
 }
 
+nav button{
+    width:auto;
+}
+
 /* General Background Colors **********************************/
 .bgdkblue {
     background-color: #23446e;

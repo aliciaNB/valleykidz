@@ -156,7 +156,7 @@ class Formsplitter
                     $end = new DateTime($result[$i]["endDate"]);
                     $end =$end->format("M d,Y");
                     //start card
-                    echo'<div class="row mt-3">
+                    echo'<div class="row mt-3 mb-3">
                         <div class="col-md-2 col-1 col-lg-2"></div>
                             <div class="card text-center col-lg-8 col-md-8 col-10 p-0">
                              <h3 class="priors list-group-item list-group-item-primary bglblue white list-group-flush clickable">SESSION: '.$start.'-'.$end.
