@@ -39,10 +39,9 @@ Date:11/13/2019
     <!--Header-->
     <h1 class="text-center mt-4">View Weekly DBT </h1>
     <h2 class="text-center">Client# {{@GET.id}}</h2>
-    <h3 class="text-center">{{@displayStart}} - {{@displayEnd}}</h3>
-
+    <h3 class="text-center m-b1">{{@displayStart}} - {{@displayEnd}}</h3>
     <button id="printTop" class="btn btn-primary mt-2 mb-2 rounded-0 border-0 print">Print</button>
-
+    <hr>
     {{@table->printEmptyTargets(@GET.form)}}
 
     {{@table->printEmptyEmotions(@GET.form)}}
