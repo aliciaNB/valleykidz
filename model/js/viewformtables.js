@@ -49,7 +49,7 @@ $(document).ready( function(){
                     date = new Date(date);//modify to date object
                     date = date.getDay();//retrieve day in values of 0-6
                     var id = '#ta' + target + date;
-                    $(id).html('&#128505;');
+                    $(id).html('&#10003;');
                     $(id).removeClass('empty');
                     $(id).addClass('check');
                 }
@@ -82,7 +82,7 @@ $(document).ready( function(){
                     date = new Date(date);//modify to date object
                     date = date.getDay();//retrieve day in values of 0-6
                     var id = '#su' + skill + date;
-                    $(id).html('&#128505;');
+                    $(id).html('&#10003;');
                     $(id).removeClass('empty');
                     $(id).addClass('check');
                 }
