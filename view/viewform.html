@@ -41,8 +41,9 @@ Date:11/13/2019
     <h2 class="text-center">Client# {{@GET.id}}</h2>
     <h3 class="text-center m-b1">{{@displayStart}} - {{@displayEnd}}</h3>
     <p class="text-center"><a class="btn btn-primary mt-2 mb-2 rounded-0 border-0" href="formtable?id={{@GET.id}}">&#8592; Go Back</a></p>
-    <button id="printTop" class="btn btn-primary mt-2 mb-2 rounded-0 border-0 print">Print</button>
     <hr>
+    <div class="text-right"><button id="printTop" class="btn btn-primary mt-2 mb-2 rounded-0 border-0 print">Print</button></div>
+
     {{@table->printEmptyTargets(@GET.form)}}
 
     {{@table->printEmptyEmotions(@GET.form)}}
