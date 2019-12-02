@@ -1175,6 +1175,7 @@ class database
      */
     public function createForm($clientId)
     {
+        date_default_timezone_set('America/Los_Angeles');
         //grab today's date
         $today = date("Y-m-d");
         $sql = "INSERT INTO forms (clientId, startDate) VALUES(:clientId, :startDate)";
