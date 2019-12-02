@@ -7,19 +7,22 @@
 /*
 ************************* USER TABLES ***********************************
 CREATE TABLE users(
-	user_id int(8) primary key not null,
+	user_id int primary key AUTO_INCREMENT not null,
     password varchar(255) not null,
     admin boolean,
     client boolean);
 CREATE table client(
-	client_id int(8) primary key
+	client_id int,
+    client_num int;
+    PRIMARY KEY(client_id, client_num),
+    FOREIGN KEY (client_num) REFERENCES users(user_id),
 );
 CREATE table clinician(
-    clinician_id int(8) primary key,
+    clinician_id int primary key,
     user_name varchar(255)
 );
 CREATE table admin(
-    admin_id int(8) primary key,
+    admin_id int primary key,
     user_name varchar(255)
 );
 CREATE TABLE profilelinks(
