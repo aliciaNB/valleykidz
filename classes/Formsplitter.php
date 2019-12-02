@@ -24,6 +24,7 @@ class Formsplitter
         $numDates = count($newDate);
         if($numDates===0){//no future mondays meaning end date and start date only range of values
             $futuredate= new DateTime($startDate);
+            $startDate= $futuredate->format("Y-m-d");
             $displayStart = $futuredate->format("M d,Y");//format date for route get hive
             $futuredate= new DateTime($endDate);
             $displayEnd= $futuredate->format("M d,Y");
@@ -172,7 +173,7 @@ class Formsplitter
                 echo '</div>';
             }
 
-
+            echo '</div></div>';
         }
 
     }
