@@ -192,6 +192,7 @@ require_once("validation.php");
  */
 class database
 {
+    private $options = ['cost' => 10,];
     private $_dbh;
     private $_errormessage;
     private $mysqli;
@@ -223,67 +224,51 @@ class database
      */
     public function getUser($userid, $pass)
     {
-        $isAdmin = false;
-        // check if client
-        $sql = "SELECT * FROM users WHERE user_id=:user_id";
+        $userIdExists = false;
+        $sql = "SELECT * FROM client INNER JOIN users ON client.client_num=users.user_id WHERE client_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($result) {// Client
-            $sql = "SELECT * FROM users WHERE user_id=:user_id and password=:pass";
+        if($result) {
+            $userIdExists = true;
+            if (password_verify($pass, $result['password'])) {// Client
+                return 1;
+            }
+        }
+        if($userIdExists==false) {// check if clinician
+            $sql = "SELECT * FROM clinician INNER JOIN users 
+            ON users.user_id = clinician.clinician_id WHERE clinician.user_name=:user_name";
             $statement= $this->_dbh->prepare($sql);
-            $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
-            $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+            $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
-        } else {
-            // check if clinician
-            $sql = "SELECT * FROM clinician WHERE user_name=:user_id";
-            $statement= $this->_dbh->prepare($sql);
-            $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
-            $statement->execute();
-            $result = $statement->fetch(PDO::FETCH_ASSOC);
-            if ($result) {
-                $sql = "SELECT * FROM clinician INNER JOIN users 
-                ON users.user_id = clinician.clinician_id WHERE clinician.user_name=:user_name and users.password=:pass";
-                $statement= $this->_dbh->prepare($sql);
-                $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
-                $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
-                $statement->execute();
-                $result = $statement->fetch(PDO::FETCH_ASSOC);
-            } else {
-                // check if admin
-                $sql = "SELECT * FROM admin WHERE user_name=:user_id";
-                $statement= $this->_dbh->prepare($sql);
-                $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
-                $statement->execute();
-                $result = $statement->fetch(PDO::FETCH_ASSOC);
-                if ($result) {
-                    $sql = "SELECT * FROM admin INNER JOIN users 
-                    ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
-                    $statement= $this->_dbh->prepare($sql);
-                    $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
-                    $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
-                    $statement->execute();
-                    $result = $statement->fetch(PDO::FETCH_ASSOC);
-                    if ($result) {
-                        $isAdmin = true;
-                    }
-                } else {
-                    return "User id does not exist";
+            if ($result) {// Client
+                $userIdExists=true;
+                if(password_verify($pass, $result['password'])) {
+                    return 0;
                 }
             }
         }
-        //if all three are not correct this means only password is left
-        if (!$result && !$isAdmin) {
-            return "Password doest not match id";
+
+        if($userIdExists==false){// check if admin
+            $sql = "SELECT * FROM admin INNER JOIN users 
+            ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
+            $statement= $this->_dbh->prepare($sql);
+            $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
+            $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+            if ($result){
+                return 2;
+            }
         }
-        //if user is admin return a different result other than 1 or 0
-        if ($isAdmin) {
-            return $result['client'] = "2";
-        } else {
-            return $result['client'];
+
+        //if all three are not correct this means only password is left
+        if($userIdExists) {
+            return "Password does not match username";
+        }else{
+            return "Username does not exist";
         }
     }
     /**
@@ -315,6 +300,25 @@ class database
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['clinician_id'];
+    }
+
+    /**
+     * Gets clinician id provided Clinician user_name$
+     * @param $uuid Represents username of clinician
+     * @return boolean true if clinician exists false otherwise
+     */
+    public function checkClinicianIDExists($uuid)
+    {
+        $sql = "SELECT clinician_id FROM clinician WHERE clinician_id=:clinician_id";
+        $statement= $this->_dbh->prepare($sql);
+        $statement->bindParam(":clinician_id", $uuid, PDO::PARAM_STR);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if($result)
+        {
+            return true;
+        }
+        return false;
     }
     /**
      * Gets admin id provided admin user_name
@@ -422,27 +426,29 @@ class database
      * @param $password string New client password.
      * @return boolean Success of new client account insert.
      */
-    public function insertClientAccount($clientId, $password)
+    public function insertClientAccount($clientNum, $password)
     {
         try {
             //insert statement for the user table
-            $sql = "INSERT INTO users VALUES (:user_id, :password, :admin, :client);";
+            $sql = "INSERT INTO users(password, admin, client) VALUES (:password, :admin, :client);";
             $statement= $this->_dbh->prepare($sql);
+            $password = password_hash($password, PASSWORD_BCRYPT);
             $admin = 0; //not a admin
             $client = 1; //is a client
             //bind params
-            $statement->bindParam(":user_id", $clientId, PDO::PARAM_INT);
             $statement->bindParam(":password", $password, PDO::PARAM_STR);
             $statement->bindParam(":admin", $admin, PDO::PARAM_BOOL);
             $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
             //run the statement
             $statement->execute();
+            $id = $this->_dbh->lastInsertId();//retrive form num of new formid created
             //FIXME may want to check if ($result) statement ran
             //insert statement for the client table
-            $sql = "INSERT INTO client VALUES (:client_id);";
+            $sql = "INSERT INTO client(client_id, client_num) VALUES (:client_id, :client_num);";
             $statement= $this->_dbh->prepare($sql);
             //bind param
-            $statement->bindParam(":client_id", $clientId, PDO::PARAM_INT);
+            $statement->bindParam(":client_num", $id, PDO::PARAM_INT);
+            $statement->bindParam(":client_id", $clientNum, PDO::PARAM_INT);
             //run the statement
             $statement->execute();
         } catch (PDOException $ex) {
@@ -458,16 +464,16 @@ class database
      * @param $clnUsername User provided clinician username.
      * @return boolean Success of new clinician account insert.
      */
-    public function insertClinicianAccount($clnId, $clnPassword, $clnUsername)
+    public function insertClinicianAccount($clnPassword, $clnUsername)
     {
         try {
             //insert clinician into users table
-            $sql = "INSERT INTO users VALUES (:user_id, :password, :admin, :client);";
+            $sql = "INSERT INTO users(password, admin, client) VALUES (:password, :admin, :client);";
             $statement= $this->_dbh->prepare($sql);
             $admin = 0; //not a admin
             $cln = 0; //not a client
+            $clnPassword = password_hash($clnPassword, PASSWORD_BCRYPT);
             //bind params
-            $statement->bindParam(":user_id", $clnId, PDO::PARAM_INT);
             $statement->bindParam(":password", $clnPassword, PDO::PARAM_STR);
             $statement->bindParam(":admin", $admin, PDO::PARAM_BOOL);
             $statement->bindParam(":client", $cln, PDO::PARAM_BOOL);
@@ -475,10 +481,11 @@ class database
             $statement->execute();
             //FIXME may want to check if ($result) statement ran
             //insert into clinician table
+            $id = $this->_dbh->lastInsertId();//retrive form num of new formid created
             $sql = "INSERT INTO clinician VALUES (:clinician_id, :user_name);";
             $statement= $this->_dbh->prepare($sql);
             //bind param
-            $statement->bindParam(":clinician_id", $clnId, PDO::PARAM_INT);
+            $statement->bindParam(":clinician_id", $id, PDO::PARAM_INT);
             $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
             //run the statement
             $statement->execute();
@@ -626,20 +633,20 @@ class database
      */
     public function getuserType($uuid)
     {
-        if ($uuid===null) {
-            return "n";
-        }
-        $sql = "SELECT * FROM users WHERE user_id=:uuid";
-        $statement = $this->_dbh->prepare($sql);
-        $statement->bindParam("uuid", $uuid, PDO::PARAM_STR);
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if ($result['admin'] ==="1") {//is admin
-            return "a";
-        } elseif ($result['client']==="0") { //is clinician
-            return "cln";
-        } elseif ($result['client']==="1") {//is client
+        if($this->checkIfClientExists($uuid))
+        {
             return "cl";
+        }
+        elseif($this->checkClinicianIDExists($uuid))
+        {
+            return 'cln';
+        }
+        else if($this->getAdminID($uuid))
+        {
+            return "a";
+        }
+        else{
+            return 'n';
         }
     }
     //--------------------------------- Insert defaults -----------------------------------------
@@ -771,7 +778,7 @@ class database
     // Gets the client's current form and returns the ID
     public function getRecentClosedFormId($clientId)
     {
-        $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId ORDER BY endDate DESC";
+        $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId ORDER BY formId DESC, endDate DESC";
         $statement = $this->_dbh->prepare($sql);
         $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
         $statement->execute();

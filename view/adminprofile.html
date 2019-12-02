@@ -13,7 +13,7 @@
 <body>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bgdkblue">
-    <a class="navbar-brand mus" href="branchprofile">
+    <a class="navbar-brand mus" href="adminprofile">
         Valley <span class="lgold">|</span> Cities DBT Portal
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -99,15 +99,6 @@
                     <h1>Create Clinician Account</h1>
                     <!-- Start of Create Clinician Account Form-->
                     <form method="post" action="#" id="createClinician">
-                        <div class="form-group">
-                            <label for="newClinicianId">Id Number</label>
-                            <input type="text" class="form-control" id="newClinicianId" name="newClinicianId"
-                                   placeholder="Id Number">
-                            <check if="{{ @errors['clnId'] }}">
-                                <small id="clnIDHelp"
-                                       class="form-text text-muted"> {{ @errors['clnId'] }}</small>
-                            </check>
-                        </div>
                         <div class="form-group">
                             <label for="nClnUsername">Username</label>
                             <input type="text" class="form-control" id="nClnUsername" name="nClnUsername"

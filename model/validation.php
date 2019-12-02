@@ -241,11 +241,6 @@ function validCreateClinicianForm()
     global $f3;
     $isValid = true;
 
-    if (!validNewClientId($f3->get('clnId'))) {
-        $isValid = false;
-        $f3->set("errors['clnId']", 'Id must be at least 6 numeric digits.');
-    }
-
     if (!validClinicianUsername($f3->get('clnUsername'))) {
         $isValid = false;
         $f3->set("errors['clnUsername']", 'Username must be longer than 3 characters and cannot be blank.');

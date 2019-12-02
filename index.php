@@ -40,15 +40,14 @@ $f3->route('GET|POST /', function ($f3) {
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->getUser($_POST['user'],$_POST['pass']);
-
-        if ($result === "0") { //clinician
+        if ($result === 0) { //clinician
             $_SESSION['uuid'] = $db->getClinicianID($_POST['user']);
             $f3->reroute('/branchprofile');
-        } elseif ($result === "1") { //member
+        } elseif ($result === 1) { //member
             $_SESSION['uuid'] = $_POST['user'];
             $f3->reroute('/memberprofile');
-        } else if ($result === "2") { //admin
-            $_SESSION['uuid'] = $db->getAdminID($_POST['user']);
+        } else if ($result === 2) { //admin
+            $_SESSION['uuid']= $_POST['user'];
             $f3->reroute('/adminprofile');
         } else {
             $f3->set('error', $result);
@@ -100,7 +99,6 @@ $f3->route('GET|POST /createdbt', function ($f3) {
                 if($feeling!=="") {//if feeling in post was empty ignore and do not place in db
 
                     $result = $db->getEmotionId($feeling);
-                    var_dump($result);
                     if(!$result) {//id does not exist in table
 
                         $result=$db->insertEmotion($feeling);//add to table
@@ -140,10 +138,9 @@ $f3->route('GET|POST /createdbt', function ($f3) {
 $f3->route('GET|POST /branchprofile', function ($f3) {
     global $db;
     $f3->set('db', $db);
-
     if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
-        $f3->reroute('/');
+        //$f3->reroute('/');
     }
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -245,30 +242,22 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
 
     //Check if create clinician/group leader account is the form submitted on the page
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'createClinician') {
-        $clnId = $_POST['newClinicianId'];
         $clnUsername = $_POST['nClnUsername'];
         $clnPassword = $_POST['nclnPassword'];
         $clnPassword2 = $_POST['nclnPasswordConfirm'];
-
-        $f3->set('clnId', $clnId);
         $f3->set('clnUsername', $clnUsername);
         $f3->set('clnPassword', $clnPassword);
         $f3->set('clnPassword2', $clnPassword2);
 
         //validate the form, if not valid display error
         if (validCreateClinicianForm()) {
-
-            //add additional digit so that user_id in users table is unique from client ids **important**
-            $uniqueClnId = $clnId . 0;
-
             //check if the clinician id does not already exist
-            if ($f3->get('db')->checkIfClinicianExists($uniqueClnId, $clnUsername)) {
+            if ($f3->get('db')->checkIfClinicianUsernameExists($clnUsername)){
                 //FIXME case where username is used but does not belong to client id && client id is used but belongs to another username
-                $f3->set("errors['clnId']", 'ID already exists');
                 $f3->set("errors['clnUsername']", 'Username already exists');
             } else { // otherwise valid create the account,
                 //call db inserts
-                $result = $f3->get('db')->insertClinicianAccount($uniqueClnId, $clnPassword, $clnUsername);
+                $result = $f3->get('db')->insertClinicianAccount($clnPassword, $clnUsername);
                 if ($result) {
                     $f3->set('clnAccSuccess', "Account for Clinician: " . $clnUsername . " successfully created.");
                 } else {
