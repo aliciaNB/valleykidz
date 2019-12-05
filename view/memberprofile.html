@@ -54,13 +54,13 @@ Date:11/13/2019
                 <div id="datepicker" class="carousel col" data-interval="false" data-ride="carousel" data-wrap="false">
                     <!-- The slideshow -->
                     <div class="carousel-inner">
-                        <repeat group="{{ @dateRange }}" key="{{ @day }}" value="{{ @dates }}">
+                        <repeat group="{{ @dateRange }}" key="{{ @index }}" value="{{ @dates }}">
                             <div id="{{ @dates[1] }}" class="carousel-item <check if="{{ @currentDate == @dates[0] }}">
                             <true>
                                 active
                             </true>
                             </check>">
-                                <h1>{{ @day }}</h1>
+                                <h1>{{ @dates[2] }}</h1>
                                 <h2>{{ @dates[0] }}</h2>
                             </div>
                         </repeat>

@@ -186,6 +186,7 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
     $f3->set('dateRange', $f3->get('db')->getDateRange($_SESSION['uuid']));
     $currentDate = new DateTime('Today');
     $f3->set('currentDate', $currentDate->format('M. d'));
+    //var_dump($f3->get('dateRange'));
 
     if ($db->getuserType($_SESSION['uuid'])!=="cl") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";

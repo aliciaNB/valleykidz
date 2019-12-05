@@ -233,6 +233,7 @@ class database
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+        var_dump($result);
         if($result) {
             $userIdExists = true;
             if (password_verify($pass, $result['password'])) {// Client
@@ -834,17 +835,20 @@ class database
         if ($results == null) {
             return null;
         }
+
         $startDate = new DateTime($results[0]['startDate']);
         $currentDate = new DateTime('Today');
         $dateCounter = $startDate;
+        $counter = 0;
         $dateArray = array();
         while (true) {
-            $dateArray[$dateCounter->format('l')] = array($dateCounter->format('M. d'),
-                $dateCounter->format('Y-m-d'));
+            $dateArray[$counter] = array($dateCounter->format('M. d'),
+                $dateCounter->format('Y-m-d'), $dateCounter->format('l'));
             if ($dateCounter == $currentDate) {
                 break;
             }
             $dateCounter->add(new DateInterval('P1D'));
+            $counter++;
         }
         return $dateArray;
     }
