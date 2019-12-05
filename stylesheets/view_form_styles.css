@@ -16,12 +16,25 @@ div.data {
     margin: auto;
 }
 
+.card {
+    width: 100%;
+}
+
+a.card-header {
+    color: white;
+    font-size: 2em;
+}
+
+a.skillsHeader {
+    font-size: 1em;
+}
+
 #printTop {
     margin-right: 5%;
 }
 
-#noteHead {
-    width: 10%;
+#noteHeader {
+    width: 15%;
 }
 
 /* pagination on media request in order to create page breaks for tables*/
@@ -34,7 +47,7 @@ div.data {
         font-size: .8em;
     }
 
-    .print {
+    .hideOnPrint {
         display: none;
     }
 }
