@@ -515,8 +515,7 @@ class database
             //update client password in the db table
             //$sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
 
-            $sql = "UPDATE users SET users.password=:password FROM users 
-                    INNER JOIN client ON users.client_id = client.client_num 
+            $sql = "UPDATE users INNER  JOIN  client ON users.user_id = client.client_num  SET users.password=:password
                     WHERE client.client_id=:client_id;";
 
             $statement = $this->_dbh->prepare($sql);
