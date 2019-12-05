@@ -16,6 +16,19 @@ div.data {
     margin: auto;
 }
 
+.card {
+    width: 100%;
+}
+
+a.card-header {
+    color: white;
+    font-size: 2em;
+}
+
+a.skillsHeader {
+    font-size: 1em;
+}
+
 #printTop {
     margin-right: 5%;
 }

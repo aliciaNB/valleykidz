@@ -96,7 +96,7 @@ class BuildTable
 
         }
         //close table
-        echo '</tbody></table></div>';//close table and div
+        echo '</tbody></table></div></div></div>';//close table and div
     }
 
 
@@ -122,7 +122,7 @@ class BuildTable
            echo '</tr>';
         }
 
-        echo '</tbody></table></div>';//close table and div
+        echo '</tbody></table></div></div></div>';//close table and div
     }
 
     /**
@@ -160,7 +160,7 @@ class BuildTable
                 echo "</tr>";
             }
             echo "</tbody></table>
-            </div>";
+            </div></div></div>";
         }
     }
 
@@ -170,12 +170,18 @@ class BuildTable
     private static function printEmotionHeader()
     {
         //build table head
-        echo'<h2 class="text-center mt-5 bgwhite">Emotions</h2>
-        <div class="mt-5 data pagination">
-            <table id="feelings" class="table table-bordered cell-border">
-            <thead>
-                <tr>
-                    <th class="bglblue white">Emotions</th>';
+        echo'<div class="mt-5 data pagination">
+                <div class=\'card\'>
+                    <a id=\'emotionHead\' href=\'#\' class=\'text-center mb-0 card_a card-header bgdkblue\' 
+                    data-toggle="collapse" data-target="#emotiondiv" aria-expanded="true" 
+                    aria-controls="emotiondiv">Emotions</a>
+                    
+                    <div id="emotiondiv" class="collapse show bgdkblue"
+                    aria-labelledby="emotionHead">
+                        <table id="feelings" class="table table-bordered cell-border">
+                            <thead>
+                                <tr>
+                                    <th class="bglblue white">Emotions</th>';
 
         self::printDateRow();
         echo '</thead>';
@@ -186,18 +192,25 @@ class BuildTable
      */
     private static function printTargetHeader()
     {
-        echo "<h2 class=\"text-center mt-5 bgwhite\">Targets</h2>
-                <div class=\"mt-5 data pagination\">
-                    <table id=\"targets\" class=\"table table-bordered cell-border\">
-                       <thead>
-                        <tr>
-                            <th class=\"bglblue white\" colspan=\"2\">Targets</th>";
+        echo "<div class=\"mt-5 data pagination\">
+                <div class='card'>
+                    <a id='targetHead' href='#' class='text-center mb-0 card_a card-header bgdkblue' 
+                    data-toggle=\"collapse\" data-target=\"#targetdiv\" aria-expanded=\"true\" 
+                    aria-controls=\"targetdiv\">Targets</a>
+                    
+                    <div id=\"targetdiv\" class=\"collapse show bgdkblue\"
+                             aria-labelledby=\"targetHead\">
+                        <table id=\"targets\" 
+                        class=\"table table-bordered cell-border\">
+                            <thead>
+                                <tr>
+                                    <th class=\"bglblue white\" colspan=\"2\">Targets</th>";
         self::printDateRow();
         echo '</thead>';
     }
 
     /**
-     * prints header for skllls table
+     * prints header for skills table
      */
     private static function printSkillHeader($core)
     {
@@ -208,8 +221,14 @@ class BuildTable
             echo '<div class="mt-5 data">';
         }
         $stripped = str_replace(' ', '',$core);
-        echo "<table id=\"$stripped\" class=\"table table-bordered cell-border\">
-                    <caption class='caption text-center white bgdkblue'>$core</caption>
+        echo "<div class='card'>
+                    <a id='" . $stripped . "Head' href='#' class='skillsHeader text-center mb-0 card_a card-header bgdkblue' 
+                    data-toggle=\"collapse\" data-target=\"#" . $stripped . "div\" aria-expanded=\"true\" 
+                    aria-controls=\"" . $stripped . "div\">$core</a>
+                    
+                    <div id=\"" . $stripped . "div\" class=\"collapse show bgdkblue\"
+                             aria-labelledby=\"" . $stripped . "Head\">
+                <table id=\"$stripped\" class=\"table table-bordered cell-border\">
                     <thead>
                         <tr>
                             <th class=\"bglblue white\" colspan=\"2\">DBT Skills</th>";
