@@ -47,7 +47,7 @@ a.skillsHeader {
         font-size: .8em;
     }
 
-    .print {
+    .hideOnPrint {
         display: none;
     }
 }
