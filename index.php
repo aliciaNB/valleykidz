@@ -254,7 +254,6 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
         if (validCreateClinicianForm()) {
             //check if the clinician id does not already exist
             if ($f3->get('db')->checkIfClinicianUsernameExists($clnUsername)){
-                //FIXME case where username is used but does not belong to client id && client id is used but belongs to another username
                 $f3->set("errors['clnUsername']", 'Username already exists');
             } else { // otherwise valid create the account,
                 //call db inserts
@@ -282,7 +281,7 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
         if (validChangeClientPasswordForm()) {
 
             //check if client exists
-            if ($f3->get('db')->checkIfClientIdExists($clientId)) {
+            if ($f3->get('db')->checkIfClientExists($clientId)) {
 
                 // if exists run update password for client statement
                 $result = $f3->get('db')->changeClientPassword($clientId, $chgPwNewPw);

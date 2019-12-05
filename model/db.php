@@ -228,12 +228,12 @@ class database
     public function getUser($userid, $pass)
     {
         $userIdExists = false;
-        $sql = "SELECT * FROM client INNER JOIN users ON client.client_num=users.user_id WHERE client_id=:user_id";
+        $sql = "SELECT * FROM client INNER JOIN users ON client.client_num=users.user_id WHERE client.client_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        var_dump($result);
+
         if($result) {
             $userIdExists = true;
             if (password_verify($pass, $result['password'])) {// Client
@@ -508,14 +508,23 @@ class database
     public function changeClientPassword($clientId, $newPassword)
     {
         try {
+
+            //encrypt password
+            $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
             //update client password in the db table
-            $sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
+            //$sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
+
+            $sql = "UPDATE users SET users.password=:password FROM users 
+                    INNER JOIN client ON users.client_id = client.client_num 
+                    WHERE client.client_id=:client_id;";
+
             $statement = $this->_dbh->prepare($sql);
-            $client = 1; //is a client
+
             //bind params
-            $statement->bindParam(":user_id", $clientId, PDO::PARAM_INT);
             $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
-            $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
+            $statement->bindParam(":client_id", $clientId, PDO::PARAM_INT);
+
             //run the statement
             $statement->execute();
         } catch (PDOException $ex) {
@@ -527,6 +536,9 @@ class database
     public function changeClinicianPassword($clnId, $newPassword)
     {
         try {
+            //encrypt password
+            $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
             $sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
             $statement = $this->_dbh->prepare($sql);
             $client = 0; //clinician is not a client
