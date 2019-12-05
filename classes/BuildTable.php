@@ -16,12 +16,18 @@ class BuildTable
         $db = new database();
         $result=$db->getNotesBetweenDates($start,$end,$formId);
         //build table head
-        echo'<h2 class="text-center mt-5 bgwhite">Notes</h2>
-        <div class="mt-5 data">
+        echo'<div class="mt-5 data">
+                <div class=\'card\'>
+                    <a id=\'noteHead\' href=\'#\' class=\'text-center mb-0 card_a card-header bgdkblue\' 
+                    data-toggle="collapse" data-target="#notediv" aria-expanded="true" 
+                    aria-controls="notediv">Notes</a>
+                    
+                    <div id="notediv" class="collapse show bgdkblue"
+                             aria-labelledby="noteHead">
             <table id="notes" class="table table-bordered cell-border">
             <thead>
                 <tr>
-                    <th id="noteHead" class="bglblue white">Days of Week</th>
+                    <th id="noteHeader" class="bglblue white">Days of Week</th>
                     <th class="bglblue white">Notes</th>
                 </tr>
             </thead>';
@@ -62,7 +68,7 @@ class BuildTable
             echo '</tr>';//close row
         }
         //close table
-        echo '</tbody></table></div>';
+        echo '</tbody></table></div></div></div>';
     }
     /**
      * Prints a default table of targets from current form. Adding id's to be targeted by a later ajax/json request.
