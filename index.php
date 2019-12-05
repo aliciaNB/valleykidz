@@ -36,7 +36,6 @@ $f3->set('skillcategory', array(
 //default route
 $f3->route('GET|POST /', function ($f3) {
     global $db;
-
     //TODO validate db user clinician/patient
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->getUser($_POST['user'],$_POST['pass']);
