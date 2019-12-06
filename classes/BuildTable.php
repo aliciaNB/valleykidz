@@ -16,7 +16,7 @@ class BuildTable
         $db = new database();
         $result=$db->getNotesBetweenDates($start,$end,$formId);
         //build table head
-        echo'<div class="mt-5 data">
+        echo'<div class="mt-5 data boxShadow">
                 <div class=\'card\'>
                     <a id=\'noteHead\' href=\'#\' class=\'text-center mb-0 card_a card-header bgdkblue\' 
                     data-toggle="collapse" data-target="#notediv" aria-expanded="true" 
@@ -176,7 +176,7 @@ class BuildTable
     private static function printEmotionHeader()
     {
         //build table head
-        echo'<div class="mt-5 data pagination">
+        echo'<div class="mt-5 data pagination boxShadow">
                 <div class=\'card\'>
                     <a id=\'emotionHead\' href=\'#\' class=\'text-center mb-0 card_a card-header bgdkblue\' 
                     data-toggle="collapse" data-target="#emotiondiv" aria-expanded="true" 
@@ -198,7 +198,7 @@ class BuildTable
      */
     private static function printTargetHeader()
     {
-        echo "<div class=\"mt-5 data pagination\">
+        echo "<div class=\"mt-5 data pagination boxShadow\">
                 <div class='card'>
                     <a id='targetHead' href='#' class='text-center mb-0 card_a card-header bgdkblue' 
                     data-toggle=\"collapse\" data-target=\"#targetdiv\" aria-expanded=\"true\" 
@@ -222,9 +222,9 @@ class BuildTable
     {
         if($core!="Core Mindfulness")
         {
-            echo "<div class=\"mt-5 data pagination\">";
+            echo "<div class=\"mt-5 data pagination boxShadow\">";
         } else {
-            echo '<div class="mt-5 data">';
+            echo '<div class="mt-5 data boxShadow">';
         }
         $stripped = str_replace(' ', '',$core);
         echo "<div class='card'>
