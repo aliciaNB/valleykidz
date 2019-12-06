@@ -35,26 +35,26 @@
             <!-- Dynamic Select Nav -->
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="pills-add-client-tab" data-toggle="pill" href="#pills-add-client"
+                    <a class="nav-link {{ @clientAccCreate.tab }}" id="pills-add-client-tab" data-toggle="pill" href="#pills-add-client"
                        role="tab" aria-controls="pills-add-client" aria-selected="true"> + Client Account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-add-clinician-tab" data-toggle="pill" href="#pills-add-clinician"
+                    <a class="nav-link {{ @clinicianAccCreate.tab }}" id="pills-add-clinician-tab" data-toggle="pill" href="#pills-add-clinician"
                        role="tab" aria-controls="pills-add-clinician" aria-selected="false"> + Clinician Account</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-change-client-password-tab" data-toggle="pill"
+                    <a class="nav-link {{ @clientAccChange.tab }}" id="pills-change-client-password-tab" data-toggle="pill"
                        href="#pills-change-client-password" role="tab" aria-controls="pills-change-client-password"
                        aria-selected="false">Change Client Password</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-change-cln-password-tab" data-toggle="pill"
+                    <a class="nav-link {{ @clinicianAccChange.tab }}" id="pills-change-cln-password-tab" data-toggle="pill"
                        href="#pills-change-cln-password" role="tab" aria-controls="pills-change-cln-password"
                        aria-selected="false">Change Clinician Password</a>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="pills-add-client" role="tabpanel"
+                <div class="tab-pane fade {{ @clientAccCreate.form }}" id="pills-add-client" role="tabpanel"
                      aria-labelledby="pills-add-client-tab">
                     <h1>Create Client Account</h1>
                     <!-- Start of Create New Client Account Form-->
@@ -65,7 +65,7 @@
                                    placeholder="Client Id">
                             <check if="{{ @errors['newClientId'] }}">
                                 <small id="clientIDHelp"
-                                       class="form-text text-muted"> {{ @errors['newClientId'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['newClientId'] }}</small>
                             </check>
                         </div>
                         <div class="form-group">
@@ -73,8 +73,15 @@
                             <input type="password" class="form-control" id="ncPassword" name="ncPassword"
                                    placeholder="Password">
                             <check if="{{ @errors['password'] }}">
-                                <small id="clientPwHelp1"
-                                       class="form-text text-muted"> {{ @errors['password'] }}</small>
+                                <true>
+                                    <small id="clientPwHelp1"
+                                       class="form-text text-danger"> {{ @errors['password'] }}</small>
+                                </true>
+                                <false>
+                                    <small id="createClientPWhelp" class="form-text text-muted">Password must be 8-20
+                                        characters in length, have at least one uppercase letter, one lowercase letter,
+                                        one number, and one special character. Must not contain spaces.</small>
+                                </false>
                             </check>
                         </div>
                         <div class="form-group">
@@ -83,7 +90,7 @@
                                    placeholder="Confirm Password">
                             <check if="{{ @errors['password2'] }}">
                                 <small id="clientPWHelp2"
-                                       class="form-text text-muted"> {{ @errors['password2'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['password2'] }}</small>
                             </check>
                         </div>
                         <div class="text-center">
@@ -94,7 +101,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="pills-add-clinician" role="tabpanel"
+                <div class="tab-pane fade {{ @clinicianAccCreate.form }}" id="pills-add-clinician" role="tabpanel"
                      aria-labelledby="pills-add-clinician-tab">
                     <h1>Create Clinician Account</h1>
                     <!-- Start of Create Clinician Account Form-->
@@ -106,7 +113,7 @@
                             <check if="{{ @errors['clnUsername'] }}">
                                 <true>
                                     <small id="usernameHelp"
-                                           class="form-text text-muted"> {{ @errors['clnUsername'] }}</small>
+                                           class="form-text text-danger"> {{ @errors['clnUsername'] }}</small>
                                 </true>
                                 <false>
                                     <small id="usernameHelp1"
@@ -120,8 +127,14 @@
                             <input type="password" class="form-control" id="nclnPassword" name="nclnPassword"
                                    placeholder="Password">
                             <check if="{{ @errors['clnPassword'] }}">
-                                <small id="nclnPwHelp"
-                                       class="form-text text-muted"> {{ @errors['clnPassword'] }}</small>
+                                <true>
+                                    <small id="nclnPwHelp" class="form-text text-danger"> {{ @errors['clnPassword'] }}</small>
+                                </true>
+                                <false>
+                                    <small id="createClnPWhelp" class="form-text text-muted">Password must be 8-20
+                                        characters in length, have at least one uppercase letter, one lowercase letter,
+                                        one number, and one special character. Must not contain spaces.</small>
+                                </false>
                             </check>
                         </div>
                         <div class="form-group">
@@ -130,7 +143,7 @@
                                    placeholder="Confirm Password">
                             <check if="{{ @errors['clnPassword2'] }}">
                                 <small id="nclnPwHelp2"
-                                       class="form-text text-muted"> {{ @errors['clnPassword2'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['clnPassword2'] }}</small>
                             </check>
                         </div>
                         <div class="text-center">
@@ -141,7 +154,7 @@
                         <h2 class="failure_h2 text-center">{{ @errors['clnAccFail'] }}</h2>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="pills-change-client-password" role="tabpanel"
+                <div class="tab-pane fade show {{ @clientAccChange.form }}" id="pills-change-client-password" role="tabpanel"
                      aria-labelledby="pills-change-client-password-tab">
                     <h1>Change Client Account Password</h1>
                     <!-- Start of reset account password -->
@@ -152,7 +165,7 @@
                                    placeholder="Client Id">
                             <check if="{{ @errors['chgClientPwId'] }}">
                                 <small id="chgClientPwIdHelp"
-                                       class="form-text text-muted"> {{ @errors['chgClientPwId'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['chgClientPwId'] }}</small>
                             </check>
                         </div>
                         <div class="form-group">
@@ -160,8 +173,16 @@
                             <input type="password" class="form-control" id="chgPwNewPw" name="chgPwNewPw"
                                    placeholder="New Password">
                             <check if="{{ @errors['chgPwNewPw'] }}">
-                                <small id="chgPwHelp"
-                                       class="form-text text-muted"> {{ @errors['chgPwNewPw'] }}</small>
+                                <true>
+                                    <small id="chgPwHelp"
+                                       class="form-text text-danger"> {{ @errors['chgPwNewPw'] }}</small>
+                                </true>
+                                <false>
+                                    <small id="clientChangePWHelp"
+                                           class="form-text text-muted">Password must be 8-20 characters in length,
+                                        have at least one uppercase letter, one lowercase letter, one number, and one
+                                        special character. Must not contain spaces.</small>
+                                </false>
                             </check>
                         </div>
                         <div class="form-group">
@@ -170,7 +191,7 @@
                                    placeholder="Confirm Password">
                             <check if="{{ @errors['chgPwNewPw2'] }}">
                                 <small id="chgPwHelp2"
-                                       class="form-text text-muted"> {{ @errors['chgPwNewPw2'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['chgPwNewPw2'] }}</small>
                             </check>
                         </div>
                         <div class="text-center">
@@ -181,7 +202,7 @@
                         <h2 class="failure_h2 text-center">{{ @errors['updatePwFail'] }}</h2>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="pills-change-cln-password" role="tabpanel"
+                <div class="tab-pane fade {{ @clinicianAccChange.form }}" id="pills-change-cln-password" role="tabpanel"
                      aria-labelledby="pills-change-cln-password-tab">
                     <h1>Change Clinician Account Password</h1>
                     <!-- Start of Admin reset account password -->
@@ -192,7 +213,7 @@
                                    placeholder="Username">
                             <check if="{{ @errors['chgPwClnUsername'] }}">
                                 <small id="chgPwClnUsernameHelp"
-                                       class="form-text text-muted"> {{ @errors['chgPwClnUsername'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['chgPwClnUsername'] }}</small>
                             </check>
                         </div>
                         <div class="form-group">
@@ -200,8 +221,16 @@
                             <input type="password" class="form-control" id="chgPwClnNewPw" name="chgPwClnNewPw"
                                    placeholder="New Password">
                             <check if="{{ @errors['chgPwClnNewPw'] }}">
-                                <small id="chgPwClnNewPwHelp"
-                                       class="form-text text-muted"> {{ @errors['chgPwClnNewPw'] }}</small>
+                                <true>
+                                    <small id="chgPwClnNewPwHelp"
+                                       class="form-text text-danger"> {{ @errors['chgPwClnNewPw'] }}</small>
+                                </true>
+                                <false>
+                                    <small id="clnChangePwHelp"
+                                           class="form-text text-muted">Password must be 8-20 characters in length,
+                                        have at least one uppercase letter, one lowercase letter, one number, and one
+                                        special character. Must not contain spaces.</small>
+                                </false>
                             </check>
                         </div>
                         <div class="form-group">
@@ -210,7 +239,7 @@
                                    placeholder="Confirm Password">
                             <check if="{{ @errors['chgPwClnNewPw2'] }}">
                                 <small id="chgPwClnNewPwConfirmHelp"
-                                       class="form-text text-muted"> {{ @errors['chgPwClnNewPw2'] }}</small>
+                                       class="form-text text-danger"> {{ @errors['chgPwClnNewPw2'] }}</small>
                             </check>
                         </div>
                         <div class="text-center">

@@ -206,11 +206,17 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
 $f3->route('GET|POST /adminprofile', function ($f3) {
     $view = new Template();
     global $db;
+    $f3->set('clientAcc', 'active');
 
     if ($db->getuserType($_SESSION['uuid'])!=="a") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
     }
+
+    $f3->set('clientAccCreate', array("tab"=>"active", "form"=>"show active"));
+    $f3->set('clinicianAccCreate', array("tab"=>"", "form"=>""));
+    $f3->set('clientAccChange', array("tab"=>"", "form"=>""));
+    $f3->set('clinicianAccChange', array("tab"=>"", "form"=>""));
 
     //Check if create client account form is the form submitted on the page
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'createClient') {
@@ -242,6 +248,11 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
 
     //Check if create clinician/group leader account is the form submitted on the page
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'createClinician') {
+
+        //set default pill
+        $f3->set('clientAccCreate', array("tab"=>"", "form"=>""));
+        $f3->set('clinicianAccCreate', array("tab"=>"active", "form"=>"show active"));
+
         $clnUsername = $_POST['nClnUsername'];
         $clnPassword = $_POST['nclnPassword'];
         $clnPassword2 = $_POST['nclnPasswordConfirm'];
@@ -268,6 +279,14 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
 
     //Check if change client account password is the form submitted on the page
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'changeClientPassword') {
+
+        //set default pill
+        $f3->set('clientAccCreate', array("tab"=>"", "form"=>""));
+        $f3->set('clientAccChange', array("tab"=>"active", "form"=>"show active"));
+
+        $f3->set('clientAcc', '');
+        $f3->set('clientPass', 'active');
+
         $clientId = $_POST['chgClientPwId'];
         $chgPwNewPw = $_POST['chgPwNewPw'];
         $chgPwNewPw2 = $_POST['chgPwNewPwConfirm'];
@@ -297,6 +316,14 @@ $f3->route('GET|POST /adminprofile', function ($f3) {
 
     //Check if change clinician account password is the form submitted on the page
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['action'] == 'changeClnPassword') {
+
+        //set default pill
+        $f3->set('clientAccCreate', array("tab"=>"", "form"=>""));
+        $f3->set('clinicianAccChange', array("tab"=>"active", "form"=>"show active"));
+
+        $f3->set('clientAcc', '');
+        $f3->set('clinicianPass', 'active');
+
         $clnUsername = $_POST['chgPwClnUsername'];
         $chgPwClnNewPw = $_POST['chgPwClnNewPw'];
         $chgPwClnNewPw2 = $_POST['chgPwClnNewPw2'];
@@ -380,11 +407,10 @@ $f3->route('GET|POST /confirmdbtform', function($f3) {
 $f3->route('GET|POST /viewform', function($f3) {
     global $db;
 
-    // todo Might not need this, saving just in case
-    /*if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
+    if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
-    }*/
+    }
 
     $view = new Template();
     $f3->set('id', $_GET['id']);
@@ -427,12 +453,11 @@ $f3->route('GET|POST /formtable', function($f3) {
         }
     }
 
-    //todo Might not need this, don't know yet
-    /*$type =$db->getuserType($_SESSION['uuid']);//get the user type
+    $type =$db->getuserType($_SESSION['uuid']);//get the user type
 
     if ($type!=="cln") { //this page only viewable by clinicians
         $f3->reroute('/');
-    }*/
+    }
 
     $formsplit = new Formsplitter();
     $f3->set('formsplit', $formsplit);

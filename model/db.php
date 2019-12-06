@@ -271,17 +271,19 @@ class database
 
         if ($userIdExists==false) {// check if admin
             $sql = "SELECT * FROM admin INNER JOIN users 
-            ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
+            ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name";
             $statement= $this->_dbh->prepare($sql);
 
             $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
-            $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
 
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                return 2;
+            if ($result) {// Client
+                $userIdExists=true;
+                if(password_verify($pass, $result['password'])) {
+                    return 2;
+                }
             }
         }
 
