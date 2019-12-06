@@ -50,4 +50,8 @@ a.skillsHeader {
     .hideOnPrint {
         display: none;
     }
+
+    .collapse {
+        display: block;
+    }
 }

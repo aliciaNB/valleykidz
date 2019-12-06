@@ -130,6 +130,7 @@ class Formsplitter
                              <span class="swap">-</span></h3>
                              <ul class="list-group list-group-flush expandable">';
             if($result[0]['endDate']===null) {//if recent form is open
+                date_default_timezone_set('America/Los_Angeles');
                 echo self::printWeeks($result[0]['startDate'],date("Y-m-d"), $result[0]['formId'], $id);
             } else {
                 echo self::printWeeks($result[0]['startDate'],$result[0]['endDate'], $result[0]['formId'], $id);
