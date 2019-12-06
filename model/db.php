@@ -32,12 +32,14 @@ CREATE TABLE profilelinks(
     FOREIGN KEY (client_id) REFERENCES client(client_id),
     FOREIGN KEY (clinician_id) REFERENCES clinician(clinician_id)
 );
+
 ************************* SAMPLE USERS ****************************************
 INSERT INTO users (admin, client, password, user_id)
 VALUES (0, 1, 'test', 123456), (0, 0, 'test', 1234), (1, 0, 'test', 2345);
 INSERT INTO clinician (clinician_id, user_name) VALUES (1234, 'jelzughbi');
 INSERT INTO client (client_id) VALUES (123456);
 INSERT INTO admin (admin_id, user_name) VALUES (2345, 'admin');
+
 ************************ FORM TABLES *******************************************
 CREATE TABLE forms
 (
@@ -131,6 +133,7 @@ CREATE TABLE noteSubmission
     noteInfo varchar(255),
    	FOREIGN KEY (formId) REFERENCES forms(formId)
 );
+
 ************************* DEFAULT FORM DATA ***********************************
 INSERT INTO emotions (emotionId,emotionName,isDefault)
 VALUES (1,'joy',1),(2,'gratitude',1),(3,'compassion',1),(4,'vulnerability',1),
@@ -170,6 +173,7 @@ VALUES('tipp','dt',1, "Temperature.   Intense exercise.    Progressive muscle re
 ('radical acceptance','dt',1,"Choose to recognize and accept reality.  Freedom from suffering = acceptance of facts from deep within / not approval."),
 ('turning the mind','dt',1,"Choosing over and over again to accept even though emotion mind wants to reject reality."),
 ('willingness','dt',1,"Doing what is needed in each situation.");
+
 ***************** SAMPLE FORM FOR SAMPLE USER 123456 ***********************************
 INSERT INTO forms(clientId, startDate) VALUES (123456, '2019-11-07');
 INSERT INTO formTargets (formId, targetId) VALUES (1, 1),(1,2),(1,3),(1,4);
@@ -188,6 +192,7 @@ if ($user == NULL) {
 }
 require_once($path);
 require_once("validation.php");
+
 //-------------------------- Start of Class ---------------------------------------
 /**
  * Class database Creates a database connection using config file
@@ -199,6 +204,7 @@ class database
     private $_dbh;
     private $_errormessage;
     private $mysqli;
+
     /**
      * database constructor. Start out disconnected
      */
@@ -206,6 +212,7 @@ class database
     {
         $this->connect();
     }
+
     /**
      * Attempts to connect to database, saves error message if not connected
      * @return void
@@ -218,6 +225,7 @@ class database
             $this->_errormessage = $e->getMessage();
         }
     }
+
     //----------------------------- Validate user in db ------------------------------------------
     /**
      * Finds out if user is a client/clinician then verifies password is correct
@@ -230,23 +238,29 @@ class database
         $userIdExists = false;
         $sql = "SELECT * FROM client INNER JOIN users ON client.client_num=users.user_id WHERE client.client_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if($result) {
+        if ($result) {
             $userIdExists = true;
             if (password_verify($pass, $result['password'])) {// Client
                 return 1;
             }
         }
-        if($userIdExists==false) {// check if clinician
+
+        if ($userIdExists==false) {// check if clinician
             $sql = "SELECT * FROM clinician INNER JOIN users 
             ON users.user_id = clinician.clinician_id WHERE clinician.user_name=:user_name";
             $statement= $this->_dbh->prepare($sql);
+
             $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
+
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
+
             if ($result) {// Client
                 $userIdExists=true;
                 if(password_verify($pass, $result['password'])) {
@@ -255,26 +269,30 @@ class database
             }
         }
 
-        if($userIdExists==false){// check if admin
+        if ($userIdExists==false) {// check if admin
             $sql = "SELECT * FROM admin INNER JOIN users 
             ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
             $statement= $this->_dbh->prepare($sql);
+
             $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
             $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
+
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
-            if ($result){
+
+            if ($result) {
                 return 2;
             }
         }
 
         //if all three are not correct this means only password is left
-        if($userIdExists) {
+        if ($userIdExists) {
             return "Password does not match username";
-        }else{
+        } else {
             return "Username does not exist";
         }
     }
+
     /**
      * Retrieve an id from provided table if a user exists
      * @param $userid User Id provided of form
@@ -284,13 +302,17 @@ class database
     {
         $sql = "SELECT * FROM `users` WHERE user_id=:user_id";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":user_id", $userid, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
         if (!$result) {
             return "User ID does not exist";
         }
     }
+
     /**
      * Gets clinician id provided Clinician user_name
      * @param $user_name Represents username of clinician
@@ -300,7 +322,9 @@ class database
     {
         $sql = "SELECT clinician_id FROM clinician WHERE user_name=:user_name";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":user_name", $user_name, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['clinician_id'];
@@ -315,15 +339,18 @@ class database
     {
         $sql = "SELECT clinician_id FROM clinician WHERE clinician_id=:clinician_id";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":clinician_id", $uuid, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        if($result)
-        {
+
+        if ($result) {
             return true;
         }
         return false;
     }
+
     /**
      * Gets admin id provided admin user_name
      * @param $user_name Represents username of admin
@@ -333,11 +360,14 @@ class database
     {
         $sql = "SELECT admin_id FROM admin WHERE user_name=:user_name";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":user_name", $user_name, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['admin_id'];
     }
+
     //--------------------------- Add New User Accounts/Change PW ---------------------------------------------------
     /**
      * This function checks if the users db table already contains a client id.
@@ -349,15 +379,19 @@ class database
     {
         $sql = "SELECT client_id FROM `client` WHERE client_id=:client_id";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":client_id", $clientId, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
         if ($result) {
             return true; //form not valid if result is true (already exists)
         } else {
             return false; //form valid if result is false
         }
     }
+
     /**
      * This function checks if a clinician account exists for creating a new
      * clinician account.
@@ -368,23 +402,25 @@ class database
      */
     public function checkIfClinicianExists($clnId, $clnUsername)
     {
-        //FIXME might have to split this into two methods
         $sql = "SELECT clinician_id, user_name FROM `clinician` WHERE clinician_id=:clinician_id AND user_name=:user_name";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":clinician_id", $clnId, PDO::PARAM_INT);
         $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
         if ($result) {
             return true; //form not valid if result is true (already exists)
         } else {
             return false; //form valid if result is false
         }
     }
+
     /**
      * This function checks if a client id already exists for updating
      * a client account password.
-     *
      * @param $clientId User provided client id.
      * @return boolean client id exists.
      */
@@ -392,21 +428,24 @@ class database
     {
         $sql = "SELECT user_id, client FROM `users` WHERE user_id=:user_id AND client=:client";
         $statement= $this->_dbh->prepare($sql);
+
         $client = 1; //is a client
         $statement->bindParam(":user_id", $clientId, PDO::PARAM_INT);
         $statement->bindParam(":client", $client, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
         if ($result) {
             return true; //is a client account
         } else {
             return false; //is not a client account
         }
     }
+
     /**
      * This function checks if a clinician username exists for
      * updating clinician account password.
-     *
      * @param $clnUsername User provided clinician username.
      * @return integer/boolean Clinician id or username does not exist.
      */
@@ -414,19 +453,22 @@ class database
     {
         $sql = "SELECT clinician_id FROM `clinician` WHERE user_name=:user_name";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
         if ($result) {
             return $result['clinician_id']; //is a clinician account
         } else {
             return false; //is not a clinician account
         }
     }
+
     /**
      * This function inserts a New client Account into the db.
-     *
-     * @param $clientId int New client id.
+     * @param $clientNum int New client id.
      * @param $password string New client password.
      * @return boolean Success of new client account insert.
      */
@@ -437,33 +479,38 @@ class database
             $sql = "INSERT INTO users(password, admin, client) VALUES (:password, :admin, :client);";
             $statement= $this->_dbh->prepare($sql);
             $password = password_hash($password, PASSWORD_BCRYPT);
+
             $admin = 0; //not a admin
             $client = 1; //is a client
+
             //bind params
             $statement->bindParam(":password", $password, PDO::PARAM_STR);
             $statement->bindParam(":admin", $admin, PDO::PARAM_BOOL);
             $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
+
             //run the statement
             $statement->execute();
             $id = $this->_dbh->lastInsertId();//retrive form num of new formid created
-            //FIXME may want to check if ($result) statement ran
+
             //insert statement for the client table
             $sql = "INSERT INTO client(client_id, client_num) VALUES (:client_id, :client_num);";
             $statement= $this->_dbh->prepare($sql);
+
             //bind param
             $statement->bindParam(":client_num", $id, PDO::PARAM_INT);
             $statement->bindParam(":client_id", $clientNum, PDO::PARAM_INT);
+
             //run the statement
             $statement->execute();
+
         } catch (PDOException $ex) {
             return false; //something went wrong
         }
         return true;
     }
+
     /**
      * This function inserts a new clinician account into the db.
-     *
-     * @param $clnId User provided clinician id.
      * @param $clnPassword User provided password.
      * @param $clnUsername User provided clinician username.
      * @return boolean Success of new clinician account insert.
@@ -474,33 +521,40 @@ class database
             //insert clinician into users table
             $sql = "INSERT INTO users(password, admin, client) VALUES (:password, :admin, :client);";
             $statement= $this->_dbh->prepare($sql);
+
             $admin = 0; //not a admin
             $cln = 0; //not a client
+
             $clnPassword = password_hash($clnPassword, PASSWORD_BCRYPT);
+
             //bind params
             $statement->bindParam(":password", $clnPassword, PDO::PARAM_STR);
             $statement->bindParam(":admin", $admin, PDO::PARAM_BOOL);
             $statement->bindParam(":client", $cln, PDO::PARAM_BOOL);
+
             //run the statement
             $statement->execute();
-            //FIXME may want to check if ($result) statement ran
+
             //insert into clinician table
             $id = $this->_dbh->lastInsertId();//retrive form num of new formid created
             $sql = "INSERT INTO clinician VALUES (:clinician_id, :user_name);";
             $statement= $this->_dbh->prepare($sql);
+
             //bind param
             $statement->bindParam(":clinician_id", $id, PDO::PARAM_INT);
             $statement->bindParam(":user_name", $clnUsername, PDO::PARAM_STR);
+
             //run the statement
             $statement->execute();
+
         } catch (PDOException $ex) {
             return false; //something went wrong
         }
         return true;
     }
+
     /**
      * This function changes the password of a current client account in the db.
-     *
      * @param $clientId Client id to update password for.
      * @param $newPassword New client password.
      * @return boolean update password success.
@@ -508,7 +562,6 @@ class database
     public function changeClientPassword($clientId, $newPassword)
     {
         try {
-
             //encrypt password
             $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
 
@@ -526,12 +579,19 @@ class database
 
             //run the statement
             $statement->execute();
+
         } catch (PDOException $ex) {
             return false; //something went wrong
         }
         return true;
     }
-    //TODO php doc
+
+    /**
+     * This function changes a current clinician account password in the db.
+     * @param $clnId clinician id to update password for.
+     * @param $newPassword New clinician password.
+     * @return boolean update password success.
+     */
     public function changeClinicianPassword($clnId, $newPassword)
     {
         try {
@@ -541,17 +601,21 @@ class database
             $sql = "UPDATE users SET password=:password WHERE user_id=:user_id AND client=:client;";
             $statement = $this->_dbh->prepare($sql);
             $client = 0; //clinician is not a client
+
             //bind params
             $statement->bindParam(":user_id", $clnId, PDO::PARAM_INT);
             $statement->bindParam(":password", $newPassword, PDO::PARAM_STR);
             $statement->bindParam(":client", $client, PDO::PARAM_BOOL);
+
             //run the statement
             $statement->execute();
+
         } catch (PDOException $ex) {
             return false; //something went wrong
         }
         return true;
     }
+
     //--------------------------- Update profiles links -----------------------------------------------------------
     /**
      * Takes a clinican and client id and links their profile if possible
@@ -567,14 +631,17 @@ class database
             } else {//link does not exist and client exists
                 $sql= "INSERT INTO profilelinks(client_id, clinician_id) VALUES (:client, :clinician)";
                 $statement = $this->_dbh->prepare($sql);
+
                 $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
                 $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+
                 $statement->execute();
             }
         } else {//client not found
             return "Client does not exist check with admin to add";
         }
     }
+
     /**
      * Check if a profile link exists
      * @param $clinicianid String Represent clinician id submitted from form
@@ -585,12 +652,15 @@ class database
     {
         $sql = "SELECT * FROM `profilelinks` WHERE clinician_id=:clinician and client_id=:client";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
         $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Checks if client # exists in client table
      * @param $clientid String representation of requested client #
@@ -600,11 +670,14 @@ class database
     {
         $sql = "SELECT * FROM client WHERE client_id=:client";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Retrieves all current profile links for clinician provided
      * @param $clinicianid String clinician id of db
@@ -614,11 +687,14 @@ class database
     {
         $sql = "SELECT client_id FROM `profilelinks` WHERE clinician_id=:clinician";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Removes client/clinician profilelink if possible
      * @param $clinicianid String represent clienician id in db
@@ -633,14 +709,17 @@ class database
             } else {//link does exist remove from db
                 $sql= "DELETE FROM profilelinks WHERE client_id=:client and clinician_id=:clinician";
                 $statement = $this->_dbh->prepare($sql);
+
                 $statement->bindParam("clinician", $clinicianid, PDO::PARAM_STR);
                 $statement->bindParam("client", $clientid, PDO::PARAM_STR);
+
                 $statement->execute();
             }
         } else {//id does not exist
             return "Client does not exist check with admin to add";
         }
     }
+
     /**
      * Find if user exists in db and of what type they are
      * @param $uuid String represent a uuid provided from sessions
@@ -648,22 +727,17 @@ class database
      */
     public function getuserType($uuid)
     {
-        if($this->checkIfClientExists($uuid))
-        {
+        if ($this->checkIfClientExists($uuid)) {
             return "cl";
-        }
-        elseif($this->checkClinicianIDExists($uuid))
-        {
+        } elseif($this->checkClinicianIDExists($uuid)) {
             return 'cln';
-        }
-        else if($this->getAdminID($uuid))
-        {
+        } else if($this->getAdminID($uuid)) {
             return "a";
-        }
-        else{
+        } else {
             return 'n';
         }
     }
+
     //--------------------------------- Insert defaults -----------------------------------------
     /**
      * Grabs default skills from db
@@ -673,10 +747,12 @@ class database
     {
         $sql = "SELECT * FROM skills WHERE isDefault=1";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Retrieves default emotions from db
      * @return mixed Array of default emotions
@@ -685,10 +761,12 @@ class database
     {
         $sql = "SELECT emotionId,emotionName FROM emotions WHERE isDefault=1";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Retrieves default targets from db
      * @return mixed Array of defaul targets
@@ -697,10 +775,12 @@ class database
     {
         $sql = "SELECT targetId,targetName FROM targets WHERE isDefault=1";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Takes a form number in inserts default skills at that time into the associative table
      * @param $formId int form num being added to
@@ -709,12 +789,15 @@ class database
     {
         $defaults =$this->getDefaultSkills();
         $sql = "INSERT INTO formSkills(formId,skillsId) VALUES";
+
         foreach ($defaults as $value) {
             $sql.='('.$formId.','.$value["skillId"].'),';
         }
+
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
         $statement->execute();
     }
+
     /**
      * Takes a form number in inserts default emotions at that time into the associative table
      * @param $formId int form num being added to
@@ -723,12 +806,15 @@ class database
     {
         $defaults =$this->getDefaultEmotions();
         $sql = "INSERT INTO formEmotions(formId,emotionId) VALUES";
+
         foreach ($defaults as $value) {
             $sql.='('.$formId.','.$value["emotionId"].'),';
         }
+
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
         $statement->execute();
     }
+
     /**
      * Takes a form number in inserts default targets at that time into the associative table
      * @param $formId int form num being added to
@@ -737,12 +823,15 @@ class database
     {
         $defaults=$this->getDefaultTargets();
         $sql = "INSERT INTO formTargets(formId,targetId) VALUES";
+
         foreach ($defaults as $value) {
             $sql.='('.$formId.','.$value["targetId"].'),';
         }
+
         $statement = $this->_dbh->prepare(rtrim($sql, ','));
         $statement->execute();
     }
+
     //------------------------------------ Retrieve existing forms ---------------------------------------------
     /**
      * Takes a client Id number and returns all the targets on their current form
@@ -753,15 +842,19 @@ class database
     {
         // Getting the current formId from the clientId
         $formId = $this->getCurrentFormId($clientId);
+
         // Getting the client's current targets and returning them
         $sql = "SELECT targetName FROM targets INNER JOIN formTargets ON targets.targetId = formTargets.targetId 
                 WHERE formTargets.formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Takes a client Id number and returns all the emotions on their current form
      * @param $clientId int client id
@@ -771,35 +864,45 @@ class database
     {
         // Getting the current formId from the clientId
         $formId = $this->getCurrentFormId($clientId);
+
         // Getting the client's current targets and returning them
         $sql = "SELECT emotionName FROM emotions INNER JOIN formEmotions ON emotions.emotionId = formEmotions.emotionId 
                 WHERE formEmotions.formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     // Gets the client's current form and returns the ID
     public function getCurrentFormId($clientId)
     {
         $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId AND endDate IS NULL";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result[0]['formId'];
     }
+
     // Gets the client's current form and returns the ID
     public function getRecentClosedFormId($clientId)
     {
         $sql = "SELECT formId FROM `forms` WHERE clientId=:clientId ORDER BY formId DESC, endDate DESC";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result[0]['formId'];
     }
+
     /**
      * Gets the skills from the database and returns them
      * @return array An associative array of the skills sorted by category
@@ -811,25 +914,31 @@ class database
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $cm = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         // Getting all Interpersonal Effectiveness skills
         $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'ie' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $ie = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         // Getting all Emotion Regulation skills
         $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'er' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
         $statement->execute();
         $er = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         // Getting all Distress Tolerance skills
         $sql = "SELECT skillName, skillDescriptions FROM skills WHERE skillCategory = 'dt' AND isDefault=1";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->execute();
         $dt = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $skills = array('Core Mindfulness'=>$cm, 'Interpersonal Effectiveness'=>$ie,
             'Emotion Regulation'=>$er, 'Distress Tolerance'=>$dt);
         return $skills;
     }
+
     /**
      * Selects recent open form and returns start date to determine how far back the date picker can go
      * @param $clientId current client from session information
@@ -843,6 +952,7 @@ class database
         $statement->bindParam("clientId", $clientId, PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         if ($results == null) {
             return null;
         }
@@ -852,17 +962,21 @@ class database
         $dateCounter = $startDate;
         $counter = 0;
         $dateArray = array();
+
         while (true) {
             $dateArray[$counter] = array($dateCounter->format('M. d'),
                 $dateCounter->format('Y-m-d'), $dateCounter->format('l'));
+
             if ($dateCounter == $currentDate) {
                 break;
             }
+
             $dateCounter->add(new DateInterval('P1D'));
             $counter++;
         }
         return $dateArray;
     }
+
     /**
      * Takes the post array from when the client submits their form and either adds or updates the database with the
      * date and new data being selected
@@ -872,12 +986,14 @@ class database
     public function submitClientData($post, $clientId)
     {
         $dataExists = $this->doesClientDataAlreadyExist($clientId, $post['date']);
+
         if ($dataExists) {
             $this->updateClientData($post, $clientId);
         } else {
             $this->addClientData($post, $clientId);
         }
     }
+
     /**
      * Post values for a form date submitted
      * @param $post represent a post array of values
@@ -891,6 +1007,7 @@ class database
         $this->addClientSkills($post['degree'], $post['coreskills'], $formId, $post['date']);
         $this->addClientNotes($post['notes'], $formId, $post['date']);
     }
+
     /**
      * Updates existing db with new posted information
      * @param $post represents post array of a user
@@ -904,6 +1021,7 @@ class database
         $this->updateClientSkills($post['degree'], $post['coreskills'], $formId, $post['date']);
         $this->updateClientNotes($post['notes'], $formId, $post['date']);
     }
+
     /**
      * Adds client targets to submittedTargets table
      * @param $urges number value of urgers selected
@@ -914,21 +1032,26 @@ class database
     private function addClientTargets($urges, $actions, $formId, $date)
     {
         $formTargets = $this->getCurrentFormTargets($formId);
+
         foreach ($formTargets as $targets) {
             $urge = ($urges[$targets[0]] == "" ? null : $urges[$targets[0]]);
             $action = ($actions[$targets[0]] == null ? 0 : $actions[$targets[0]]);
+
             $sql = "INSERT INTO dateSubmissionTargets (formId, targetId, dateSubmitted, urge, action) VALUES
             (:formId, :targetId, :date, :urge, :action)";
             $statement = $this->_dbh->prepare($sql);
+
             $statement->bindParam("urge", $urge, PDO::PARAM_INT);
             $statement->bindParam("action", $action, PDO::PARAM_INT);
             $statement->bindParam("formId", $formId, PDO::PARAM_STR);
             $statement->bindParam("targetId", $targets[1], PDO::PARAM_STR);
             $statement->bindParam("date", $date, PDO::PARAM_STR);
+
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
     /**
      * Update a existing target submitted date with new information
      * @param $urges urge 0-5 for the target updating
@@ -939,21 +1062,26 @@ class database
     private function updateClientTargets($urges, $actions, $formId, $date)
     {
         $formTargets = $this->getCurrentFormTargets($formId);
+
         foreach ($formTargets as $targets) {
             $urge = ($urges[$targets[0]] == "" ? null : $urges[$targets[0]]);
             $action = ($actions[$targets[0]] == null ? 0 : $actions[$targets[0]]);
+
             $sql = "UPDATE dateSubmissionTargets SET urge=:urge, action=:action 
             WHERE formId=:formId AND targetId=:targetId AND dateSubmitted=:dateSubmitted";
             $statement = $this->_dbh->prepare($sql);
+
             $statement->bindParam("urge", $urge, PDO::PARAM_INT);
             $statement->bindParam("action", $action, PDO::PARAM_INT);
             $statement->bindParam("formId", $formId, PDO::PARAM_STR);
             $statement->bindParam("targetId", $targets[1], PDO::PARAM_STR);
             $statement->bindParam("dateSubmitted", $date, PDO::PARAM_STR);
+
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
     /**
      * Add client emotion from submitted form
      * @param $intensities represents emotions level of intensity
@@ -963,143 +1091,185 @@ class database
     private function addClientEmotions($intensities, $formId, $date)
     {
         $formEmotions = $this->getCurrentFormEmotions($formId);
+
         foreach ($formEmotions as $emotions) {
             $intensity = ($intensities[$emotions[0]] == "" ? null : $intensities[$emotions[0]]);
+
             $sql = "INSERT INTO dateSubmissionsEmotions (formId, dateSubmitted, emotionId, intensity) VALUES 
             (:formId, :date, :emotionId, :intensity)";
             $statement = $this->_dbh->prepare($sql);
+
             $statement->bindParam("intensity", $intensity, PDO::PARAM_INT);
             $statement->bindParam("formId", $formId, PDO::PARAM_STR);
             $statement->bindParam("emotionId", $emotions[1], PDO::PARAM_STR);
             $statement->bindParam("date", $date, PDO::PARAM_STR);
+
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
     private function updateClientEmotions($intensities, $formId, $date)
     {
         $formEmotions = $this->getCurrentFormEmotions($formId);
+
         foreach ($formEmotions as $emotions) {
             $intensity = ($intensities[$emotions[0]] == "" ? null : $intensities[$emotions[0]]);
+
             $sql = "UPDATE dateSubmissionsEmotions SET intensity=:intensity
             WHERE formId=:formId AND emotionId=:emotionId AND dateSubmitted=:dateSubmitted";
             $statement = $this->_dbh->prepare($sql);
+
             $statement->bindParam("intensity", $intensity, PDO::PARAM_INT);
             $statement->bindParam("formId", $formId, PDO::PARAM_STR);
             $statement->bindParam("emotionId", $emotions[1], PDO::PARAM_STR);
             $statement->bindParam("dateSubmitted", $date, PDO::PARAM_STR);
+
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
     private function addClientSkills($degrees, $coreskills, $formId, $date)
     {
         $allSkills = $this->getSkillsArray();
+
         foreach ($allSkills as $skillId => $skill) {
             $degree = ($degrees[$skillId - 1] == "" ? null : $degrees[$skillId - 1]);
             $used = ($coreskills[$skill] == null ? 0 : 1);
+
             $sql = "INSERT INTO dateSubmissionSkills (formId, dateSubmitted, skillId, degree, used) VALUES 
             (:formId, :date, :skillId, :degree, :used)";
             $statement = $this->_dbh->prepare($sql);
+
             $statement->bindParam("formId", $formId, PDO::PARAM_INT);
             $statement->bindParam("date", $date, PDO::PARAM_STR);
             $statement->bindParam("skillId", $skillId, PDO::PARAM_STR);
             $statement->bindParam("degree", $degree, PDO::PARAM_INT);
             $statement->bindParam("used", $used, PDO::PARAM_INT);
+
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
     private function updateClientSkills($degrees, $coreskills, $formId, $date)
     {
         $allSkills = $this->getSkillsArray();
+
         foreach ($allSkills as $skillId => $skill) {
             $degree = ($degrees[$skillId - 1] == "" ? null : $degrees[$skillId - 1]);
             $used = ($coreskills[$skill] == null ? 0 : 1);
+
             $sql = "UPDATE dateSubmissionSkills SET degree=:degree, used=:used 
             WHERE formId=:formId AND dateSubmitted=:date AND skillId=:skillId";
             $statement = $this->_dbh->prepare($sql);
+
             $statement->bindParam("formId", $formId, PDO::PARAM_INT);
             $statement->bindParam("date", $date, PDO::PARAM_STR);
             $statement->bindParam("skillId", $skillId, PDO::PARAM_STR);
             $statement->bindParam("degree", $degree, PDO::PARAM_INT);
             $statement->bindParam("used", $used, PDO::PARAM_INT);
+
             $statement->execute();
             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
     private function addClientNotes($note, $formId, $date)
     {
         $sql = "INSERT INTO noteSubmission (formId, dateSubmitted, noteInfo) VALUES
         (:formId, :date, :note)";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_INT);
         $statement->bindParam("date", $date, PDO::PARAM_STR);
         $statement->bindParam("note", $note, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
     private function updateClientNotes($note, $formId, $date)
     {
         $sql = "UPDATE noteSubmission SET noteInfo=:note WHERE formId=:formId AND dateSubmitted=:date";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_INT);
         $statement->bindParam("date", $date, PDO::PARAM_STR);
         $statement->bindParam("note", $note, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
     private function getSkillsArray()
     {
         $sql = "SELECT * FROM skills";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $allSkills = array();
+
         foreach ($results as $result) {
             $allSkills[$result['skillId']] = $result['skillName'];
         }
         return $allSkills;
     }
+
     public function getCurrentFormTargets($formId)
     {
         $sql = "SELECT targetName, targets.targetId FROM targets LEFT JOIN formTargets ON targets.targetId = formTargets.targetId 
         WHERE formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $targetsArray = array();
+
         foreach ($results as $result) {
             array_push($targetsArray, array($result['targetName'], $result['targetId']));
         }
         return $targetsArray;
     }
+
     private function getCurrentFormEmotions($formId)
     {
         $sql = "SELECT emotionName, emotions.emotionId FROM emotions LEFT JOIN formEmotions 
         ON emotions.emotionId = formEmotions.emotionId WHERE formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $emotionsArray = array();
+
         foreach ($results as $result) {
             array_push($emotionsArray, array($result['emotionName'], $result['emotionId']));
         }
         return $emotionsArray;
     }
+
     private function doesClientDataAlreadyExist($clientId, $date)
     {
         $formId = $this->getCurrentFormId($clientId);
         $sql = "SELECT skillId FROM dateSubmissionSkills WHERE formId=:formId AND dateSubmitted=:currentdate";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->bindParam("currentdate", $date, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results != null;
     }
+
     /**
      * Takes the client ID and the selected date and returns an associative array of the client's targets, emotions,
      * skills, and notes for the selected date
@@ -1116,53 +1286,71 @@ class database
         $clientData['notes'] = $this->getClientNotesData($formId, $date);
         return $clientData;
     }
+
     private function getClientTargetData($formId, $date)
     {
         $sql = "SELECT targetName, urge, action FROM targets INNER JOIN dateSubmissionTargets 
         ON targets.targetId=dateSubmissionTargets.targetId WHERE formId=:formId AND dateSubmitted=:date";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->bindParam("date", $date, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $targets = array();
+
         foreach ($results as $result) {
             $targets[$result['targetName']] = array($result['urge'], $result['action']);
         }
         return $targets;
     }
+
     private function getClientEmotionData($formId, $date)
     {
         $sql = "SELECT emotionName, intensity FROM emotions INNER JOIN dateSubmissionsEmotions 
         ON emotions.emotionId=dateSubmissionsEmotions.emotionId WHERE formId=:formId AND dateSubmitted=:date";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->bindParam("date", $date, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $emotions = array();
+
         foreach ($results as $result) {
             $emotions[$result['emotionName']] = $result['intensity'];
         }
         return $emotions;
     }
+
     private function getClientSkillData($formId, $date)
     {
         $sql = "SELECT skillName, degree, used FROM skills INNER JOIN dateSubmissionSkills 
         ON skills.skillId=dateSubmissionSkills.skillId WHERE formId=:formId AND dateSubmitted=:date";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->bindParam("date", $date, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         $clientSkills = array();
+
         foreach ($results as $result) {
             $clientSkills[$result['skillName']] = array($result['degree'], $result['used']);
         }
+
         $allSkills = $this->getSkills();
         $skillsData = array();
+
         foreach ($allSkills as $coreSkill => $subSkills) {
             $tempArray = array();
+
             foreach ($subSkills as $skill) {
                 $skillName = $skill['skillName'];
                 $tempArray[$skillName] = array($clientSkills[$skillName][0],
@@ -1172,16 +1360,20 @@ class database
         }
         return $skillsData;
     }
+
     private function getClientNotesData($formId, $date)
     {
         $sql = "SELECT noteInfo FROM noteSubmission WHERE formId=:formId AND dateSubmitted=:date";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam("formId", $formId, PDO::PARAM_STR);
         $statement->bindParam("date", $date, PDO::PARAM_STR);
+
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $results[0]['noteInfo'];
     }
+
     //--------------------------------- Update  Form Table ------------------------------
     /**
      * Creates a new form with open end date and closes previous form
@@ -1191,16 +1383,20 @@ class database
     public function createForm($clientId)
     {
         date_default_timezone_set('America/Los_Angeles');
+
         //grab today's date
         $today = date("Y-m-d");
         $sql = "INSERT INTO forms (clientId, startDate) VALUES(:clientId, :startDate)";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
         $statement->bindParam(":startDate", $today, PDO::PARAM_STR);
+
         $statement->execute();
         $id = $this->_dbh->lastInsertId();//retrive form num of new formid created
         return $id;
     }
+
     /**
      * Closes an open form of the client if it exists
      * @param $clientId represents client id in db
@@ -1209,19 +1405,25 @@ class database
     {
         $sql = "SELECT * FROM forms WHERE clientId=:clientId and endDate is null";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
+
         if (isset($result)) { //has an open form
             //grab today's date
             $today = date("Y-m-d");
             $sql= "UPDATE forms SET endDate =:today WHERE clientId=:clientId and endDate IS NULL";
             $statement= $this->_dbh->prepare($sql);
+
             $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
             $statement->bindParam(":today", $today, PDO::PARAM_STR);
+
             $statement->execute();
         }
     }
+
     //------------------------------ UPDAtE EMOTIONS ----------------------------------------------
     /**
      * Retrieves an emotion id if one exists from emotions table
@@ -1234,11 +1436,14 @@ class database
         $emotionString= strtolower($escapedString);//return escaped string and lowercase it
         $sql = "SELECT emotionId FROM emotions WHERE emotionName=:ename";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":ename", $emotionString, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['emotionId'];
     }
+
     /**
      * This method inserts new emotions into the emotion table and returns its id of new insert
      * @param $emotionString represents the name of an emotions entered in custom form
@@ -1248,13 +1453,17 @@ class database
     {
         $escapedString=filter_var($emotionString, FILTER_SANITIZE_STRING);
         $emotionString= strtolower($escapedString);//return escaped string and lowercase it
+
         $sql = "INSERT INTO emotions (emotionName, isDefault) VALUES(:emotionString ,0);";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":emotionString", $emotionString, PDO::PARAM_STR);
+
         $statement->execute();
         $id = $this->_dbh->lastInsertId();
         return $id;
     }
+
     /**
      * Insert customer emotions into associative table that produces the form for the client developed by clinician
      * @param $formNum current form num
@@ -1264,10 +1473,13 @@ class database
     {
         $sql = "INSERT INTO formEmotions (formId, emotionId) VALUES(:fid ,:eid )";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":fid", $formNum, PDO::PARAM_INT);
         $statement->bindParam(":eid", $eId, PDO::PARAM_INT);
+
         $statement->execute();
     }
+
     //----------------------------- Update Targets ----------------------
     /**
      * Retrieves an taget id if one exists from target table
@@ -1278,13 +1490,17 @@ class database
     {
         $escapedString = filter_var($targetString, FILTER_SANITIZE_STRING);
         $targetString= strtolower($escapedString);//return escaped string and lowercase it
+
         $sql = "SELECT targetId FROM targets WHERE targetName=:tname";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":tname", $targetString, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result['targetId'];
     }
+
     /**
      * This method inserts new target into the targets table and returns its id of new insert
      * @param $targetString represents the name of a target entered in custom form
@@ -1294,13 +1510,17 @@ class database
     {
         $escapedString  =filter_var($targetString, FILTER_SANITIZE_STRING);
         $targetString= strtolower($escapedString);//return escaped string and lowercase it
+
         $sql = "INSERT INTO targets(targetName, isDefault) VALUES(:targetString ,0)";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":targetString", $targetString, PDO::PARAM_STR);
+
         $statement->execute();
         $id = $this->_dbh->lastInsertId();
         return $id;
     }
+
     /**
      * Insert customer target into associative table that produces the form for the client developed by clinician
      * @param $formNum current form num
@@ -1310,10 +1530,13 @@ class database
     {
         $sql = "INSERT INTO formTargets (formId, targetId) VALUES(:fid ,:tid )";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":fid", $formNum, PDO::PARAM_INT);
         $statement->bindParam(":tid", $tid, PDO::PARAM_INT);
+
         $statement->execute();
     }
+
     /**
      * This will retrieve the custom emotions from the most recent form submitted by the client.
      * @param $clientId id of the client being worked with
@@ -1325,11 +1548,14 @@ class database
         $sql = "SELECT emotions.emotionName FROM formEmotions INNER JOIN emotions on 
             formEmotions.emotionId = emotions.emotionId WHERE emotions.isDefault=0 AND formId=:formId";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * This will retrieve the custom targets from the most recent form submitted by the client
      * @param $clientId id of the client being worked with
@@ -1341,11 +1567,14 @@ class database
         $sql = "SELECT targets.targetName FROM formTargets INNER JOIN targets on targets.targetId =
             formTargets.targetId WHERE formTargets.formId=:formId  AND targets.isDefault=0";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     //--------------------- Pull Forms --------------------------
     /**
      * Grabs a list of all current forms in sorted order by most current date to least current
@@ -1356,28 +1585,35 @@ class database
     {
         $sql="SELECT formId,startDate,endDate FROM forms WHERE clientId=:clientId ORDER BY (endDate IS NOT NULL), startDate DESC";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":clientId", $clientId, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Grabs all notes between a date range from a form id provided
      * @param $startDate the beginning date to be selected from form
      * @param $endDate end date to be selected from form
      * @param $formId the form id that is currently being used
+     * @return array notes between date range
      */
     public function getNotesBetweenDates($startDate, $endDate, $formId)
     {
         $sql="SELECT dateSubmitted, noteInfo FROM noteSubmission WHERE formId=:formId AND dateSubmitted BETWEEN :start AND :end ";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
         $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
         $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Retrieve emotion names from form id provided
      * @param $formId form numb provided for db retrieval
@@ -1388,11 +1624,14 @@ class database
         $sql="SELECT emotions.emotionName FROM formEmotions INNER JOIN emotions on formEmotions.emotionId = emotions.emotionId
             WHERE formEmotions.formId=:formId ORDER BY emotions.emotionId ASC";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Grab emotions results from db between target dates with form id provided
      * @param $startDate starting date of form
@@ -1407,19 +1646,23 @@ class database
         $startDate= $startDate->format("Y-m-d");
         $endDate = new DateTime($endDate);
         $endDate= $endDate->format("Y-m-d");
+
         $sql= "SELECT dateSubmissionsEmotions.dateSubmitted, emotions.emotionName, dateSubmissionsEmotions.intensity FROM dateSubmissionsEmotions 
         INNER JOIN emotions on dateSubmissionsEmotions.emotionId = emotions.emotionId WHERE dateSubmissionsEmotions.formId=:formId AND dateSubmissionsEmotions.dateSubmitted 
         BETWEEN :start and :end";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
         $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
         $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
-     * Grabs all the targets associated to a form id returnin there name as an array
+     * Grabs all the targets associated to a form id returning their name as an array
      * @param $formId from number provided associated to db
      * @return mixed returns array of targets names
      */
@@ -1428,11 +1671,14 @@ class database
         $sql="SELECT targets.targetName from formTargets INNER JOIN targets on formTargets.targetId= targets.targetId WHERE formId =:formId 
         ORDER BY targets.targetId ASC";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Retrieves all targets between two dates from a given form
      * @param $startDate the start date of the form
@@ -1447,13 +1693,16 @@ class database
         dateSubmissionTargets.targetId = targets.targetId WHERE dateSubmissionTargets.formId=:formId AND 
         dateSubmissionTargets.dateSubmitted BETWEEN :start and :end";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
         $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
         $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     /**
      * Grabs all the skills associated to a form id returnin there name as an array
      * @param $formId from number provided associated to db
@@ -1465,34 +1714,46 @@ class database
         $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
                 WHERE skillCategory = 'cm' AND formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $cm = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         // Getting all Interpersonal Effectiveness skills
         $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
                 WHERE skillCategory = 'ie' AND formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $ie = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         // Getting all Emotion Regulation skills
         $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
                 WHERE skillCategory = 'er' AND formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $er = $statement->fetchAll(PDO::FETCH_ASSOC);
+
         // Getting all Distress Tolerance skills
         $sql = "SELECT skillName FROM skills INNER JOIN formSkills ON skills.skillId=formSkills.skillsId 
                 WHERE skillCategory = 'dt' AND formId=:formId";
         $statement = $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
+
         $statement->execute();
         $dt = $statement->fetchAll(PDO::FETCH_ASSOC);
         $skills = array('Core Mindfulness'=>$cm, 'Interpersonal Effectiveness'=>$ie,
             'Emotion Regulation'=>$er, 'Distress Tolerance'=>$dt);
         return $skills;
     }
+
     /**
      * Retrieves the value of skills between two dates matching a form id
      * @param $startDate start date of form data requested
@@ -1507,14 +1768,17 @@ class database
         $startDate= $startDate->format("Y-m-d");
         $endDate = new DateTime($endDate);
         $endDate= $endDate->format("Y-m-d");
+
         $sql= "SELECT dateSubmitted, skillName, degree, used FROM dateSubmissionSkills 
         INNER JOIN skills on dateSubmissionSkills.skillId = skills.skillId WHERE dateSubmissionSkills.formId=:formId 
         AND dateSubmitted 
         BETWEEN :start and :end";
         $statement= $this->_dbh->prepare($sql);
+
         $statement->bindParam(":formId", $formId, PDO::PARAM_INT);
         $statement->bindParam(":start", $startDate, PDO::PARAM_STR);
         $statement->bindParam(":end", $endDate, PDO::PARAM_STR);
+
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
