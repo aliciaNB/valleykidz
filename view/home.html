@@ -28,8 +28,8 @@ Date:11/13/2019
 <div class="container rounded mt-5">
     <div class="row  pb-2 pt-3">
         <div class="col-lg-3 col-sm-0"></div>
-        <div class="col-lg-6 col-sm-12">
-            <form class="form-group" action="#" method="post">
+        <div class="card boxShadow col-lg-6 col-sm-12">
+            <form class="form-group m-5" action="#" method="post">
                 <label for="inputUsername" class="dkgrey">Username</label>
                 <input type="text" class="form-control form-control-lg" name="user"
                        id="inputUsername" placeholder="Username" value="{{@POST.user}}{{@GET.user}}">
@@ -42,6 +42,7 @@ Date:11/13/2019
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary mt-2 mb-2 rounded-0 border-0">Login</button>
                 </div>
+                <hr>
                 <p class="text-center">Unable to login? Please contact your group leader for assistance.</p>
             </form>
         </div>
