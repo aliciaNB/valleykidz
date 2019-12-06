@@ -30,7 +30,7 @@
 </nav>
 <!-- End of Navbar -->
 <div class="container mt-4">
-    <div class="card mx-auto col-lg-8 mt-3 mb-3">
+    <div class="card mx-auto col-lg-8 mt-3 mb-3 boxShadow">
         <div class="card-body">
             <!-- Dynamic Select Nav -->
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -80,7 +80,7 @@
                         <div class="form-group">
                             <label for="ncPasswordConfirm">Confirm Password</label>
                             <input type="password" class="form-control" id="ncPasswordConfirm" name="ncPasswordConfirm"
-                                   placeholder="Conform Password">
+                                   placeholder="Confirm Password">
                             <check if="{{ @errors['password2'] }}">
                                 <small id="clientPWHelp2"
                                        class="form-text text-muted"> {{ @errors['password2'] }}</small>
@@ -127,7 +127,7 @@
                         <div class="form-group">
                             <label for="nclnPasswordConfirm">Confirm Password</label>
                             <input type="password" class="form-control" id="nclnPasswordConfirm" name="nclnPasswordConfirm"
-                                   placeholder="Conform Password">
+                                   placeholder="Confirm Password">
                             <check if="{{ @errors['clnPassword2'] }}">
                                 <small id="nclnPwHelp2"
                                        class="form-text text-muted"> {{ @errors['clnPassword2'] }}</small>
