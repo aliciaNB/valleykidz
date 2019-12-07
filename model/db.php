@@ -12,10 +12,10 @@ CREATE TABLE users(
     admin boolean,
     client boolean);
 CREATE table client(
-	client_id int,
-    client_num int;
+    client_id int,
+    client_num int,
     PRIMARY KEY(client_id, client_num),
-    FOREIGN KEY (client_num) REFERENCES users(user_id),
+    FOREIGN KEY (client_num) REFERENCES users(user_id)
 );
 CREATE table clinician(
     clinician_id int primary key,
