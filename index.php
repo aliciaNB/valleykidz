@@ -206,7 +206,6 @@ $f3->route('GET|POST /memberprofile', function ($f3) {
 $f3->route('GET|POST /adminprofile', function ($f3) {
     $view = new Template();
     global $db;
-    $f3->set('clientAcc', 'active');
 
     if ($db->getuserType($_SESSION['uuid'])!=="a") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
@@ -407,10 +406,11 @@ $f3->route('GET|POST /confirmdbtform', function($f3) {
 $f3->route('GET|POST /viewform', function($f3) {
     global $db;
 
-    if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
+    // todo Might not need this, saving just in case - DEFINITELY A FIX ME (someone can get to route from url)
+    /*if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
-    }
+    }*/
 
     $view = new Template();
     $f3->set('id', $_GET['id']);
@@ -453,11 +453,12 @@ $f3->route('GET|POST /formtable', function($f3) {
         }
     }
 
-    $type =$db->getuserType($_SESSION['uuid']);//get the user type
+    //todo Might not need this, don't know yet
+   /* $type =$db->getuserType($_SESSION['uuid']);//get the user type
 
     if ($type!=="cln") { //this page only viewable by clinicians
         $f3->reroute('/');
-    }
+    }*/
 
     $formsplit = new Formsplitter();
     $f3->set('formsplit', $formsplit);
