@@ -380,20 +380,11 @@ $f3->route('GET|POST /confirmdbtform', function($f3) {
 $f3->route('GET|POST /viewform', function($f3) {
     global $db;
 
-    $userType=$db->getuserType($_SESSION['uuid']);
-    if($userType==="cln" || $userType ==="cl"){
-        if($userType==="cl") {
-            if($_SESSION['uuid'] != $_GET['id']){
-                $_SESSION['redirect']="Your session has timed out. Please login to continue.";
-                $f3->reroute('/');
-            }
-        }
-
-    }else{
-
+    // todo Might not need this, saving just in case
+    /*if ($db->getuserType($_SESSION['uuid'])!=="cln") { //check if appropriate user on page redirect to home if not
         $_SESSION['redirect']="Your session has timed out. Please login to continue.";
         $f3->reroute('/');
-    }
+    }*/
 
     $view = new Template();
     $f3->set('id', $_GET['id']);

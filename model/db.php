@@ -12,10 +12,10 @@ CREATE TABLE users(
     admin boolean,
     client boolean);
 CREATE table client(
-	client_id int,
-    client_num int;
+    client_id int,
+    client_num int,
     PRIMARY KEY(client_id, client_num),
-    FOREIGN KEY (client_num) REFERENCES users(user_id),
+    FOREIGN KEY (client_num) REFERENCES users(user_id)
 );
 CREATE table clinician(
     clinician_id int primary key,
@@ -147,7 +147,7 @@ VALUES('wise mind', 'cm',1, "Accessed wisdom.  Know truth.  Be centered and calm
 ('participate','cm',1, "Enter into the experience.  Act intuitively from wise mind.  Practice changing the harmful and accepting yourself."),
 ('nonjudgmental stance', 'cm',1,"See but don't evaluate.  Unglue your opinions.  Accept each moment."),
 ('one-mindfully','cm',1,"Be in-the-moment.  Do one thing at a time.  Let go of distractions.  Concentrate your mind on the task at hand."),
-('efectiveness','cm',1, "Focus on what works.  Learn the rules.  Play by the rules.  Act skillfully.  Let go of vengeance and useless anger.");
+('effectiveness','cm',1, "Focus on what works.  Learn the rules.  Play by the rules.  Act skillfully.  Let go of vengeance and useless anger.");
 INSERT INTO skills (skillName, skillCategory, isDefault, skillDescriptions)
 VALUES('objective effectiveness','ie',1, "DEAR MAN:  Describe. Express. Assert. Reinforce. Mindful. Appear confident. Negotiate."),
 ('relationship effectiveness','ie',1, "GIVE:  Gentle. Interested. Validation. Easy manner."),
@@ -162,7 +162,7 @@ VALUES('identifying primary emotions','er',1,"Use the model of emotions to ident
 ('build mastery','er',1,"Try to do one (hard or challenging) thing a day to make yourself feel competent and in control."),
 ('cope ahead','er',1,"Imagine how you would skillfully cope with a situation before you are in it."),
 ('please','er',1,"Reduce vulnerability, treat: Physical illness, balance Eating. Avoid drugs, balance Sleep. Exercise daily."),
-('mindfulness to current emotion','er',1,null);
+('mindfulness to current emotion','er',1, 'Being mindful of your current emotion.');
 INSERT INTO skills(skillName,skillCategory, isDefault, skillDescriptions)
 VALUES('tipp','dt',1, "Temperature.   Intense exercise.    Progressive muscle relaxation.  Paced breathing."),
 ('distract','dt',1,"Wise Mind ACCEPTS Activities.  Contributing.  Comparisons.  Emotions.  Pushing away.  Thoughts.  Sensations."),
@@ -271,17 +271,19 @@ class database
 
         if ($userIdExists==false) {// check if admin
             $sql = "SELECT * FROM admin INNER JOIN users 
-            ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name and users.password=:pass";
+            ON users.user_id = admin.admin_id WHERE admin.user_name=:user_name";
             $statement= $this->_dbh->prepare($sql);
 
             $statement->bindParam(":user_name", $userid, PDO::PARAM_STR);
-            $statement->bindParam(":pass", $pass, PDO::PARAM_STR);
 
             $statement->execute();
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-            if ($result) {
-                return 2;
+            if ($result) {// Client
+                $userIdExists=true;
+                if(password_verify($pass, $result['password'])) {
+                    return 2;
+                }
             }
         }
 
